@@ -19,7 +19,7 @@ export const sidebarLinks = [
     path: '/account',
     icon: <RiAccountCircleFill size={24} />,
   },
-  { name: 'Docs', path: '/', icon: <FaBook size={24} /> },
+  { name: 'Docs', path: '/docs', icon: <FaBook size={24} /> },
 ];
 
 export default function Sidebar({ children }: SidebarProps) {
@@ -34,7 +34,7 @@ export default function Sidebar({ children }: SidebarProps) {
       <div
         className={`${
           open ? 'w-72' : 'w-20'
-        } relative h-screen bg-blue-900 p-5 pt-8 duration-300`}
+        } relative  bg-blue-900 p-5 pt-8 text-white duration-300`}
       >
         <div
           onClick={toggleSidebar}
@@ -52,9 +52,9 @@ export default function Sidebar({ children }: SidebarProps) {
             <h1
               className={`${
                 !open && 'scale-0'
-              } origin-left text-2xl font-medium duration-300`}
+              } origin-left whitespace-nowrap text-2xl font-medium duration-300`}
             >
-              logo
+              Step Upp
             </h1>
           </Link>
         </div>

@@ -3,7 +3,7 @@ import { useSession, signOut, getSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
-export default function Account() {
+export default function Docs() {
   const { data: session, status } = useSession();
   // if (status === 'authenticated') {
   return (
@@ -14,7 +14,7 @@ export default function Account() {
       <Layout>
         {status === 'authenticated' ? (
           <>
-            <p>Welcome {session.user!.name} </p>
+            <p>Docs</p>
           </>
         ) : (
           <p>You are not signed in</p>

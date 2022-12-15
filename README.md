@@ -1,4 +1,4 @@
-This is a bolierplate Nextjs app.
+# Step Upp
 
 It has the following features:
 
