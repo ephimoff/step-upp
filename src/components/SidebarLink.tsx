@@ -13,11 +13,13 @@ const SidebarLink = ({ path, name, open, icon }: SidebarLinkProps) => {
   return (
     <Link
       href={path}
-      className={`mt-2 flex items-center gap-x-4 rounded-md p-2 text-sm text-gray-300 hover:bg-blue-700 ${
-        router.pathname == path ? 'bg-blue-800' : ''
+      className={`${
+        !open && 'mr-4'
+      } ml-0 mt-2 flex items-center gap-x-4 rounded-md py-3 pl-3 text-sky-800 hover:bg-slate-200 ${
+        router.pathname == path ? 'bg-sky-100' : ''
       }`}
     >
-      <span>{icon}</span>
+      <span className="text-2xl">{icon}</span>
       <span className={`${!open && 'hidden'} origin-left duration-300`}>
         {name}
       </span>

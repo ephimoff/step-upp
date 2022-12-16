@@ -1,3 +1,5 @@
+const { fontFamily } = require('tailwindcss/defaultTheme');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,6 +11,9 @@ module.exports = {
       colors: {
         primary: '#202225',
         secondary: '#5865f2',
+      },
+      fontFamily: {
+        sans: ['var(--font-nunito)', ...fontFamily.sans],
       },
     },
   },

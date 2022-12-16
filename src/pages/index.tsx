@@ -1,6 +1,8 @@
-import Layout from '@/components/Layout';
+import Sidebar from '@/components/Sidebar';
 import Head from 'next/head';
 import UserInfo from '@/components/UserInfo';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 
 export const data = [
   {
@@ -50,7 +52,7 @@ export default function Home() {
         <title>Step-Upp. A tool to help you advance you career</title>
       </Head>
 
-      <Layout>
+      <Sidebar>
         <div className="h-max">
           <UserInfo
             name={'J. Appleseed'}
@@ -98,7 +100,21 @@ export default function Home() {
             );
           })}
         </div>
-      </Layout>
+      </Sidebar>
     </>
   );
 }
+
+export const getServerSideProps = async (context: GetServerSideProps) => {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+      },
+    };
+  }
+  return {
+    props: { session },
+  };
+};
