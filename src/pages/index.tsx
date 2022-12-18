@@ -1,7 +1,6 @@
 import Sidebar from '@/components/Sidebar';
 import Head from 'next/head';
 import UserInfo from '@/components/UserInfo';
-import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 
 export const data = [
@@ -105,12 +104,12 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps = async (context: GetServerSideProps) => {
+export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
   if (!session) {
     return {
       redirect: {
-        destination: '/auth/login',
+        destination: '/auth/signin',
       },
     };
   }
