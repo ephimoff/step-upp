@@ -1,4 +1,5 @@
 import { getProviders, signIn, getSession } from 'next-auth/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 const errors: { [key: string]: any } = {
@@ -26,31 +27,46 @@ const getErrorMessage = (errorType: string) => {
     : errors.default;
 };
 
-export default function SignIn({ providers }: any) {
+const SignIn = ({ providers }: any) => {
+  console.log(providers);
   const router = useRouter();
   const { callbackUrl = '/', error: errorType } = router.query;
 
   const error = getErrorMessage(errorType as string);
   return (
     <>
-      {error && (
-        <div className="bg-red-400 text-white">
-          <p>{error}</p>
+      <Head>
+        <title>Step-Upp. A tool to help you advance you career</title>
+      </Head>
+      <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500">
+        <div className="flex h-screen items-center justify-center">
+          <div className="w-96 rounded-xl bg-sky-400 p-10 shadow-xl">
+            {error && (
+              <div className="mb-2 rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-sm text-white">
+                <p>{error}</p>
+              </div>
+            )}
+            {Object.values(providers).map((provider: any) => (
+              <div key={provider.name}>
+                <button
+                  onClick={() => signIn(provider.id)}
+                  className="my-2 w-full rounded border bg-blue-500 py-1 hover:bg-blue-600"
+                >
+                  Sign in with {provider.name}
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
-      {Object.values(providers).map((provider: any) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id)}>
-            Sign in with {provider.name}
-          </button>
-        </div>
-      ))}
+      </div>
     </>
   );
-}
+};
+export default SignIn;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
+  console.log('session:', session);
   if (session) {
     return {
       redirect: {
