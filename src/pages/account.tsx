@@ -1,5 +1,4 @@
 import { useSession, getSession } from 'next-auth/react';
-import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Sidebar from '@/components/Sidebar';
 
@@ -24,7 +23,7 @@ export default function Account() {
   );
 }
 
-export const getServerSideProps = async (context: GetServerSideProps) => {
+export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
   if (!session) {
     return {
