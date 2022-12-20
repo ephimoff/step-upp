@@ -42,7 +42,7 @@ const SignIn = ({ providers }: any) => {
         <div className="flex h-screen items-center justify-center">
           <div className="w-96 rounded-xl bg-sky-400 p-10 shadow-xl">
             {error && (
-              <div className="mb-2 rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-sm text-white">
+              <div className="mb-2 rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-center text-sm text-white">
                 <p>{error}</p>
               </div>
             )}

@@ -2,47 +2,8 @@ import Sidebar from '@/components/Sidebar';
 import Head from 'next/head';
 import UserInfo from '@/components/UserInfo';
 import { getSession } from 'next-auth/react';
-
-export const data = [
-  {
-    name: 'Product strategy',
-    skills: [
-      { name: 'Strategic impact', score: 10, score360: 10, actions: 2 },
-      {
-        name: 'Product Vision & Roadmapping',
-        score: 10,
-        score360: 8,
-        actions: 1,
-      },
-
-      {
-        name: 'Business Outcome Ownership',
-        score: 10,
-        score360: 10,
-        actions: 2,
-      },
-    ],
-  },
-  {
-    name: 'Product execution',
-    skills: [
-      { name: 'Feature Specification', score: 10, score360: 10, actions: 2 },
-      {
-        name: 'Product Delivery',
-        score: 10,
-        score360: 8,
-        actions: 1,
-      },
-
-      {
-        name: 'Quality Assurance',
-        score: 10,
-        score360: 10,
-        actions: 2,
-      },
-    ],
-  },
-];
+import ProgressBar from '@/components/ProgressBar';
+import { dataFull, dataEmpty } from '@/data/data';
 
 export default function Home() {
   return (
@@ -59,7 +20,7 @@ export default function Home() {
             team={'Payment platfrom'}
             email={'john.appleseed@company.com'}
           />
-          {data.map((item, index) => {
+          {dataFull.map((item, index) => {
             return (
               <section className="my-20 grid grid-cols-5 gap-4">
                 <div className="col-span-5">
@@ -80,17 +41,17 @@ export default function Home() {
                 {item.skills.map((skill, skillIndex) => {
                   return (
                     <>
-                      <div className="col-span-2 font-normal">
-                        <h2>{skill.name}</h2>
-                      </div>
-                      <div className=" font-normal">
-                        <h2>{skill.score}</h2>
-                      </div>
-                      <div className=" font-normal">
-                        <h2>{skill.score360}</h2>
-                      </div>
-                      <div className=" font-normal">
-                        <h2>{skill.actions}</h2>
+                      <div className="col-span-2 font-normal">{skill.name}</div>
+                      <button className="">
+                        <ProgressBar value={skill.score} />
+                      </button>
+                      <button>
+                        <ProgressBar value={skill.score360} />
+                      </button>
+                      <div>
+                        <button className="w-1/4 rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gradient-to-l">
+                          +{skill.actions}
+                        </button>
                       </div>
                     </>
                   );
