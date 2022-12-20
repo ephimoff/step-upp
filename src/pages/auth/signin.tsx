@@ -1,3 +1,4 @@
+import { siteTitle } from '@/data/data';
 import { getProviders, signIn, getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -36,7 +37,7 @@ const SignIn = ({ providers }: any) => {
   return (
     <>
       <Head>
-        <title>Step-Upp. A tool to help you advance you career</title>
+        <title>{siteTitle}</title>
       </Head>
       <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500">
         <div className="flex h-screen items-center justify-center">

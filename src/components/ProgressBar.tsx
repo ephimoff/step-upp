@@ -2,16 +2,19 @@ import { Popover } from '@headlessui/react';
 
 type ProgressBarProps = {
   value: number;
+  type: 'self' | '360';
 };
 
-const ProgressBar = ({ value }: ProgressBarProps) => {
+const ProgressBar = ({ value, type }: ProgressBarProps) => {
   return (
     // <div className="flex h-full items-center gap-x-2">
     <Popover className="relative">
-      <Popover.Button className="w-full">
+      <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 focus:outline-none">
         <div className="flex h-full items-center gap-x-2">
           <span>
-            {value <= 2
+            {!value
+              ? '❔'
+              : value <= 2
               ? '🍄'
               : value <= 4
               ? '🥕'
@@ -21,7 +24,7 @@ const ProgressBar = ({ value }: ProgressBarProps) => {
               ? '☘️'
               : '💎'}
           </span>
-          <div className="h-2 w-1/2 rounded-xl bg-gray-300">
+          <div className="h-2 w-full rounded-xl bg-gray-300">
             <div
               style={{ width: `${value * 10}%` }}
               className={`h-full rounded-xl ${
@@ -37,10 +40,10 @@ const ProgressBar = ({ value }: ProgressBarProps) => {
               }`}
             ></div>
           </div>
-          <span>{value}</span>
+          <span>{!value ? '❔' : value}</span>
         </div>
       </Popover.Button>
-      <Popover.Panel className="absolute -top-14 z-10">
+      <Popover.Panel className="absolute -top-24 z-10">
         <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
           <strong
             className={`${
@@ -55,10 +58,12 @@ const ProgressBar = ({ value }: ProgressBarProps) => {
                 : 'text-cyan-400'
             } text-xs`}
           >
-            {value} out of 10:
+            {!value ? '???' : `${value} out of 10:`}
           </strong>
           <span>
-            {value <= 2
+            {!value
+              ? 'No assessment yet'
+              : value <= 2
               ? 'Very high-level knowledge. No practical experience'
               : value <= 4
               ? 'Maybe used the skill once or twice'
@@ -69,7 +74,7 @@ const ProgressBar = ({ value }: ProgressBarProps) => {
               : 'An absolute MVP. You can teach others and write books about it'}
           </span>
           <button className="mt-2 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 py-1 text-xs hover:from-pink-500 hover:to-yellow-500">
-            Update
+            {type === 'self' ? 'Update' : 'Request assessment'}
           </button>
         </div>
       </Popover.Panel>

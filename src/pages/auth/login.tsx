@@ -1,3 +1,4 @@
+import { siteTitle } from '@/data/data';
 import { useSession, signIn, signOut, getSession } from 'next-auth/react';
 import Head from 'next/head';
 
@@ -16,7 +17,7 @@ export default function Component() {
   return (
     <>
       <Head>
-        <title>Step-Upp. A tool to help you advance you career</title>
+        <title>{siteTitle}</title>
       </Head>
 
       <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500">

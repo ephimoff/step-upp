@@ -1,13 +1,14 @@
 import { useSession, getSession } from 'next-auth/react';
 import Head from 'next/head';
 import Sidebar from '@/components/Sidebar';
+import { siteTitle } from '@/data/data';
 
 export default function Account() {
   const { data: session, status } = useSession();
   return (
     <>
       <Head>
-        <title>Step-Upp. A tool to help you advance you career</title>
+        <title>{siteTitle}</title>
       </Head>
       <Sidebar>
         {status === 'authenticated' ? (

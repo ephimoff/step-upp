@@ -1,3 +1,4 @@
+export const siteTitle = 'StepUpp. A tool to help you advance you career';
 export const dataFull = [
   {
     name: 'Product strategy',
@@ -5,7 +6,7 @@ export const dataFull = [
       { name: 'Strategic impact', score: 7, score360: 10, actions: 2 },
       {
         name: 'Product Vision & Roadmapping',
-        score: 10,
+        score: null,
         score360: 4,
         actions: 1,
       },
@@ -32,7 +33,7 @@ export const dataFull = [
       {
         name: 'Quality Assurance',
         score: 2,
-        score360: 4,
+        score360: null,
         actions: 2,
       },
     ],
