@@ -4,6 +4,7 @@ import UserInfo from '@/components/UserInfo';
 import { getSession } from 'next-auth/react';
 import ProgressBar from '@/components/ProgressBar';
 import { dataFull, dataEmpty } from '@/data/data';
+import React from 'react';
 
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
           />
           {dataFull.map((item, index) => {
             return (
-              <section className="my-20 grid grid-cols-5 gap-4">
+              <section className="my-20 grid grid-cols-5 gap-4" key={index}>
                 <div className="col-span-5">
                   <h2>{item.name}</h2>
                 </div>
@@ -40,20 +41,16 @@ export default function Home() {
                 </div>
                 {item.skills.map((skill, skillIndex) => {
                   return (
-                    <>
+                    <React.Fragment key={skillIndex}>
                       <div className="col-span-2 font-normal">{skill.name}</div>
-                      <button className="">
-                        <ProgressBar value={skill.score} />
-                      </button>
-                      <button>
-                        <ProgressBar value={skill.score360} />
-                      </button>
+                      <ProgressBar value={skill.score} />
+                      <ProgressBar value={skill.score360} />
                       <div>
                         <button className="w-1/4 rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gradient-to-l">
                           +{skill.actions}
                         </button>
                       </div>
-                    </>
+                    </React.Fragment>
                   );
                 })}
               </section>

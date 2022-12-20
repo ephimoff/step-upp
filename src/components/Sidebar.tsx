@@ -38,23 +38,26 @@ export default function Sidebar({ children }: SidebarProps) {
   const toggleSidebar = () => {
     setOpen(!open);
   };
+  // const sidebarGradient = `bg-gradient-to-br from-[#c9def4] via-[#f5ccd4] to-[#b8a4c9]`;
+  const sidebarGradient = `bg-gradient-to-tl from-[#595cff] to-[#c6f8ff]`;
+  const logoGradient = `bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent`;
   return (
     <div className="flex">
       <div
         className={`${
           open ? 'w-72' : 'w-24'
-        } relative  bg-white p-4 pt-8 text-black duration-300`}
+        } relative p-4 pt-8 text-black duration-300 ${sidebarGradient}`}
       >
         <div
           onClick={toggleSidebar}
-          className="absolute -right-4 top-9 w-7 cursor-pointer rounded-full border-2 bg-sky-200 text-2xl text-sky-500 shadow"
+          className="absolute -right-4 top-9 w-7 cursor-pointer rounded-full border-2 border-purple-500 bg-purple-300 text-2xl text-purple-500 shadow"
         >
           {open ? <HiChevronLeft /> : <HiChevronRight />}
         </div>
         <div>
           <Link className="flex items-center gap-x-4" href="/">
             <span
-              className={`rounded-xl border-2 border-sky-600 bg-sky-500 p-2 text-3xl text-white duration-500 ${
+              className={`rounded-xl bg-purple-500 p-2 text-3xl text-white duration-500 ${
                 open && 'rotate-[360deg]'
               }`}
             >
@@ -65,7 +68,10 @@ export default function Sidebar({ children }: SidebarProps) {
                 !open && 'scale-0'
               } origin-left whitespace-nowrap text-3xl font-medium duration-300`}
             >
-              Step<strong className="font-extrabold text-sky-500">Upp</strong>
+              Step
+              <strong className={`font-extrabold text-black ${logoGradient}`}>
+                Upp
+              </strong>
             </h1>
           </Link>
         </div>
