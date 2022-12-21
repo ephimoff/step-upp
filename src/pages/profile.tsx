@@ -16,14 +16,14 @@ export default function Profile({ profile }: any) {
       <Sidebar>
         {status === 'authenticated' ? (
           <>
-            <p>Welcome {session.user!.name}.</p>
-            {!profile ? (
-              <p>
-                You don't have a profile yet. Please fill it up down below and
-                save
-              </p>
-            ) : null}
-            <div>
+            <div className="mx-auto w-full max-w-2xl rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl">
+              <p>Welcome {session.user!.name}.</p>
+              {!profile ? (
+                <p className="font-thin">
+                  You don't have a profile yet. Please fill it up down below and
+                  save
+                </p>
+              ) : null}
               <ProfileForm />
             </div>
           </>
