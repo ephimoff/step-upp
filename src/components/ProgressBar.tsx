@@ -1,7 +1,7 @@
 import { Popover } from '@headlessui/react';
 
 type ProgressBarProps = {
-  value: number;
+  value: number | null;
   type: 'self' | '360';
 };
 
@@ -26,15 +26,15 @@ const ProgressBar = ({ value, type }: ProgressBarProps) => {
           </span>
           <div className="h-2 w-full rounded-xl bg-gray-300">
             <div
-              style={{ width: `${value * 10}%` }}
+              style={{ width: `${value! * 10}%` }}
               className={`h-full rounded-xl ${
-                value <= 2
+                value! <= 2
                   ? 'bg-red-600'
-                  : value <= 4
+                  : value! <= 4
                   ? 'bg-orange-400'
-                  : value <= 6
+                  : value! <= 6
                   ? 'bg-yellow-400'
-                  : value <= 8
+                  : value! <= 8
                   ? 'bg-green-400'
                   : 'bg-cyan-400'
               }`}
@@ -47,13 +47,13 @@ const ProgressBar = ({ value, type }: ProgressBarProps) => {
         <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
           <strong
             className={`${
-              value <= 2
+              value! <= 2
                 ? 'text-red-400'
-                : value <= 4
+                : value! <= 4
                 ? 'text-orange-400'
-                : value <= 6
+                : value! <= 6
                 ? 'text-yellow-400'
-                : value <= 8
+                : value! <= 8
                 ? 'text-green-400'
                 : 'text-cyan-400'
             } text-xs`}

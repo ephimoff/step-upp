@@ -5,6 +5,7 @@ import { getSession } from 'next-auth/react';
 import ProgressBar from '@/components/ProgressBar';
 import { dataFull, dataEmpty, siteTitle } from '@/data/data';
 import React from 'react';
+import prisma from '@/utils/prisma';
 
 export default function Home() {
   return (
@@ -67,6 +68,7 @@ export default function Home() {
 
 export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
+
   if (!session) {
     return {
       redirect: {
@@ -74,7 +76,21 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
+
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
+  if (!profile) {
+    return {
+      redirect: {
+        destination: '/profile',
+      },
+    };
+  }
+
   return {
-    props: { session },
+    props: { session, profile },
   };
 };

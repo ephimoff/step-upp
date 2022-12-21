@@ -60,3 +60,13 @@ enum Role {
   USER
   ADMIN
 }
+
+model Profile {
+  id       String  @id @default(cuid())
+  name     String
+  email    String  @unique
+  phone    String?
+  twitter  String?
+  linkedin String?
+  github   String?
+}
