@@ -65,6 +65,7 @@ model Profile {
   id       String  @id @default(cuid())
   name     String
   email    String  @unique
+  userpic  String?
   phone    String?
   twitter  String?
   linkedin String?

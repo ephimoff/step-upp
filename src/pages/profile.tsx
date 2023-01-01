@@ -24,7 +24,7 @@ export default function Profile({ profile }: any) {
                   save
                 </p>
               ) : null}
-              <ProfileForm />
+              <ProfileForm profile={profile} />
             </div>
           </>
         ) : (
