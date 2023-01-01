@@ -7,6 +7,10 @@ It has the following features:
 - Styles with Tailwind CSS
 - Database through Docker Compose with Prisma
 
+## Todos
+
+- [ ] Fix the layout of errors on the `/profile` screen
+
 ## Marketing speech
 
 ### Option 1. ProPath

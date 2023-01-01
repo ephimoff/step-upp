@@ -3,7 +3,24 @@ import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
 // import ProfileFormInputProps from '@/components/ProfileFormInput';
 
-const ProfileForm = () => {
+async function createProfile(profile: any) {
+  try {
+    console.log('inside the createProfile function');
+    console.log(profile);
+    const response = await fetch('/api/profile', {
+      method: 'POST',
+      body: JSON.stringify(profile),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+const ProfileForm = ({ profile }: any) => {
   const { data: session } = useSession();
   const {
     values,
@@ -13,6 +30,7 @@ const ProfileForm = () => {
     handleSubmit,
     isSubmitting,
     touched,
+    setSubmitting,
   } = useFormik({
     initialValues: {
       name: session!.user!.name,
@@ -24,12 +42,19 @@ const ProfileForm = () => {
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      if (profile) {
+        // profile exist, we need to update
+      } else {
+        // profile doesn't exist, we need to crreate a new one
+        createProfile(values);
+        // alert(JSON.stringify(values, null, 2));
+      }
     },
   });
-  const inputStyle = `w-3/4 rounded-md p-2 text-black`;
+
+  const inputStyle = `w-3/4 rounded-md p-2 bg-slate-700 border `;
   const labelStyle = `w-1/4 font-thin`;
-  const errorStyle = `w-3/4 font-thin text-red-500`;
+  const errorStyle = `w-3/4 font-thin text-[#fc8181]`;
   const rowStyle = `flex flex-row my-4 items-center`;
   return (
     <form onSubmit={handleSubmit} method="post" className="">
@@ -44,12 +69,16 @@ const ProfileForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.name as string}
-          className={inputStyle}
+          className={`${inputStyle} ${
+            errors.name && touched.name
+              ? 'border-2 border-[#fc8181]'
+              : 'border-gray-500'
+          }`}
         />
       </div>
-      <div className={errorStyle}>
-        <span>{errors.name && touched.name && errors.name}</span>
-      </div>
+      {errors.name && touched.name && (
+        <span className={errorStyle}>{errors.name}</span>
+      )}
       <div className={rowStyle}>
         <label htmlFor="email" className={labelStyle}>
           Email
@@ -61,12 +90,16 @@ const ProfileForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.email as string}
-          className={inputStyle}
+          className={`${inputStyle} ${
+            errors.email && touched.email
+              ? 'border-2 border-[#fc8181]'
+              : 'border-gray-500'
+          }`}
         />
       </div>
-      <div className={errorStyle}>
-        <span>{errors.email && touched.email && errors.email}</span>
-      </div>
+      {errors.email && touched.email && (
+        <div className={errorStyle}>{errors.email}</div>
+      )}
       <div className={rowStyle}>
         <label htmlFor="phone" className={labelStyle}>
           Phone
@@ -78,12 +111,16 @@ const ProfileForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.phone}
-          className={inputStyle}
+          className={`${inputStyle} ${
+            errors.phone && touched.phone
+              ? 'border-2 border-[#fc8181]'
+              : 'border-gray-500'
+          }`}
         />
       </div>
-      <div className={errorStyle}>
-        <span>{errors.phone && touched.phone && errors.phone}</span>
-      </div>
+      {errors.phone && touched.phone && (
+        <span className={errorStyle}>{errors.phone}</span>
+      )}
       <div className={rowStyle}>
         <label htmlFor="twitter" className={labelStyle}>
           Twitter
@@ -95,13 +132,17 @@ const ProfileForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.twitter}
-          className={inputStyle}
+          className={`${inputStyle} ${
+            errors.twitter && touched.twitter
+              ? 'border-2 border-[#fc8181]'
+              : 'border-gray-500'
+          }`}
           placeholder="https://example.com"
         />
       </div>
-      <div className={errorStyle}>
-        <span>{errors.twitter && touched.twitter && errors.twitter}</span>
-      </div>
+      {errors.twitter && touched.twitter && (
+        <span className={errorStyle}>{errors.twitter}</span>
+      )}
       <div className={rowStyle}>
         <label htmlFor="linkedin" className={labelStyle}>
           Linkedin
@@ -113,13 +154,17 @@ const ProfileForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.linkedin}
-          className={inputStyle}
+          className={`${inputStyle} ${
+            errors.linkedin && touched.linkedin
+              ? 'border-2 border-[#fc8181]'
+              : 'border-gray-500'
+          }`}
           placeholder="https://example.com"
         />
       </div>
-      <div className={errorStyle}>
-        <span>{errors.linkedin && touched.linkedin && errors.linkedin}</span>
-      </div>
+      {errors.linkedin && touched.linkedin && (
+        <span className={errorStyle}>{errors.linkedin}</span>
+      )}
       <div className={rowStyle}>
         <label htmlFor="github" className={labelStyle}>
           GitHub
@@ -131,19 +176,25 @@ const ProfileForm = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.github}
-          className={inputStyle}
+          className={`${inputStyle} ${
+            errors.github && touched.github
+              ? 'border-2 border-[#fc8181]'
+              : 'border-gray-500'
+          }`}
           placeholder="https://example.com"
         />
       </div>
-      <div className={errorStyle}>
-        <span>{errors.github && touched.github && errors.github}</span>
-      </div>
+      {errors.github && touched.github && (
+        <span className={errorStyle}>{errors.github}</span>
+      )}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l"
+        className={`${
+          isSubmitting && 'opacity-40'
+        }  w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l`}
       >
-        Save
+        {profile ? 'Update profile' : 'Save new profile'}
       </button>
     </form>
   );
