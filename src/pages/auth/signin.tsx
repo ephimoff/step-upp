@@ -29,7 +29,6 @@ const getErrorMessage = (errorType: string) => {
 };
 
 const SignIn = ({ providers }: any) => {
-  console.log(providers);
   const router = useRouter();
   const { callbackUrl = '/', error: errorType } = router.query;
 
@@ -67,7 +66,6 @@ export default SignIn;
 
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
-  console.log('session:', session);
   if (session) {
     return {
       redirect: {

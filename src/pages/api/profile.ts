@@ -4,8 +4,9 @@ import prisma from '@/utils/prisma';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const profileData = req.body;
-    console.log('inside the API');
+    console.log('*** profileData:');
     console.log(profileData);
+
     try {
       const savedProfile = await prisma.profile.create({
         data: profileData,

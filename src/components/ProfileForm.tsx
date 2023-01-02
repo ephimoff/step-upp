@@ -1,12 +1,11 @@
 import { profileSchema } from '@/schemas/profileSchema';
-import { useFormik } from 'formik';
+import { useFormik, Formik } from 'formik';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 // import ProfileFormInputProps from '@/components/ProfileFormInput';
 
 async function createProfile(profile: any) {
   try {
-    console.log('inside the createProfile function');
-    console.log(profile);
     const response = await fetch('/api/profile', {
       method: 'POST',
       body: JSON.stringify(profile),
@@ -21,7 +20,10 @@ async function createProfile(profile: any) {
 }
 
 const ProfileForm = ({ profile }: any) => {
+  // console.log('*** profile:');
+  // console.log(profile);
   const { data: session } = useSession();
+  const router = useRouter();
   const {
     values,
     errors,
@@ -39,6 +41,7 @@ const ProfileForm = ({ profile }: any) => {
       twitter: '',
       linkedin: '',
       github: '',
+      user: { connect: { email: session!.user!.email } },
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
@@ -47,6 +50,7 @@ const ProfileForm = ({ profile }: any) => {
       } else {
         // profile doesn't exist, we need to crreate a new one
         createProfile(values);
+        setSubmitting(false);
         // alert(JSON.stringify(values, null, 2));
       }
     },

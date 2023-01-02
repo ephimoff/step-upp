@@ -46,6 +46,7 @@ model User {
   role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
+  profile       Profile?
 }
 
 model VerificationToken {
@@ -70,4 +71,6 @@ model Profile {
   twitter  String?
   linkedin String?
   github   String?
+  userId   String  @unique
+  user     User    @relation(fields: [userId], references: [id])
 }

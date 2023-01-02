@@ -20,8 +20,7 @@ const ProfileFormInput = ({
   touched,
 }: ProfileFormInputProps) => {
   const { data: session } = useSession();
-  console.log(errors);
-  console.log(touched);
+
   return (
     <>
       <label htmlFor={name} className="w-1/4 font-thin">
