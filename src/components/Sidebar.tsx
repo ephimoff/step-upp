@@ -12,9 +12,12 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import SidebarLink from './SidebarLink';
 import SignInOutButton from './SingInOutButton';
+import { siteTitle } from '@/data/data';
+import Head from 'next/head';
 
 type SidebarProps = {
   children: React.ReactNode;
+  title?: string;
 };
 
 export const sidebarLinks = [
@@ -31,7 +34,7 @@ export const sidebarLinks = [
   { name: 'Docs', path: '/docs', icon: <BiFoodMenu /> },
 ];
 
-export default function Sidebar({ children }: SidebarProps) {
+export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
   const { data: session, status } = useSession();
 
   const [open, setOpen] = useState(true);
@@ -43,6 +46,9 @@ export default function Sidebar({ children }: SidebarProps) {
   const logoGradient = `bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent`;
   return (
     <div className="flex">
+      <Head>
+        <title>{title}</title>
+      </Head>
       <div
         className={`${
           open ? 'w-72' : 'w-24'
@@ -61,7 +67,7 @@ export default function Sidebar({ children }: SidebarProps) {
                 open && 'rotate-[360deg]'
               }`}
             >
-              <CiCoffeeCup className="duration-500" size={32} />
+              <BiHomeAlt className="duration-500" size={32} />
             </span>
             <h1
               className={`${

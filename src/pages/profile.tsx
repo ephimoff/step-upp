@@ -1,7 +1,5 @@
 import { useSession, getSession } from 'next-auth/react';
-import Head from 'next/head';
 import Sidebar from '@/components/Sidebar';
-import { siteTitle } from '@/data/data';
 import prisma from '@/utils/prisma';
 import ProfileForm from '@/components/ProfileForm';
 
@@ -10,9 +8,6 @@ export default function Profile({ profile }: any) {
 
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
       <Sidebar>
         {status === 'authenticated' ? (
           <>

@@ -1,19 +1,14 @@
 import Sidebar from '@/components/Sidebar';
-import Head from 'next/head';
 import UserInfo from '@/components/UserInfo';
 import { getSession } from 'next-auth/react';
 import ProgressBar from '@/components/ProgressBar';
-import { dataFull, dataEmpty, siteTitle } from '@/data/data';
+import { dataFull, dataEmpty } from '@/data/data';
 import React from 'react';
 import prisma from '@/utils/prisma';
 
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-
       <Sidebar>
         <div className="h-max">
           <UserInfo
