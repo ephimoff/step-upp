@@ -9,7 +9,8 @@ It has the following features:
 
 ## Todos
 
-- [ ] Fix the layout of errors on the `/profile` screen
+- [ ] Add validation to the fields on the `/profile` screen
+- [ ] Rewrite the logic of the `/profile` using either SWR or useForm
 
 ## Marketing speech
 

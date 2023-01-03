@@ -2,10 +2,12 @@ import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 // import ProfileForm from '@/components/ProfileForm';
 import { useState, useEffect } from 'react';
+import { Profile as ProfileType } from '@prisma/client';
+import ProfileFormInput from '@/components/ProfileFormInput';
 
 export default function Profile() {
   const { data: session, status } = useSession();
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<ProfileType | null>(null);
   const [name, setName] = useState<string>(session!.user!.name as string);
   const [email, setEmail] = useState<string>(session!.user!.email as string);
   const [phone, setPhone] = useState<string>('');
@@ -17,17 +19,17 @@ export default function Profile() {
   useEffect(() => {
     const fetchProfile = async (email: string) => {
       const res = await fetch(`/api/profile?email=${email}`);
-      const profile = await res.json();
+      const profile: ProfileType = await res.json();
       // console.log('useEffect: ');
       // console.log(profile);
       if (res.status === 200) {
         setProfile(profile);
         setName(profile.name);
         setEmail(profile.email);
-        setPhone(profile.phone);
-        setTwitter(profile.twitter);
-        setLinkedin(profile.linkedin);
-        setGithub(profile.github);
+        setPhone(profile.phone as string);
+        setTwitter(profile.twitter as string);
+        setLinkedin(profile.linkedin as string);
+        setGithub(profile.github as string);
       } else {
         setProfile(null);
       }
@@ -88,17 +90,68 @@ export default function Profile() {
                 </p>
               )}
               <form onSubmit={handleSubmit}>
-                <label htmlFor="name" className="">
-                  Name
-                </label>
-                <input
+                <ProfileFormInput
+                  name={'Name'}
                   type="text"
-                  id="name"
-                  name="name"
-                  className="rounded-md border bg-slate-700 p-2"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setName(e.target.value)
+                  }
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
                 />
+                <ProfileFormInput
+                  name={'Email'}
+                  type="email"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEmail(e.target.value)
+                  }
+                  value={email}
+                />
+                <ProfileFormInput
+                  name={'Phone'}
+                  type="text"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setPhone(e.target.value)
+                  }
+                  value={phone}
+                />
+                <ProfileFormInput
+                  name={'Twitter'}
+                  type="text"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setTwitter(e.target.value)
+                  }
+                  value={twitter}
+                />
+                <ProfileFormInput
+                  name={'Linkedin'}
+                  type="text"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setLinkedin(e.target.value)
+                  }
+                  value={linkedin}
+                />
+                <ProfileFormInput
+                  name={'GitHub'}
+                  type="text"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setGithub(e.target.value)
+                  }
+                  value={github}
+                />
+                {/* <div>
+                  <label htmlFor="name" className="">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    className="rounded-md border bg-slate-700 p-2"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <span>Required</span>
+                </div> 
                 <label htmlFor="email" className="">
                   Email
                 </label>
@@ -153,7 +206,7 @@ export default function Profile() {
                   className="rounded-md border bg-slate-700 p-2"
                   value={github}
                   onChange={(e) => setGithub(e.target.value)}
-                />
+                />*/}
                 <button
                   type="submit"
                   className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l"
