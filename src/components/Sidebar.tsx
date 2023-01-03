@@ -98,16 +98,18 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
         <div className="absolute bottom-4 ml-0 mr-4 flex items-center gap-x-4 py-3 pl-3">
           {status === 'authenticated' ? (
             <>
-              <span className="text-2xl">
-                <BiUserCircle />
-              </span>
-              <span
-                className={`${
-                  !open && 'hidden'
-                } origin-left whitespace-nowrap duration-200`}
-              >
-                {session.user!.name}
-              </span>
+              <Link href="/profile" className="flex gap-x-4">
+                <span className="text-2xl">
+                  <BiUserCircle />
+                </span>
+                <span
+                  className={`${
+                    !open && 'hidden'
+                  } origin-left whitespace-nowrap duration-200`}
+                >
+                  {session.user!.name}
+                </span>
+              </Link>
               <button
                 onClick={() => signOut()}
                 className={`${

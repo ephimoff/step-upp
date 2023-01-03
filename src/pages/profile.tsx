@@ -1,10 +1,22 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
-import prisma from '@/utils/prisma';
 import ProfileForm from '@/components/ProfileForm';
+import { useState, useEffect } from 'react';
 
-export default function Profile({ profile }: any) {
+export default function Profile() {
   const { data: session, status } = useSession();
+  const [profile, setProfile] = useState(null);
+  const queryEmail = session!.user!.email;
+
+  useEffect(() => {
+    fetch(`/api/profile?email=${queryEmail}`).then((res: any) => {
+      if (res.status === 200) {
+        setProfile(res);
+      } else {
+        setProfile(null);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -12,13 +24,17 @@ export default function Profile({ profile }: any) {
         {status === 'authenticated' ? (
           <>
             <div className="mx-auto w-full max-w-2xl rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl">
-              <p>Welcome {session.user!.name}.</p>
               {!profile ? (
                 <p className="font-thin">
-                  You don't have a profile yet. Please fill it up down below and
-                  save
+                  You logged in as {session.user!.name} but don't have a profile
+                  yet. Please fill it up down below and save.
                 </p>
-              ) : null}
+              ) : (
+                <p className="font-thin">
+                  Welcome back {session.user!.name}. Here you can edit your
+                  profile.
+                </p>
+              )}
               <ProfileForm profile={profile} />
             </div>
           </>
@@ -41,13 +57,7 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
-  const profile = await prisma.profile.findUnique({
-    where: {
-      email: session!.user!.email as string,
-    },
-  });
-
   return {
-    props: { session, profile },
+    props: { session },
   };
 };

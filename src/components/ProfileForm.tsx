@@ -2,6 +2,7 @@ import { profileSchema } from '@/schemas/profileSchema';
 import { useFormik, Formik } from 'formik';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { CiGlass } from 'react-icons/ci';
 // import ProfileFormInputProps from '@/components/ProfileFormInput';
 
 async function createProfile(profile: any) {
@@ -18,12 +19,26 @@ async function createProfile(profile: any) {
     console.error(error);
   }
 }
+async function updateProfile(profile: any, where: string) {
+  try {
+    const response = await fetch('/api/profile', {
+      method: 'PUT',
+      body: JSON.stringify({ profile, where }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const ProfileForm = ({ profile }: any) => {
+  const router = useRouter();
   // console.log('*** profile:');
   // console.log(profile);
   const { data: session } = useSession();
-  const router = useRouter();
   const {
     values,
     errors,
@@ -47,11 +62,14 @@ const ProfileForm = ({ profile }: any) => {
     onSubmit: (values) => {
       if (profile) {
         // profile exist, we need to update
+        updateProfile(values, session!.user!.email as string);
+        setSubmitting(false);
+        window.location.href = '/profile';
       } else {
         // profile doesn't exist, we need to crreate a new one
         createProfile(values);
         setSubmitting(false);
-        // alert(JSON.stringify(values, null, 2));
+        window.location.href = '/profile';
       }
     },
   });
@@ -60,6 +78,7 @@ const ProfileForm = ({ profile }: any) => {
   const labelStyle = `w-1/4 font-thin`;
   const errorStyle = `w-3/4 font-thin text-[#fc8181]`;
   const rowStyle = `flex flex-row my-4 items-center`;
+  // console.log(values);
   return (
     <form onSubmit={handleSubmit} method="post" className="">
       <div className={rowStyle}>
