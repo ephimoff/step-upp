@@ -1,8 +1,7 @@
 import { profileSchema } from '@/schemas/profileSchema';
-import { useFormik, Formik } from 'formik';
+import { useFormik } from 'formik';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { CiGlass } from 'react-icons/ci';
+
 // import ProfileFormInputProps from '@/components/ProfileFormInput';
 
 async function createProfile(profile: any) {
@@ -19,11 +18,11 @@ async function createProfile(profile: any) {
     console.error(error);
   }
 }
-async function updateProfile(profile: any, where: string) {
+async function updateProfile(profile: any, email: string) {
   try {
-    const response = await fetch('/api/profile', {
+    const response = await fetch(`/api/profile?email=${email}`, {
       method: 'PUT',
-      body: JSON.stringify({ profile, where }),
+      body: JSON.stringify({ profile }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -35,9 +34,8 @@ async function updateProfile(profile: any, where: string) {
 }
 
 const ProfileForm = ({ profile }: any) => {
-  const router = useRouter();
-  // console.log('*** profile:');
-  // console.log(profile);
+  console.log('inside the ProfileForm:');
+  console.log(profile);
   const { data: session } = useSession();
   const {
     values,
@@ -50,9 +48,9 @@ const ProfileForm = ({ profile }: any) => {
     setSubmitting,
   } = useFormik({
     initialValues: {
-      name: session!.user!.name,
-      email: session!.user!.email,
-      phone: '',
+      name: profile?.name || session!.user!.name,
+      email: profile?.email || session!.user!.email,
+      phone: profile?.phone,
       twitter: '',
       linkedin: '',
       github: '',
