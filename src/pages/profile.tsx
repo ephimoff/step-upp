@@ -1,9 +1,10 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
-// import ProfileForm from '@/components/ProfileForm';
 import { useState, useEffect } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
-import ProfileFormInput from '@/components/ProfileFormInput';
+import { Form, Formik } from 'formik';
+import ProfileInput from '@/components/ProfileInput';
+import { profileSchema } from '@/schemas/profileSchema';
 
 export default function Profile() {
   const { data: session, status } = useSession();
@@ -20,8 +21,7 @@ export default function Profile() {
     const fetchProfile = async (email: string) => {
       const res = await fetch(`/api/profile?email=${email}`);
       const profile: ProfileType = await res.json();
-      // console.log('useEffect: ');
-      // console.log(profile);
+
       if (res.status === 200) {
         setProfile(profile);
         setName(profile.name);
@@ -37,17 +37,16 @@ export default function Profile() {
     fetchProfile(queryEmail as string);
   }, []);
 
-  async function handleSubmit(event: any) {
-    event.preventDefault();
+  async function updateProfile(values: any) {
     let url = '/api/profile';
     let method = 'POST';
     const newProfile = {
-      name: name,
-      email: email,
-      phone: phone,
-      twitter: twitter,
-      linkedin: linkedin,
-      github: github,
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      twitter: values.twitter,
+      linkedin: values.linkedin,
+      github: values.github,
       user: { connect: { email: queryEmail } },
     };
     if (profile) {
@@ -63,8 +62,7 @@ export default function Profile() {
         },
       });
       const profileResponse = await await response.json();
-      // console.log('profileResponse');
-      // console.log(profileResponse);
+
       setProfile(profileResponse);
       return profileResponse;
     } catch (error) {
@@ -89,134 +87,93 @@ export default function Profile() {
                   profile.
                 </p>
               )}
-              <form onSubmit={handleSubmit}>
-                <ProfileFormInput
-                  name={'Name'}
-                  type="text"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setName(e.target.value)
-                  }
-                  value={name}
-                  required
-                />
-                <ProfileFormInput
-                  name={'Email'}
-                  type="email"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setEmail(e.target.value)
-                  }
-                  value={email}
-                  required
-                />
-                <ProfileFormInput
-                  name={'Phone'}
-                  type="text"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setPhone(e.target.value)
-                  }
-                  value={phone}
-                />
-                <ProfileFormInput
-                  name={'Twitter'}
-                  type="text"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setTwitter(e.target.value)
-                  }
-                  value={twitter}
-                />
-                <ProfileFormInput
-                  name={'Linkedin'}
-                  type="text"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setLinkedin(e.target.value)
-                  }
-                  value={linkedin}
-                />
-                <ProfileFormInput
-                  name={'GitHub'}
-                  type="text"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setGithub(e.target.value)
-                  }
-                  value={github}
-                />
-                {/* <div>
-                  <label htmlFor="name" className="">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className="rounded-md border bg-slate-700 p-2"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                  <span>Required</span>
-                </div> 
-                <label htmlFor="email" className="">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  className="rounded-md border bg-slate-700 p-2"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <label htmlFor="phone" className="">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  id="phone"
-                  name="phone"
-                  className="rounded-md border bg-slate-700 p-2"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-                <label htmlFor="twitter" className="">
-                  Twitter
-                </label>
-                <input
-                  type="text"
-                  id="twitter"
-                  name="twitter"
-                  className="rounded-md border bg-slate-700 p-2"
-                  value={twitter}
-                  onChange={(e) => setTwitter(e.target.value)}
-                />
-                <label htmlFor="linkedin" className="">
-                  LinkedIn
-                </label>
-                <input
-                  type="text"
-                  id="linkedin"
-                  name="linkedin"
-                  className="rounded-md border bg-slate-700 p-2"
-                  value={linkedin}
-                  onChange={(e) => setLinkedin(e.target.value)}
-                />
-                <label htmlFor="github" className="">
-                  GitHub
-                </label>
-                <input
-                  type="text"
-                  id="github"
-                  name="github"
-                  className="rounded-md border bg-slate-700 p-2"
-                  value={github}
-                  onChange={(e) => setGithub(e.target.value)}
-                />*/}
-                <button
-                  type="submit"
-                  className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l"
-                >
-                  {profile ? 'Update profile' : 'Save new profile'}
-                </button>
-              </form>
-              {/* <ProfileForm profile={profile} /> */}
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  name: name,
+                  email: email,
+                  phone: phone,
+                  twitter: twitter,
+                  linkedin: linkedin,
+                  github: github,
+                }}
+                validationSchema={profileSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  setSubmitting(true);
+                  // console.log(values);
+                  updateProfile(values);
+                  setSubmitting(false);
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <Form className="">
+                    <ProfileInput
+                      label="Name"
+                      name="name"
+                      type="input"
+                      placeholder="John Doe"
+                      required
+                    />
+                    <ProfileInput
+                      label="Email"
+                      name="email"
+                      type="input"
+                      placeholder="email@example.com"
+                      required
+                    />
+                    <ProfileInput
+                      label="Phone"
+                      name="phone"
+                      type="input"
+                      placeholder="1234567"
+                    />
+                    <ProfileInput
+                      label="Twitter"
+                      name="twitter"
+                      type="input"
+                      placeholder="@johndoe"
+                    />
+                    <ProfileInput
+                      label="LinkedIn"
+                      name="linkedin"
+                      type="input"
+                      placeholder="https://www.linkedin.com/in/johndoe/"
+                    />
+                    <ProfileInput
+                      label="GitHub"
+                      name="github"
+                      type="input"
+                      placeholder="@johndoe"
+                    />
+                    <pre className="text-sm font-thin text-white">
+                      {JSON.stringify(values, null, 2)}
+                    </pre>
+                    <pre className="text-sm font-thin text-red-500">
+                      {JSON.stringify(errors, null, 2)}
+                    </pre>
+                    <button
+                      type="submit"
+                      disabled={
+                        isSubmitting || Object.keys(errors).length !== 0
+                      }
+                      className={`${
+                        (isSubmitting || Object.keys(errors).length !== 0) &&
+                        'opacity-40'
+                      }  w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l`}
+                    >
+                      {profile ? 'Update profile' : 'Save new profile'}
+                    </button>
+                  </Form>
+                )}
+              </Formik>
             </div>
           </>
         ) : (
