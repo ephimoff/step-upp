@@ -1,11 +1,9 @@
-import { useSession } from 'next-auth/react';
-
 type ProfileFormInputProps = {
   name: string;
   type: 'text' | 'email';
   onChange: any;
   value: string;
-  // errors: any;
+  required?: boolean;
 };
 
 const ProfileFormInput = ({
@@ -13,9 +11,8 @@ const ProfileFormInput = ({
   type,
   onChange,
   value,
+  required,
 }: ProfileFormInputProps) => {
-  const { data: session } = useSession();
-
   return (
     <div className="flex items-start py-3">
       <label htmlFor={name} className="w-1/5 font-thin">
@@ -29,6 +26,7 @@ const ProfileFormInput = ({
           name="name"
           value={value}
           onChange={onChange}
+          required={required}
         />
         <div className="mt-1 text-sm font-thin text-red-500">Error text</div>
       </div>

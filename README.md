@@ -11,6 +11,7 @@ It has the following features:
 
 - [ ] Add validation to the fields on the `/profile` screen
 - [ ] Rewrite the logic of the `/profile` using either SWR or useForm
+- [ ] Fix sidebar. It opens up again when clicks on a link
 
 ## Marketing speech
 

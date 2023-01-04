@@ -97,6 +97,7 @@ export default function Profile() {
                     setName(e.target.value)
                   }
                   value={name}
+                  required
                 />
                 <ProfileFormInput
                   name={'Email'}
@@ -105,6 +106,7 @@ export default function Profile() {
                     setEmail(e.target.value)
                   }
                   value={email}
+                  required
                 />
                 <ProfileFormInput
                   name={'Phone'}
