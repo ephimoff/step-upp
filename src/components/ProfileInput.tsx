@@ -1,4 +1,4 @@
-import { FieldAttributes, FieldHookConfig, useField } from 'formik';
+import { useField } from 'formik';
 
 type ProfileInputProps = {
   label: string;
@@ -17,7 +17,7 @@ const ProfileInput = ({
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   return (
-    <div className="flex items-start py-3">
+    <div className="flex items-baseline py-3">
       <label className="w-1/5 font-thin">{label} </label>
       <div className="w-4/5">
         <input
