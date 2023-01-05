@@ -5,6 +5,7 @@ competencies and even request 360-degree assessments from others. Plus, our app 
 personalized recommendations for how to improve your skills and competencies. 
 Whether you're just starting out in your career or you're an experienced pro, StepUpp is 
 the perfect tool to help you reach your professional goals.`;
+
 export const dataFull = [
   {
     name: 'Product strategy',
