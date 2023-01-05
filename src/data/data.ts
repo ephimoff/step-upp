@@ -1,4 +1,10 @@
 export const siteTitle = 'StepUpp. A tool to help you advance you career';
+export const siteDescription = `StepUpp is the ultimate tool for professionals looking to track 
+their growth and development. With our easy-to-use app, you can self-assess against a list of 
+competencies and even request 360-degree assessments from others. Plus, our app provides 
+personalized recommendations for how to improve your skills and competencies. 
+Whether you're just starting out in your career or you're an experienced pro, StepUpp is 
+the perfect tool to help you reach your professional goals.`;
 export const dataFull = [
   {
     name: 'Product strategy',

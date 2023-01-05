@@ -1,8 +1,8 @@
 import Sidebar from '@/components/Sidebar';
-import UserInfo from '@/components/UserInfo';
+// import UserInfo from '@/components/UserInfo';
 import { getSession } from 'next-auth/react';
-import ProgressBar from '@/components/ProgressBar';
-import { dataFull, dataEmpty } from '@/data/data';
+// import ProgressBar from '@/components/ProgressBar';
+import { dataFull, dataEmpty, siteDescription } from '@/data/data';
 import React from 'react';
 import prisma from '@/utils/prisma';
 
@@ -10,7 +10,11 @@ export default function Home() {
   return (
     <>
       <Sidebar>
-        <div className="h-max">
+        <div>
+          <h1>Welcome to StepUpp</h1>
+          <p>{siteDescription}</p>
+        </div>
+        {/* <div className="h-max">
           <UserInfo
             name={'J. Appleseed'}
             title={'Senior Product Manager'}
@@ -55,7 +59,7 @@ export default function Home() {
               </section>
             );
           })}
-        </div>
+        </div> */}
       </Sidebar>
     </>
   );
@@ -80,7 +84,7 @@ export const getServerSideProps = async (context: any) => {
   if (!profile) {
     return {
       redirect: {
-        destination: '/profile',
+        destination: '/myprofile',
       },
     };
   }

@@ -6,11 +6,14 @@ import { Form, Formik } from 'formik';
 import ProfileInput from '@/components/ProfileInput';
 import { profileSchema } from '@/schemas/profileSchema';
 
-export default function Profile() {
+export default function MyProfile() {
   const { data: session, status } = useSession();
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [name, setName] = useState<string>(session!.user!.name as string);
   const [email, setEmail] = useState<string>(session!.user!.email as string);
+  const [title, setTitle] = useState<string>('');
+  const [team, setTeam] = useState<string>('');
+  const [slug, setSlug] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [twitter, setTwitter] = useState<string>('');
   const [linkedin, setLinkedin] = useState<string>('');
@@ -26,6 +29,9 @@ export default function Profile() {
         setProfile(profile);
         setName(profile.name);
         setEmail(profile.email);
+        setTitle(profile.title as string);
+        setTeam(profile.team as string);
+        setSlug(profile.slug as string);
         setPhone(profile.phone as string);
         setTwitter(profile.twitter as string);
         setLinkedin(profile.linkedin as string);
@@ -43,6 +49,9 @@ export default function Profile() {
     const newProfile = {
       name: values.name,
       email: values.email,
+      title: values.title,
+      team: values.team,
+      slug: values.slug,
       phone: values.phone,
       twitter: values.twitter,
       linkedin: values.linkedin,
@@ -92,6 +101,9 @@ export default function Profile() {
                 initialValues={{
                   name: name,
                   email: email,
+                  title: title,
+                  team: team,
+                  slug: slug,
                   phone: phone,
                   twitter: twitter,
                   linkedin: linkedin,
@@ -108,7 +120,6 @@ export default function Profile() {
                 {({
                   values,
                   errors,
-                  touched,
                   handleChange,
                   handleBlur,
                   handleSubmit,
@@ -128,6 +139,24 @@ export default function Profile() {
                       type="input"
                       placeholder="email@example.com"
                       required
+                    />
+                    <ProfileInput
+                      label="Title"
+                      name="title"
+                      type="input"
+                      placeholder="Senior Product Manager"
+                    />
+                    <ProfileInput
+                      label="Team"
+                      name="team"
+                      type="input"
+                      placeholder="Platform team"
+                    />
+                    <ProfileInput
+                      label="Slug"
+                      name="slug"
+                      type="input"
+                      placeholder="your-slug"
                     />
                     <ProfileInput
                       label="Phone"

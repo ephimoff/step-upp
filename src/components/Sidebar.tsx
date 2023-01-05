@@ -27,8 +27,8 @@ export const sidebarLinks = [
     icon: <BiHomeAlt />,
   },
   {
-    name: 'Account',
-    path: '/account',
+    name: 'Profiles',
+    path: '/profile',
     icon: <BiUser />,
   },
   { name: 'Docs', path: '/docs', icon: <BiFoodMenu /> },
@@ -98,7 +98,7 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
         <div className="absolute bottom-4 ml-0 mr-4 flex items-center gap-x-4 py-3 pl-3">
           {status === 'authenticated' ? (
             <>
-              <Link href="/profile" className="flex gap-x-4">
+              <Link href="/myprofile" className="flex gap-x-4">
                 <span className="text-2xl">
                   <BiUserCircle />
                 </span>

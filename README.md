@@ -9,8 +9,8 @@ It has the following features:
 
 ## Todos
 
-- [ ] Add validation to the fields on the `/profile` screen
-- [ ] Rewrite the logic of the `/profile` using either SWR or useForm
+- [x] Add validation to the fields on the `/profile` screen
+- [x] Rewrite the logic of the `/profile` using either SWR or useForm or Formik
 - [ ] Fix sidebar. It opens up again when clicks on a link
 
 ## Marketing speech

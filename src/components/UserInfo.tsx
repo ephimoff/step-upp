@@ -11,7 +11,7 @@ const UserInfo = ({ name, title, team, email }: UserInfoProps) => {
       <img
         src="https://thispersondoesnotexist.com/image"
         alt="profile picture"
-        className="mr-5 h-20 w-20 overflow-visible rounded-full"
+        className="mr-5 h-20 w-20 rounded-full"
       />
       <div className="">
         <h2 className="text-sky-500 sm:text-xl md:text-2xl">{name}</h2>
