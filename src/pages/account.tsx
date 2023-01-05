@@ -1,7 +1,7 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 
-export default function Account() {
+export default function AccountPage() {
   const { data: session, status } = useSession();
   return (
     <>

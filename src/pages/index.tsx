@@ -6,7 +6,7 @@ import { dataFull, dataEmpty, siteDescription } from '@/data/data';
 import React from 'react';
 import prisma from '@/utils/prisma';
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <Sidebar>

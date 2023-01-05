@@ -1,7 +1,7 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 
-export default function Docs() {
+export default function CompetenciesPage() {
   const { data: session, status } = useSession();
   return (
     <>
@@ -9,7 +9,8 @@ export default function Docs() {
         {status === 'authenticated' ? (
           <>
             <p>Welcome {session.user!.name}</p>
-            <p>This is a Docs page</p>
+            <p>This is a Competencies page</p>
+            <div></div>
           </>
         ) : (
           <p>You are not signed in</p>

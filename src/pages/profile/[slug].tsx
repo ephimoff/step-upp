@@ -4,16 +4,18 @@ import UserInfo from '@/components/UserInfo';
 import { dataFull, dataEmpty } from '@/data/data';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+
 import React from 'react';
 import CompetencyCard from '@/components/CompetencyCard';
+import Link from 'next/link';
 
 const ProfilePage = ({ profile }: any) => {
-  const router = useRouter();
+  const title = profile
+    ? `${profile.name}'s profile on StepUpp`
+    : 'No profile was found';
   return (
     <>
-      <Sidebar title={`${profile.name}'s profile on StepUpp`}>
-        {router.isFallback ? <div>Loading...</div> : null}
+      <Sidebar title={title}>
         {profile ? (
           <div className="h-max">
             <UserInfo
@@ -25,7 +27,27 @@ const ProfilePage = ({ profile }: any) => {
             <CompetencyCard competencies={dataFull} />
           </div>
         ) : (
-          <div>A profile with such slug doesn't exist</div>
+          <div>
+            <h2>No competency with such is found</h2>
+            <ul>
+              <li>
+                <Link
+                  href="/"
+                  className="border-b border-b-orange-500 text-orange-400"
+                >
+                  Go back home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/profile"
+                  className="border-b border-b-orange-500 text-orange-400"
+                >
+                  Go back to the list of profiles
+                </Link>
+              </li>
+            </ul>
+          </div>
         )}
       </Sidebar>
     </>

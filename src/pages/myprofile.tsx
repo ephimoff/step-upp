@@ -6,7 +6,7 @@ import { Form, Formik } from 'formik';
 import ProfileInput from '@/components/ProfileInput';
 import { profileSchema } from '@/schemas/profileSchema';
 
-export default function MyProfile() {
+export default function MyProfilePage() {
   const { data: session, status } = useSession();
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [name, setName] = useState<string>(session!.user!.name as string);

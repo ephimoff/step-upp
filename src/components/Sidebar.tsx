@@ -31,7 +31,7 @@ export const sidebarLinks = [
     path: '/profile',
     icon: <BiUser />,
   },
-  { name: 'Docs', path: '/docs', icon: <BiFoodMenu /> },
+  { name: 'Competencies', path: '/competency', icon: <BiFoodMenu /> },
 ];
 
 export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
