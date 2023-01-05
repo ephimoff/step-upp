@@ -12,6 +12,11 @@ It has the following features:
 - [x] Add validation to the fields on the `/profile` screen
 - [x] Rewrite the logic of the `/profile` using either SWR or useForm or Formik
 - [ ] Fix sidebar. It opens up again when clicks on a link
+- [ ] Generate slug
+- [ ] Check for uniqueness
+- [ ] Add a picture from the SSO service
+- [ ] Allow to change the picture
+- [ ] Add credentials login
 
 ## Marketing speech
 
