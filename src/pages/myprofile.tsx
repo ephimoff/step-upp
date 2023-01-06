@@ -70,7 +70,7 @@ export default function MyProfilePage() {
           'Content-Type': 'application/json',
         },
       });
-      const profileResponse = await await response.json();
+      const profileResponse = await response.json();
 
       setProfile(profileResponse);
       return profileResponse;

@@ -24,4 +24,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(500).json({ msg: 'Something went wrong', error });
     }
   }
+  if (req.method === 'POST') {
+    const competencyData = req.body;
+    console.log('inside API: ', competencyData);
+    let isSuccess = true;
+    try {
+      competencyData.map(async (competency: any, index: number) => {
+        const savedCompetency = await prisma.competency.create({
+          data: {
+            name: competency.name,
+            skills: {
+              create: competency.skills,
+            },
+          },
+        });
+        isSuccess = savedCompetency ? true : false;
+        console.log('savedCompetency', savedCompetency);
+      });
+      // const savedCompetency = await prisma.competency.createMany({
+      //   data: competencyData,
+      // });
+      console.log('isSuccess', isSuccess);
+      res.status(200).json(isSuccess);
+    } catch (error) {
+      res.status(500).json({ msg: 'Something went wrong', error });
+    }
+  }
 };

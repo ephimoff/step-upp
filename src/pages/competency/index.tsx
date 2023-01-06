@@ -14,6 +14,36 @@ const initialValues = {
   ],
 };
 
+async function createCompetency(values: any) {
+  let url = '/api/competency';
+  let method = 'POST';
+  console.log('values', values);
+  // const competenciesToCreate = {
+  //   name: values.name,
+
+  //   };
+  // if (profile) {
+  //   url += `?email=${queryEmail}`;
+  //   method = 'PUT';
+  // }
+  try {
+    const response = await fetch(url, {
+      method: method,
+      body: JSON.stringify(values.comps),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const jsonResponse = await response.json();
+    console.log(jsonResponse);
+
+    // setProfile(profileResponse);
+    // return profileResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export default function CompetenciesPage() {
   const { data: session, status } = useSession();
   const [competencies, setCompetencies] = useState<Competency[] | null>([]);
@@ -48,9 +78,11 @@ export default function CompetenciesPage() {
               <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
-                onSubmit={async (values) => {
-                  await new Promise((r) => setTimeout(r, 500));
+                onSubmit={(values, { setSubmitting }) => {
+                  setSubmitting(true);
                   // console.log(values);
+                  createCompetency(values);
+                  setSubmitting(false);
                 }}
               >
                 {({ values }) => (
