@@ -7,7 +7,6 @@ import {
   BiUserCircle,
   BiFoodMenu,
 } from 'react-icons/bi';
-import { CiCoffeeCup } from 'react-icons/ci';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import SidebarLink from './SidebarLink';
@@ -52,7 +51,7 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
       <div
         className={`${
           open ? 'w-72' : 'w-24'
-        } relative p-4 pt-8 text-black duration-300 ${sidebarGradient}`}
+        } sticky top-0 h-screen p-4 pt-8 text-black duration-300 ${sidebarGradient}`}
       >
         <div
           onClick={toggleSidebar}
@@ -124,9 +123,7 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
           )}
         </div>
       </div>
-      <div className="tex-2xl h-screen flex-1 p-7 font-semibold">
-        {children}
-      </div>
+      <div className="flex-1 p-7">{children}</div>
     </div>
   );
 }
