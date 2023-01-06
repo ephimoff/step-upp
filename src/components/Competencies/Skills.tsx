@@ -1,5 +1,7 @@
 import { Field, useFormikContext } from 'formik';
 import { useState } from 'react';
+import { FiDelete } from 'react-icons/fi';
+import { MdDelete } from 'react-icons/md';
 
 type Skill = {
   name: string;
@@ -42,23 +44,13 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
                 name={`comps.${competencyIndex}.skills.${index}.name`}
                 placeholder={'Strategic impact'}
                 required
-                // className={`w-full rounded-md border bg-slate-700 px-2 py-1 ${
-                //   meta.touched && meta.error
-                //     ? 'border-2 border-[#fc8181]'
-                //     : 'border-gray-500'
-                // }`}
-                className={`w-full rounded-md border bg-slate-700 px-2 py-1`}
+                className={`w-full rounded-md border border-gray-500 bg-slate-700 px-2 py-1`}
               />
-              {/* {meta.touched && meta.error ? (
-          <div className="mt-1 text-sm font-normal text-[#fc8181]">
-            {errorText}
-          </div>
-        ) : null} */}
             </div>
             <div className="pl-2">
               <button
                 type="button"
-                className=""
+                className="h-6 w-5 text-gray-300 hover:text-red-500"
                 onClick={() => handleRemoveSkill(index)}
               >
                 x

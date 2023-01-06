@@ -1,6 +1,6 @@
 import { useField } from 'formik';
 
-type ProfileInputProps = {
+type InputAndLabelProps = {
   label: string;
   placeholder: string;
   name: string;
@@ -8,12 +8,12 @@ type ProfileInputProps = {
   required?: boolean;
 };
 
-const ProfileInput = ({
+const InputAndLabel = ({
   label,
   placeholder,
   required,
   ...props
-}: ProfileInputProps) => {
+}: InputAndLabelProps) => {
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   return (
@@ -24,7 +24,7 @@ const ProfileInput = ({
           placeholder={placeholder}
           required={required}
           {...field}
-          className={`w-3/4 rounded-md border bg-slate-700 p-2 ${
+          className={`w-3/4 rounded-md border bg-slate-700 px-2 py-1 ${
             meta.touched && meta.error
               ? 'border-2 border-[#fc8181]'
               : 'border-gray-500'
@@ -39,4 +39,4 @@ const ProfileInput = ({
     </div>
   );
 };
-export default ProfileInput;
+export default InputAndLabel;

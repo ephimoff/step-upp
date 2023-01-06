@@ -1,7 +1,9 @@
 import { FieldArray, useFormikContext } from 'formik';
 import { useState } from 'react';
-import ProfileInput from '../Profile/ProfileInput';
+import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
+
+import { MdDelete } from 'react-icons/md';
 
 type Skill = {
   name: string;
@@ -50,11 +52,12 @@ const Competencies = ({ compsArrayHelpers }: any) => {
               ? values.comps[index].name
               : 'Create a new competency'}
           </h1>
-          <ProfileInput
+          <InputAndLabel
             label={'Competency'}
             placeholder={'Product Strategy'}
             name={`comps.${index}.name`}
             type={'input'}
+            required={true}
           />
           <FieldArray name={`comps[${index}].skills`}>
             {(arrayHelpers) => (
@@ -69,10 +72,10 @@ const Competencies = ({ compsArrayHelpers }: any) => {
 
           <button
             type="button"
-            className="mx-auto w-1/4 text-xs text-red-800"
+            className="mx-auto flex w-1/4 items-center text-sm font-bold text-red-700 hover:text-red-500"
             onClick={() => handleRemoveCompetency(index)}
           >
-            Remove
+            <span>Remove</span> <MdDelete size={16} />
           </button>
         </section>
       ))}

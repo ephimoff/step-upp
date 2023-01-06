@@ -3,7 +3,7 @@ import Sidebar from '@/components/Sidebar';
 import { useState, useEffect } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';
-import ProfileInput from '@/components/Profile/ProfileInput';
+import InputAndLabel from '@/components/InputAndLabel';
 import { profileSchema } from '@/schemas/profileSchema';
 
 export default function MyProfilePage() {
@@ -126,57 +126,57 @@ export default function MyProfilePage() {
                   isSubmitting,
                 }) => (
                   <Form className="">
-                    <ProfileInput
+                    <InputAndLabel
                       label="Name"
                       name="name"
                       type="input"
                       placeholder="John Doe"
                       required
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="Email"
                       name="email"
                       type="input"
                       placeholder="email@example.com"
                       required
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="Title"
                       name="title"
                       type="input"
                       placeholder="Senior Product Manager"
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="Team"
                       name="team"
                       type="input"
                       placeholder="Platform team"
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="Slug"
                       name="slug"
                       type="input"
                       placeholder="your-slug"
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="Phone"
                       name="phone"
                       type="input"
                       placeholder="1234567"
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="Twitter"
                       name="twitter"
                       type="input"
                       placeholder="@johndoe"
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="LinkedIn"
                       name="linkedin"
                       type="input"
                       placeholder="https://www.linkedin.com/in/johndoe/"
                     />
-                    <ProfileInput
+                    <InputAndLabel
                       label="GitHub"
                       name="github"
                       type="input"
