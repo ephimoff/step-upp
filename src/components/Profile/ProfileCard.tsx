@@ -1,3 +1,5 @@
+import Card from '../Card';
+
 type ProfileCardProps = {
   name: string;
   title: string;
@@ -7,7 +9,7 @@ type ProfileCardProps = {
 
 const ProfileCard = ({ name, title, team, email }: ProfileCardProps) => {
   return (
-    <section className="mx-auto flex flex-wrap rounded-xl bg-slate-900 p-8 align-bottom shadow-lg sm:w-full md:w-3/5">
+    <Card>
       <img
         src="https://thispersondoesnotexist.com/image"
         alt="profile picture"
@@ -18,11 +20,7 @@ const ProfileCard = ({ name, title, team, email }: ProfileCardProps) => {
         <h3 className="text-slate-600 sm:text-sm md:text-base">{title}</h3>
         <h4 className="font-light text-slate-400 sm:text-xs md:text-base">{`${team}, ${email}`}</h4>
       </div>
-      {/* <div className="mx-5 text-sm font-normal">
-        <p></p>
-        <p></p>
-      </div> */}
-    </section>
+    </Card>
   );
 };
 export default ProfileCard;

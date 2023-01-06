@@ -1,16 +1,15 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
-import { useEffect, useState } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
 import Competencies from '@/components/Competencies/Competencies';
-import { Competency } from '@prisma/client';
+import CompetenciesList from '@/components/Competencies/CompetenciesList';
 
 const initialValues = {
-  comps: [
-    {
-      name: '',
-      skills: [{ name: '' }, { name: '' }, { name: '' }],
-    },
+  competencies: [
+    // {
+    //   name: '',
+    //   skills: [{ name: '' }, { name: '' }, { name: '' }],
+    // },
   ],
 };
 
@@ -18,27 +17,16 @@ async function createCompetency(values: any) {
   let url = '/api/competency';
   let method = 'POST';
   console.log('values', values);
-  // const competenciesToCreate = {
-  //   name: values.name,
-
-  //   };
-  // if (profile) {
-  //   url += `?email=${queryEmail}`;
-  //   method = 'PUT';
-  // }
   try {
     const response = await fetch(url, {
       method: method,
-      body: JSON.stringify(values.comps),
+      body: JSON.stringify(values.competencies),
       headers: {
         'Content-Type': 'application/json',
       },
     });
     const jsonResponse = await response.json();
-    console.log(jsonResponse);
-
-    // setProfile(profileResponse);
-    // return profileResponse;
+    // console.log(jsonResponse);
   } catch (error) {
     console.error(error);
   }
@@ -46,26 +34,12 @@ async function createCompetency(values: any) {
 
 export default function CompetenciesPage() {
   const { data: session, status } = useSession();
-  const [competencies, setCompetencies] = useState<Competency[] | null>([]);
 
-  useEffect(() => {
-    const fetchCompetencies = async () => {
-      const res = await fetch(`/api/competency`);
-      const competencies: Competency[] = await res.json();
-      // console.log('competencies:', competencies);
-      if (res.status === 200) {
-        setCompetencies(competencies);
-      } else {
-        setCompetencies([]);
-      }
-    };
-    fetchCompetencies();
-  }, []);
   return (
     <>
       <Sidebar>
         {status === 'authenticated' ? (
-          <div className="mx-auto h-full sm:w-full md:w-3/5">
+          <div className="">
             <h1 className="text-2xl">Competencies management</h1>
             <p>
               Each Competency has a name and one ore more Skills attach to it.
@@ -74,6 +48,7 @@ export default function CompetenciesPage() {
               Here you can create Competencies and Skills in bulk. After
               creation, all of these will be available to use with profiles.
             </p>
+            <CompetenciesList />
             <div>
               <Formik
                 initialValues={initialValues}
@@ -88,11 +63,13 @@ export default function CompetenciesPage() {
                 {({ values }) => (
                   <Form onChange={(event) => {}}>
                     <div>
-                      <FieldArray name="comps">
+                      <FieldArray name="competencies">
                         {(arrayHelpers) => {
                           return (
                             <>
-                              <Competencies compsArrayHelpers={arrayHelpers} />
+                              <Competencies
+                                competenciesArrayHelpers={arrayHelpers}
+                              />
                             </>
                           );
                         }}
@@ -110,16 +87,6 @@ export default function CompetenciesPage() {
                   </Form>
                 )}
               </Formik>
-            </div>
-
-            <div>
-              {competencies && competencies.length > 0 ? (
-                competencies?.map((competency, index) => {
-                  return <div>{competency.name}</div>;
-                })
-              ) : (
-                <div>No competencies found</div>
-              )}
             </div>
           </div>
         ) : (

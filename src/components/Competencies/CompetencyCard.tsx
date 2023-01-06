@@ -1,5 +1,6 @@
 import React from 'react';
 import ProgressBar from '../Profile/ProgressBar';
+import Card from '../Card';
 
 interface Skill {
   name: string;
@@ -20,10 +21,7 @@ const CompetencyCard = ({ competencies }: Props) => {
     <>
       {competencies.map((competency: any, index: number) => {
         return (
-          <section
-            className="my-10 grid grid-cols-5 gap-4 rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl"
-            key={index}
-          >
+          <Card grid={true} key={index}>
             <div className="col-span-5">
               <h2 className="text-xl text-purple-400">{competency.name}</h2>
             </div>
@@ -53,7 +51,7 @@ const CompetencyCard = ({ competencies }: Props) => {
                 </React.Fragment>
               );
             })}
-          </section>
+          </Card>
         );
       })}
     </>

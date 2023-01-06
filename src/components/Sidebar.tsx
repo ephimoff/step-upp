@@ -123,7 +123,9 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
           )}
         </div>
       </div>
-      <div className="flex-1 p-7">{children}</div>
+      <div className="flex-1 p-7">
+        <div className="mx-auto sm:w-full md:w-3/5">{children}</div>
+      </div>
     </div>
   );
 }

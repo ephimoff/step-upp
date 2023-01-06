@@ -16,7 +16,7 @@ const ProfilePage = ({ profile }: any) => {
     <>
       <Sidebar title={title}>
         {profile ? (
-          <div className="h-max">
+          <div className="">
             <UserInfo
               name={profile.name}
               title={profile.title}

@@ -2,6 +2,7 @@ import { FieldArray, useFormikContext } from 'formik';
 import { useState } from 'react';
 import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
+import Card from '../Card';
 
 import { MdDelete } from 'react-icons/md';
 
@@ -13,7 +14,7 @@ type Competency = {
   skills: Skill[];
 };
 
-const Competencies = ({ compsArrayHelpers }: any) => {
+const Competencies = ({ competenciesArrayHelpers }: any) => {
   const [name, setName] = useState('');
   const { values } = useFormikContext<any>();
 
@@ -25,11 +26,11 @@ const Competencies = ({ compsArrayHelpers }: any) => {
     competency.name = name;
     competency.skills = [{ name: '' }, { name: '' }, { name: '' }];
 
-    compsArrayHelpers.push(competency);
+    competenciesArrayHelpers.push(competency);
     setName('');
   };
   const handleRemoveCompetency = (index: number) => {
-    compsArrayHelpers.remove(index);
+    competenciesArrayHelpers.remove(index);
   };
 
   return (
@@ -42,24 +43,21 @@ const Competencies = ({ compsArrayHelpers }: any) => {
         + Add competency
       </button>
 
-      {values.comps.map((competency: any, index: number) => (
-        <section
-          className="my-10  grid rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl "
-          key={index}
-        >
+      {values.competencies.map((competency: any, index: number) => (
+        <Card key={index}>
           <h1 className="text-xl text-purple-400">
-            {values.comps[index].name
-              ? values.comps[index].name
+            {values.competencies[index].name
+              ? values.competencies[index].name
               : 'Create a new competency'}
           </h1>
           <InputAndLabel
             label={'Competency'}
             placeholder={'Product Strategy'}
-            name={`comps.${index}.name`}
+            name={`competencies.${index}.name`}
             type={'input'}
             required={true}
           />
-          <FieldArray name={`comps[${index}].skills`}>
+          <FieldArray name={`competencies[${index}].skills`}>
             {(arrayHelpers) => (
               <>
                 <Skills
@@ -77,7 +75,7 @@ const Competencies = ({ compsArrayHelpers }: any) => {
           >
             <span>Remove</span> <MdDelete size={16} />
           </button>
-        </section>
+        </Card>
       ))}
     </>
   );
