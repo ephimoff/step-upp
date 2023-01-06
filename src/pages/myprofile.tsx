@@ -3,7 +3,7 @@ import Sidebar from '@/components/Sidebar';
 import { useState, useEffect } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';
-import ProfileInput from '@/components/ProfileInput';
+import ProfileInput from '@/components/Profile/ProfileInput';
 import { profileSchema } from '@/schemas/profileSchema';
 
 export default function MyProfilePage() {

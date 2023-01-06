@@ -2,7 +2,8 @@ import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import { useEffect, useState } from 'react';
 import { Formik, Form, FieldArray, useFormikContext, Field } from 'formik';
-import Competencies from '@/components/Competencies';
+import Competencies from '@/components/Competencies/Competencies';
+import { Competency } from '@prisma/client';
 
 const initialValues = {
   comps: [
@@ -15,12 +16,12 @@ const initialValues = {
 
 export default function CompetenciesPage() {
   const { data: session, status } = useSession();
-  const [competencies, setCompetencies] = useState([]);
+  const [competencies, setCompetencies] = useState<Competency[] | null>([]);
 
   useEffect(() => {
     const fetchCompetencies = async () => {
       const res = await fetch(`/api/competency`);
-      const competencies = await res.json();
+      const competencies: Competency[] = await res.json();
       console.log('competencies:', competencies);
       if (res.status === 200) {
         setCompetencies(competencies);

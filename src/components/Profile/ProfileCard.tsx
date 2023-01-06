@@ -1,11 +1,11 @@
-type UserInfoProps = {
+type ProfileCardProps = {
   name: string;
   title: string;
   team: string;
   email: string;
 };
 
-const UserInfo = ({ name, title, team, email }: UserInfoProps) => {
+const ProfileCard = ({ name, title, team, email }: ProfileCardProps) => {
   return (
     <section className="mx-auto flex flex-wrap rounded-xl bg-slate-900 p-8 align-bottom shadow-lg sm:w-full md:w-3/5">
       <img
@@ -25,4 +25,4 @@ const UserInfo = ({ name, title, team, email }: UserInfoProps) => {
     </section>
   );
 };
-export default UserInfo;
+export default ProfileCard;

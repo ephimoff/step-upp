@@ -1,5 +1,5 @@
 import React from 'react';
-import ProgressBar from './ProgressBar';
+import ProgressBar from '../Profile/ProgressBar';
 
 interface Skill {
   name: string;

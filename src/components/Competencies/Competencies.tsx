@@ -1,6 +1,6 @@
 import { FieldArray, useFormikContext } from 'formik';
 import { useState } from 'react';
-import ProfileInput from './ProfileInput';
+import ProfileInput from '../Profile/ProfileInput';
 import Skills from './Skills';
 
 type Skill = {
@@ -13,7 +13,7 @@ type Competency = {
 
 const Competencies = ({ compsArrayHelpers }: any) => {
   const [name, setName] = useState('');
-  const { values } = useFormikContext();
+  const { values } = useFormikContext<any>();
 
   const handleAddCompetency = () => {
     const competency: Competency = {

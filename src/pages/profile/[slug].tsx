@@ -1,12 +1,11 @@
-import ProgressBar from '@/components/ProgressBar';
 import Sidebar from '@/components/Sidebar';
-import UserInfo from '@/components/UserInfo';
+import UserInfo from '@/components/Profile/ProfileCard';
 import { dataFull, dataEmpty } from '@/data/data';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
 
 import React from 'react';
-import CompetencyCard from '@/components/CompetencyCard';
+import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 
 const ProfilePage = ({ profile }: any) => {
