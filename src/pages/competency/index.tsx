@@ -16,7 +16,7 @@ const initialValues = {
 async function createCompetency(values: any) {
   let url = '/api/competency';
   let method = 'POST';
-  console.log('values', values);
+  // console.log('values', values);
   try {
     const response = await fetch(url, {
       method: method,
@@ -55,35 +55,39 @@ export default function CompetenciesPage() {
                 enableReinitialize={true}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
-                  // console.log(values);
                   createCompetency(values);
                   setSubmitting(false);
                 }}
               >
-                {({ values }) => (
+                {({ values, isSubmitting }) => (
                   <Form onChange={(event) => {}}>
-                    <div>
-                      <FieldArray name="competencies">
-                        {(arrayHelpers) => {
-                          return (
-                            <>
-                              <Competencies
-                                competenciesArrayHelpers={arrayHelpers}
-                              />
-                            </>
-                          );
-                        }}
-                      </FieldArray>
-                    </div>
-                    <button
-                      className="w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l"
-                      type="submit"
-                    >
-                      Save all
-                    </button>
-                    <pre className="text-sm font-thin text-white">
-                      {JSON.stringify(values, null, 2)}
-                    </pre>
+                    <>
+                      <div>
+                        <FieldArray name="competencies">
+                          {(arrayHelpers) => {
+                            return (
+                              <>
+                                <Competencies
+                                  competenciesArrayHelpers={arrayHelpers}
+                                />
+                              </>
+                            );
+                          }}
+                        </FieldArray>
+                      </div>
+                      {console.log('zzz', values)}
+                      <button
+                        className={`${
+                          isSubmitting && 'opacity-40'
+                        } w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l`}
+                        type="submit"
+                      >
+                        Save all
+                      </button>
+                      <pre className="text-sm font-thin text-white">
+                        {JSON.stringify(values, null, 2)}
+                      </pre>
+                    </>
                   </Form>
                 )}
               </Formik>

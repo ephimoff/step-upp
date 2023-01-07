@@ -1,19 +1,10 @@
 import React from 'react';
 import ProgressBar from '../Profile/ProgressBar';
 import Card from '../Card';
+import { CompetencyType } from '@/types/competencyTypes';
 
-interface Skill {
-  name: string;
-  score: number | null;
-  score360: number | null;
-  actions: number | null;
-}
-interface Competency {
-  name: string;
-  skills: Skill[];
-}
 interface Props {
-  competencies: Competency[];
+  competencies: CompetencyType[];
 }
 
 const CompetencyCard = ({ competencies }: Props) => {

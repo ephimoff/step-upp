@@ -1,15 +1,14 @@
-import { Competency } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import Card from '../Card';
+import { SkillType, CompetencyType } from '@/types/competencyTypes';
 
 const CompetenciesList = () => {
-  const [competencies, setCompetencies] = useState<Competency[] | null>([]);
+  const [competencies, setCompetencies] = useState<CompetencyType[] | null>([]);
 
   useEffect(() => {
     const fetchCompetencies = async () => {
       const res = await fetch(`/api/competency`);
-      const competencies: Competency[] = await res.json();
-      console.log(competencies);
+      const competencies: CompetencyType[] = await res.json();
       if (res.status === 200) {
         setCompetencies(competencies);
       } else {
@@ -33,16 +32,18 @@ const CompetenciesList = () => {
                     <li className="text-lg" key={index}>
                       {competency.name}
                       <ul>
-                        {competency.skills.map((skill, skillIndex) => {
-                          return (
-                            <li
-                              className="pl-4 text-sm text-gray-400"
-                              key={skillIndex}
-                            >
-                              {skill.name}
-                            </li>
-                          );
-                        })}
+                        {competency.skills.map(
+                          (skill: SkillType, skillIndex: number) => {
+                            return (
+                              <li
+                                className="pl-4 text-sm text-gray-400"
+                                key={skillIndex}
+                              >
+                                {skill.name}
+                              </li>
+                            );
+                          }
+                        )}
                       </ul>
                     </li>
                   );

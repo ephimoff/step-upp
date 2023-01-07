@@ -3,23 +3,16 @@ import { useState } from 'react';
 import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
 import Card from '../Card';
+import { CompetencyType } from '@/types/competencyTypes';
 
 import { MdDelete } from 'react-icons/md';
-
-type Skill = {
-  name: string;
-};
-type Competency = {
-  name: string;
-  skills: Skill[];
-};
 
 const Competencies = ({ competenciesArrayHelpers }: any) => {
   const [name, setName] = useState('');
   const { values } = useFormikContext<any>();
 
   const handleAddCompetency = () => {
-    const competency: Competency = {
+    const competency: CompetencyType = {
       name: '',
       skills: [],
     };
