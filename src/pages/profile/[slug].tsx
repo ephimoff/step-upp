@@ -8,6 +8,7 @@ import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import CustomButton from '@/components/CustomButton';
 import Dropdown from '@/components/Dropdown';
+import Spinner from '@/components/Spinner';
 
 const options = [
   { id: 1, name: 'Durward Reynolds', unavailable: false },
@@ -38,7 +39,7 @@ const ProfilePage = ({ profile }: any) => {
               team={profile.team}
               email={profile.email}
             />
-            <div className="flex">
+            <div className="flex items-center">
               <div>
                 <CustomButton text={'Assign competency'} />
               </div>
@@ -48,6 +49,9 @@ const ProfilePage = ({ profile }: any) => {
                   selected={selected}
                   setSelected={handleSelected}
                 />
+              </div>
+              <div>
+                <Spinner />
               </div>
             </div>
             <CompetencyCard competencies={dataFull} />
