@@ -188,6 +188,7 @@ export default function MyProfilePage() {
                     <pre className="text-sm font-thin text-red-500">
                       {JSON.stringify(errors, null, 2)}
                     </pre>
+
                     <button
                       type="submit"
                       disabled={
@@ -196,7 +197,7 @@ export default function MyProfilePage() {
                       className={`${
                         (isSubmitting || Object.keys(errors).length !== 0) &&
                         'opacity-40'
-                      }  w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l`}
+                      }  w-full rounded-lg bg-gradient-to-l from-[#00B4DB] to-[#0083B0] py-2 shadow-md hover:bg-gradient-to-r `}
                     >
                       {profile ? 'Update profile' : 'Save new profile'}
                     </button>

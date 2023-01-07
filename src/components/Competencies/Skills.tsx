@@ -1,7 +1,6 @@
 import { Field, useFormikContext } from 'formik';
-import { useState } from 'react';
-import { FiDelete } from 'react-icons/fi';
-import { MdDelete } from 'react-icons/md';
+import { MouseEvent, useState } from 'react';
+import CustomButton from '../CustomButton';
 
 type Skill = {
   name: string;
@@ -26,13 +25,18 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
     <>
       <div>
         <span>Skills: </span>
-        <button
+        <CustomButton
+          text={'+ Add skill'}
+          onClick={handleAddSkill}
+          size={'small'}
+        />
+        {/* <button
           type="button"
           className="rounded-lg bg-gradient-to-r from-fuchsia-700 to-purple-500 px-2 text-sm shadow-md hover:bg-gradient-to-l"
           onClick={handleAddSkill}
         >
           + Add skill
-        </button>
+        </button> */}
       </div>
 
       {values.competencies[competencyIndex].skills.map(

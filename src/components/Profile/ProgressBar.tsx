@@ -1,4 +1,5 @@
 import { Popover } from '@headlessui/react';
+import CustomButton from '../CustomButton';
 
 type ProgressBarProps = {
   value: number | null;
@@ -73,9 +74,14 @@ const ProgressBar = ({ value, type }: ProgressBarProps) => {
               ? 'Can use this skill in the work without any guidence from the side'
               : 'An absolute MVP. You can teach others and write books about it'}
           </span>
-          <button className="mt-2 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 py-1 text-xs hover:from-pink-500 hover:to-yellow-500">
+          <CustomButton
+            text={type === 'self' ? 'Update' : 'Request assessment'}
+            size={'small'}
+            role={'secondary'}
+          />
+          {/* <button className="mt-2 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 py-1 text-xs hover:from-pink-500 hover:to-yellow-500">
             {type === 'self' ? 'Update' : 'Request assessment'}
-          </button>
+          </button> */}
         </div>
       </Popover.Panel>
       {/* <Popover.Overlay className="fixed inset-0 bg-black opacity-30" /> */}

@@ -1,9 +1,10 @@
 import { FieldArray, useFormikContext } from 'formik';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
 import Card from '../Card';
 import { CompetencyType } from '@/types/competencyTypes';
+import CustomButton from '../CustomButton';
 
 import { MdDelete } from 'react-icons/md';
 
@@ -28,13 +29,14 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
 
   return (
     <>
-      <button
+      {/* <button
         type="button"
         className="rounded-lg bg-gradient-to-r from-fuchsia-700 to-purple-500 p-2 shadow-md hover:bg-gradient-to-l"
         onClick={handleAddCompetency}
       >
         + Add competency
-      </button>
+      </button> */}
+      <CustomButton text={'+ Add competency'} onClick={handleAddCompetency} />
 
       {values.competencies.map((competency: any, index: number) => (
         <Card key={index}>
@@ -60,7 +62,6 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
               </>
             )}
           </FieldArray>
-
           <button
             type="button"
             className="mx-auto flex w-1/4 items-center text-sm font-bold text-red-700 hover:text-red-500"
