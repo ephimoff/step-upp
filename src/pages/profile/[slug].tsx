@@ -3,12 +3,27 @@ import UserInfo from '@/components/Profile/ProfileCard';
 import { dataFull, dataEmpty } from '@/data/data';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
-
-import React from 'react';
+import React, { useState } from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
+import CustomButton from '@/components/CustomButton';
+import Dropdown from '@/components/Dropdown';
+
+const options = [
+  { id: 1, name: 'Durward Reynolds', unavailable: false },
+  { id: 2, name: 'Kenton Towne', unavailable: false },
+  { id: 3, name: 'Therese Wunsch', unavailable: false },
+  { id: 4, name: 'Benedict Kessler', unavailable: true },
+  { id: 5, name: 'Katelyn Rohan', unavailable: false },
+];
 
 const ProfilePage = ({ profile }: any) => {
+  const [selected, setSelected] = useState(options[0]);
+  console.log(selected);
+
+  function handleSelected(value: any) {
+    setSelected(value);
+  }
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -23,6 +38,18 @@ const ProfilePage = ({ profile }: any) => {
               team={profile.team}
               email={profile.email}
             />
+            <div className="flex">
+              <div>
+                <CustomButton text={'Assign competency'} />
+              </div>
+              <div>
+                <Dropdown
+                  options={options}
+                  selected={selected}
+                  setSelected={handleSelected}
+                />
+              </div>
+            </div>
             <CompetencyCard competencies={dataFull} />
           </div>
         ) : (
