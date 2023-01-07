@@ -1,4 +1,5 @@
 import { signIn, signOut } from 'next-auth/react';
+
 type SignInOutButtonProps = {
   type: 'signin' | 'signout';
 };

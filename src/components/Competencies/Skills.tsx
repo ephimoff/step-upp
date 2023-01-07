@@ -1,16 +1,14 @@
 import { Field, useFormikContext } from 'formik';
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import CustomButton from '../CustomButton';
+import { SkillType } from '@/types/competencyTypes';
 
-type Skill = {
-  name: string;
-};
 const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
   const [name, setName] = useState('');
   const { values }: any = useFormikContext();
 
   const handleAddSkill = () => {
-    const skill: Skill = { name };
+    const skill: SkillType = { name };
     skill.name = name;
 
     skillsArrayHelpers.push(skill);
@@ -30,17 +28,10 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
           onClick={handleAddSkill}
           size={'small'}
         />
-        {/* <button
-          type="button"
-          className="rounded-lg bg-gradient-to-r from-fuchsia-700 to-purple-500 px-2 text-sm shadow-md hover:bg-gradient-to-l"
-          onClick={handleAddSkill}
-        >
-          + Add skill
-        </button> */}
       </div>
 
       {values.competencies[competencyIndex].skills.map(
-        (skill: any, index: number) => (
+        (skill: SkillType, index: number) => (
           <div key={index} className="">
             <div className="flex items-baseline py-3">
               <label className="w-1/5 font-thin">{`Skill ${index + 1}:`}</label>

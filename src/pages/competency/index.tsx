@@ -4,7 +4,6 @@ import { Formik, Form, FieldArray } from 'formik';
 import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
-import { MouseEvent } from 'react';
 
 const initialValues = {
   competencies: [
@@ -83,15 +82,7 @@ export default function CompetenciesPage() {
                           fullWidth={true}
                           role={'secondary'}
                         />
-                      ) : // <button
-                      //   className={`${
-                      //     isSubmitting && 'opacity-40'
-                      //   } w-full rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 py-2 shadow-md hover:bg-gradient-to-l`}
-                      //   type="submit"
-                      // >
-                      //   Save
-                      // </button>
-                      null}
+                      ) : null}
 
                       <pre className="text-sm font-thin text-white">
                         {JSON.stringify(values, null, 2)}

@@ -29,16 +29,9 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
 
   return (
     <>
-      {/* <button
-        type="button"
-        className="rounded-lg bg-gradient-to-r from-fuchsia-700 to-purple-500 p-2 shadow-md hover:bg-gradient-to-l"
-        onClick={handleAddCompetency}
-      >
-        + Add competency
-      </button> */}
       <CustomButton text={'+ Add competency'} onClick={handleAddCompetency} />
 
-      {values.competencies.map((competency: any, index: number) => (
+      {values.competencies.map((competency: CompetencyType, index: number) => (
         <Card key={index}>
           <h1 className="text-xl text-purple-400">
             {values.competencies[index].name
@@ -64,7 +57,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
           </FieldArray>
           <button
             type="button"
-            className="mx-auto flex w-1/4 items-center text-sm font-bold text-red-700 hover:text-red-500"
+            className="mx-auto flex items-center text-sm font-bold text-red-700 hover:text-red-500"
             onClick={() => handleRemoveCompetency(index)}
           >
             <span>Remove</span> <MdDelete size={16} />
