@@ -63,10 +63,10 @@ enum Role {
 }
 
 model Profile {
-  id           String      @id @default(cuid())
+  id           String        @id @default(cuid())
   name         String
-  slug         String      @unique
-  email        String      @unique
+  slug         String        @unique
+  email        String        @unique
   userpic      String?
   title        String?
   team         String?
@@ -74,18 +74,16 @@ model Profile {
   twitter      String?
   linkedin     String?
   github       String?
-  userId       String      @unique
-  user         User        @relation(fields: [userId], references: [id])
-  connectionId String?
-  connection   Connection? @relation(fields: [connectionId], references: [id])
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id])
+  competencies Connections[]
 }
 
 model Competency {
-  id           String      @id @default(cuid())
-  name         String
-  skills       Skill[]
-  connectionId String?
-  connection   Connection? @relation(fields: [connectionId], references: [id])
+  id       String        @id @default(cuid())
+  name     String
+  skills   Skill[]
+  profiles Connections[]
 }
 
 model Skill {
@@ -98,8 +96,10 @@ model Skill {
   competency   Competency @relation(fields: [competencyId], references: [id])
 }
 
-model Connection {
-  id           String       @id @default(cuid())
-  profiles     Profile[]
-  competencies Competency[]
+model Connections {
+  id           String      @id @default(cuid())
+  profile      Profile?    @relation(fields: [profileId], references: [id])
+  profileId    String?
+  competency   Competency? @relation(fields: [competencyId], references: [id])
+  competencyId String?
 }

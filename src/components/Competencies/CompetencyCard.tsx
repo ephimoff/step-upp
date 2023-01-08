@@ -37,9 +37,6 @@ const CompetencyCard = ({ competencies }: Props) => {
                   <ProgressBar value={skill.score360} type="360" />
                   <div>
                     <CustomButton text={'+' + skill.actions} size={'small'} />
-                    {/* <button className="w-1/4 rounded-lg bg-gradient-to-r from-cyan-500 to-fuchsia-500 shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:bg-gradient-to-l">
-                      +{skill.actions}
-                    </button> */}
                   </div>
                 </React.Fragment>
               );

@@ -10,12 +10,6 @@ import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
 
 const ProfilePage = ({ profile }: any) => {
-  // const [selected, setSelected] = useState(options[0]);
-  // console.log(selected);
-
-  // function handleSelected(value: any) {
-  //   setSelected(value);
-  // }
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -30,9 +24,9 @@ const ProfilePage = ({ profile }: any) => {
               team={profile.team}
               email={profile.email}
             />
-            <ProfileCompetenciesLoading />
+            <ProfileCompetenciesLoading profileId={profile.id} />
 
-            <CompetencyCard competencies={dataFull} />
+            {/* <CompetencyCard competencies={dataFull} /> */}
           </div>
         ) : (
           <div>

@@ -4,18 +4,19 @@ import CustomButton from '../CustomButton';
 import Dropdown from '../Dropdown';
 import Spinner from '../Spinner';
 
-const options = [{ id: 'none', name: 'Choose competency' }];
+const empty = [{ id: 'none', name: 'Choose competency' }];
 
 type ProfileCompetenciesLoadingProps = {
-  props: string;
+  profileId: string;
 };
 
 const ProfileCompetenciesLoading = ({
-  props,
+  profileId,
 }: ProfileCompetenciesLoadingProps) => {
   const [loading, setLoading] = useState(false);
   const [competencies, setCompetencies] = useState<CompetencyType[] | null>([]);
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(empty[0]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchCompetencies = async () => {
@@ -33,12 +34,39 @@ const ProfileCompetenciesLoading = ({
     fetchCompetencies();
   }, []);
 
-  console.log('selected', selected);
-  console.log('competencies', competencies);
+  // console.log('selected', selected);
+  // console.log('competencies', competencies);
 
   function handleSelected(value: any) {
     setSelected(value);
   }
+
+  const assignCompetency = async (competencyId: string, profileId: string) => {
+    console.log('competencyId', competencyId);
+    console.log('profileId', profileId);
+    if (competencyId === 'none') {
+      setError('Please choose one of the competencies to assign');
+    }
+    const newConnection = {
+      competencyId: competencyId,
+      profileId: profileId,
+    };
+    try {
+      const response = await fetch('/api/connection', {
+        method: 'POST',
+        body: JSON.stringify(newConnection),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const connectionResponse = await response.json();
+      console.log(connectionResponse);
+      // setProfile(profileResponse);
+      return newConnection;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="flex items-center">
@@ -54,14 +82,14 @@ const ProfileCompetenciesLoading = ({
             />
           </div>
           <div>
-            <CustomButton text={'Assign competency'} />
+            <CustomButton
+              text={'Assign'}
+              onClick={() => assignCompetency(selected.id, profileId)}
+            />
           </div>
+          <div className="text-sm text-red-600">{error ? error : null}</div>
         </>
       )}
-
-      {/* <div>
-        <Spinner />
-      </div> */}
     </div>
   );
 };
