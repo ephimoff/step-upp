@@ -6,6 +6,7 @@ export interface SkillType {
 }
 
 export type CompetencyType = {
+  id?: string;
   name: string;
   skills?: SkillType[];
 };

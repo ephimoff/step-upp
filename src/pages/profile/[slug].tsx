@@ -6,25 +6,16 @@ import { getSession } from 'next-auth/react';
 import React, { useState } from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
-import CustomButton from '@/components/CustomButton';
-import Dropdown from '@/components/Dropdown';
-import Spinner from '@/components/Spinner';
 
-const options = [
-  { id: 1, name: 'Durward Reynolds', unavailable: false },
-  { id: 2, name: 'Kenton Towne', unavailable: false },
-  { id: 3, name: 'Therese Wunsch', unavailable: false },
-  { id: 4, name: 'Benedict Kessler', unavailable: true },
-  { id: 5, name: 'Katelyn Rohan', unavailable: false },
-];
+import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
 
 const ProfilePage = ({ profile }: any) => {
-  const [selected, setSelected] = useState(options[0]);
-  console.log(selected);
+  // const [selected, setSelected] = useState(options[0]);
+  // console.log(selected);
 
-  function handleSelected(value: any) {
-    setSelected(value);
-  }
+  // function handleSelected(value: any) {
+  //   setSelected(value);
+  // }
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -39,21 +30,8 @@ const ProfilePage = ({ profile }: any) => {
               team={profile.team}
               email={profile.email}
             />
-            <div className="flex items-center">
-              <div>
-                <CustomButton text={'Assign competency'} />
-              </div>
-              <div>
-                <Dropdown
-                  options={options}
-                  selected={selected}
-                  setSelected={handleSelected}
-                />
-              </div>
-              <div>
-                <Spinner />
-              </div>
-            </div>
+            <ProfileCompetenciesLoading />
+
             <CompetencyCard competencies={dataFull} />
           </div>
         ) : (

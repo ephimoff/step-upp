@@ -3,13 +3,12 @@ import { useState, Fragment } from 'react';
 import { CompetencyType } from '@/types/competencyTypes';
 import { HiCheck, HiOutlineSelector } from 'react-icons/hi';
 
-interface CompetencyOption extends CompetencyType {
-  id: number;
-  name: string;
-  unavailable: boolean;
-}
+// interface CompetencyOption extends CompetencyType {
+//   id: string;
+//   name: string;
+// }
 type DropdownProps = {
-  options: CompetencyOption[];
+  options: CompetencyType[] | null;
   selected: any;
   setSelected: any;
 };
@@ -36,11 +35,11 @@ const Dropdown = ({ options, selected, setSelected }: DropdownProps) => {
         leaveTo="opacity-0"
       >
         <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full max-w-lg overflow-auto rounded-md bg-gray-900 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-          {options.map((option) => (
+          {options?.map((option) => (
             <Listbox.Option
               key={option.id}
               value={option}
-              disabled={option.unavailable}
+              // disabled={option.unavailable}
               className={({ active, disabled }) =>
                 `relative cursor-default select-none py-2 pl-10 pr-4 ${
                   active
