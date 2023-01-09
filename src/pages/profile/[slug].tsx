@@ -81,11 +81,24 @@ export const getServerSideProps = async (context: any) => {
         profileId: profile?.id,
       },
       select: {
-        competency: { include: { skills: true } },
+        competency: {
+          select: {
+            id: true,
+            name: true,
+            skills: {
+              select: {
+                id: true,
+                name: true,
+                scores: { where: { profileId: profile.id } },
+              },
+            },
+          },
+        },
+        // profile: { include: { skills: true } },
       },
     });
 
-    console.log(assignedCompetencies);
+    console.dir(assignedCompetencies, { depth: null });
 
     const refreshCompetenciesList = () => {
       competencies.forEach(function (competency: any) {
