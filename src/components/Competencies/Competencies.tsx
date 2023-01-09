@@ -3,7 +3,7 @@ import { MouseEvent, useState } from 'react';
 import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
 import Card from '../Card';
-import { CompetencyType } from '@/types/competencyTypes';
+import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
 
 import { MdDelete } from 'react-icons/md';

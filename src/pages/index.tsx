@@ -1,5 +1,4 @@
 import Sidebar from '@/components/Sidebar';
-import NewSidebar from '@/components/NewSidebar';
 import { getSession } from 'next-auth/react';
 import { siteDescription } from '@/data/data';
 import React from 'react';

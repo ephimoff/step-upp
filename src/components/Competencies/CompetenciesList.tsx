@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from '../Card';
-import { SkillType, CompetencyType } from '@/types/competencyTypes';
+import { SkillType, CompetencyType } from '@/types/types';
 
 const CompetenciesList = () => {
   const [competencies, setCompetencies] = useState<CompetencyType[] | null>([]);

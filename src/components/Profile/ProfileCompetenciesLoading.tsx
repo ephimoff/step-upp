@@ -1,4 +1,4 @@
-import { CompetencyType } from '@/types/competencyTypes';
+import { CompetencyType, ProfileType } from '@/types/types';
 import { useEffect, useState } from 'react';
 import CustomButton from '../CustomButton';
 import Dropdown from '../Dropdown';
@@ -6,44 +6,31 @@ import Spinner from '../Spinner';
 
 const empty = [{ id: 'none', name: 'Choose competency' }];
 
+interface CompetencyOption extends CompetencyType {
+  id: string;
+  name: string;
+  unavailable: boolean;
+}
+
 type ProfileCompetenciesLoadingProps = {
-  profileId: string;
+  profile: ProfileType;
+  competencies: CompetencyOption[];
 };
 
 const ProfileCompetenciesLoading = ({
-  profileId,
+  profile,
+  competencies,
 }: ProfileCompetenciesLoadingProps) => {
   const [loading, setLoading] = useState(false);
-  const [competencies, setCompetencies] = useState<CompetencyType[] | null>([]);
   const [selected, setSelected] = useState(empty[0]);
   const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchCompetencies = async () => {
-      setLoading(true);
-      const res = await fetch(`/api/competency`);
-      const competencies: CompetencyType[] = await res.json();
-      if (res.status === 200) {
-        setCompetencies(competencies);
-        setLoading(false);
-      } else {
-        setCompetencies([]);
-        setLoading(false);
-      }
-    };
-    fetchCompetencies();
-  }, []);
-
-  // console.log('selected', selected);
-  // console.log('competencies', competencies);
+  console.log('competencies', competencies);
 
   function handleSelected(value: any) {
     setSelected(value);
   }
 
   const assignCompetency = async (competencyId: string, profileId: string) => {
-    console.log('competencyId', competencyId);
-    console.log('profileId', profileId);
     if (competencyId === 'none') {
       setError('Please choose one of the competencies to assign');
     }
@@ -52,6 +39,7 @@ const ProfileCompetenciesLoading = ({
       profileId: profileId,
     };
     try {
+      setLoading(true);
       const response = await fetch('/api/connection', {
         method: 'POST',
         body: JSON.stringify(newConnection),
@@ -60,8 +48,7 @@ const ProfileCompetenciesLoading = ({
         },
       });
       const connectionResponse = await response.json();
-      console.log(connectionResponse);
-      // setProfile(profileResponse);
+      setLoading(false);
       return newConnection;
     } catch (error) {
       console.error(error);
@@ -84,7 +71,7 @@ const ProfileCompetenciesLoading = ({
           <div>
             <CustomButton
               text={'Assign'}
-              onClick={() => assignCompetency(selected.id, profileId)}
+              onClick={() => assignCompetency(selected.id, profile.id)}
             />
           </div>
           <div className="text-sm text-red-600">{error ? error : null}</div>

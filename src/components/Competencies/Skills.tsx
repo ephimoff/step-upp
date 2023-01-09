@@ -1,7 +1,7 @@
 import { Field, useFormikContext } from 'formik';
 import { useState } from 'react';
 import CustomButton from '../CustomButton';
-import { SkillType } from '@/types/competencyTypes';
+import { SkillType } from '@/types/types';
 
 const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
   const [name, setName] = useState('');

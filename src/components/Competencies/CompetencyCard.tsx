@@ -1,7 +1,7 @@
 import React from 'react';
 import ProgressBar from '../Profile/ProgressBar';
 import Card from '../Card';
-import { CompetencyType } from '@/types/competencyTypes';
+import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
 
 interface Props {
