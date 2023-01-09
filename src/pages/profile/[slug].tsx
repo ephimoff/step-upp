@@ -28,7 +28,7 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
               competencies={competencies}
             />
 
-            {/* <CompetencyCard competencies={assignedCompetencies} /> */}
+            <CompetencyCard competencies={assignedCompetencies} />
           </div>
         ) : (
           <div>
