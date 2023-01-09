@@ -8,7 +8,7 @@ import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
 
-const ProfilePage = ({ profile, competencies }: any) => {
+const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -28,7 +28,7 @@ const ProfilePage = ({ profile, competencies }: any) => {
               competencies={competencies}
             />
 
-            {/* <CompetencyCard competencies={dataFull} /> */}
+            {/* <CompetencyCard competencies={assignedCompetencies} /> */}
           </div>
         ) : (
           <div>
@@ -67,27 +67,42 @@ export const getServerSideProps = async (context: any) => {
     },
     include: { competencies: true },
   });
-  const competencies = await prisma.competency.findMany({
-    include: { skills: true },
-  });
 
-  const refreshCompetenciesList = () => {
-    // console.log('profile.competencies', profile?.competencies);
-    competencies.forEach(function (competency: any) {
-      // console.log(competency.id);
-      if (
-        profile?.competencies.find(
-          (element) => element.competencyId === competency.id
-        )
-      ) {
-        competency.unavailable = true;
-      } else {
-        competency.unavailable = false;
-      }
+  let competencies: any = null;
+  let assignedCompetencies: any = null;
+
+  if (profile) {
+    competencies = await prisma.competency.findMany({
+      include: { skills: true },
     });
-  };
 
-  refreshCompetenciesList();
+    assignedCompetencies = await prisma.profileCompetencies.findMany({
+      where: {
+        profileId: profile?.id,
+      },
+      select: {
+        competency: { include: { skills: true } },
+      },
+    });
+
+    console.log(assignedCompetencies);
+
+    const refreshCompetenciesList = () => {
+      competencies.forEach(function (competency: any) {
+        if (
+          profile?.competencies.find(
+            (element) => element.competencyId === competency.id
+          )
+        ) {
+          competency.unavailable = true;
+        } else {
+          competency.unavailable = false;
+        }
+      });
+    };
+
+    refreshCompetenciesList();
+  }
 
   const session = await getSession(context);
 
@@ -100,6 +115,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, profile, competencies },
+    props: { session, profile, competencies, assignedCompetencies },
   };
 };

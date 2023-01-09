@@ -63,10 +63,10 @@ enum Role {
 }
 
 model Profile {
-  id           String        @id @default(cuid())
+  id           String                @id @default(cuid())
   name         String
-  slug         String        @unique
-  email        String        @unique
+  slug         String                @unique
+  email        String                @unique
   userpic      String?
   title        String?
   team         String?
@@ -74,32 +74,41 @@ model Profile {
   twitter      String?
   linkedin     String?
   github       String?
-  userId       String        @unique
-  user         User          @relation(fields: [userId], references: [id])
-  competencies Connections[]
+  userId       String                @unique
+  user         User                  @relation(fields: [userId], references: [id])
+  competencies ProfileCompetencies[]
+  skills       ProfileScores[]
 }
 
 model Competency {
-  id       String        @id @default(cuid())
+  id       String                @id @default(cuid())
   name     String
   skills   Skill[]
-  profiles Connections[]
+  profiles ProfileCompetencies[]
 }
 
 model Skill {
-  id           String     @id @default(cuid())
+  id           String          @id @default(cuid())
   name         String
-  score        Int?
-  score360     Int?
-  actions      Int?
   competencyId String
-  competency   Competency @relation(fields: [competencyId], references: [id])
+  competency   Competency      @relation(fields: [competencyId], references: [id])
+  scores       ProfileScores[]
 }
 
-model Connections {
+model ProfileCompetencies {
   id           String      @id @default(cuid())
   profile      Profile?    @relation(fields: [profileId], references: [id])
   profileId    String?
   competency   Competency? @relation(fields: [competencyId], references: [id])
   competencyId String?
+}
+
+model ProfileScores {
+  id        String   @id @default(cuid())
+  profile   Profile? @relation(fields: [profileId], references: [id])
+  profileId String?
+  skill     Skill?   @relation(fields: [skillId], references: [id])
+  skillId   String?
+  score     Int?
+  score360  Int?
 }

@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { competencyId, profileId } = req.body;
     // console.log('api', { competencyId, profileId });
     try {
-      const savedConnection = await prisma.connections
+      const savedConnection = await prisma.profileCompetencies
         .create({
           data: {
             profile: {

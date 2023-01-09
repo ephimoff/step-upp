@@ -24,7 +24,7 @@ const ProfileCompetenciesLoading = ({
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(empty[0]);
   const [error, setError] = useState('');
-  console.log('competencies', competencies);
+  // console.log('competencies', competencies);
 
   function handleSelected(value: any) {
     setSelected(value);
@@ -55,7 +55,7 @@ const ProfileCompetenciesLoading = ({
       const connectionResponse = await response.json();
       updateAvailability(competencyId);
       setLoading(false);
-      console.log(competencies);
+      // console.log(competencies);
       return newConnection;
     } catch (error) {
       console.error(error);

@@ -8,7 +8,8 @@ interface Props {
   competencies: CompetencyType[];
 }
 
-const CompetencyCard = ({ competencies }: Props) => {
+const CompetencyCard = ({ competencies }: any) => {
+  console.log('competencies', competencies);
   return (
     <>
       {competencies.map((competency: any, index: number) => {
