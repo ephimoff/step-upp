@@ -29,7 +29,12 @@ const ProfileCompetenciesLoading = ({
   function handleSelected(value: any) {
     setSelected(value);
   }
-
+  function updateAvailability(id: string) {
+    const competencyIndex = competencies.findIndex(
+      (element) => element.id === id
+    );
+    competencies[competencyIndex].unavailable = true;
+  }
   const assignCompetency = async (competencyId: string, profileId: string) => {
     if (competencyId === 'none') {
       setError('Please choose one of the competencies to assign');
@@ -48,7 +53,9 @@ const ProfileCompetenciesLoading = ({
         },
       });
       const connectionResponse = await response.json();
+      updateAvailability(competencyId);
       setLoading(false);
+      console.log(competencies);
       return newConnection;
     } catch (error) {
       console.error(error);
