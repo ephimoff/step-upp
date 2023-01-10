@@ -44,7 +44,7 @@ const PopoverPanel = ({ type, value, profileId }: PopoverPanelProps) => {
           <Formik
             enableReinitialize
             initialValues={{
-              score: value,
+              score: value || '',
             }}
             validationSchema={scoreSchema}
             onSubmit={(values, { setSubmitting }) => {
