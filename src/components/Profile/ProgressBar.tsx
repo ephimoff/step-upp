@@ -1,12 +1,14 @@
 import { Popover } from '@headlessui/react';
-import CustomButton from '../CustomButton';
+// import CustomButton from '../CustomButton';
+import PopoverPanel from '../PopoverPanel';
 
 type ProgressBarProps = {
   value: number | null;
   type: 'self' | '360';
+  profileId: string;
 };
 
-const ProgressBar = ({ value, type }: ProgressBarProps) => {
+const ProgressBar = ({ value, type, profileId }: ProgressBarProps) => {
   return (
     // <div className="flex h-full items-center gap-x-2">
     <Popover className="relative">
@@ -45,7 +47,8 @@ const ProgressBar = ({ value, type }: ProgressBarProps) => {
         </div>
       </Popover.Button>
       <Popover.Panel className="absolute -top-24 z-10">
-        <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
+        <PopoverPanel type={type} value={value} profileId={profileId} />
+        {/* <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
           <strong
             className={`${
               value! <= 2
@@ -74,15 +77,18 @@ const ProgressBar = ({ value, type }: ProgressBarProps) => {
               ? 'Can use this skill in the work without any guidence from the side'
               : 'An absolute MVP. You can teach others and write books about it'}
           </span>
-          <CustomButton
-            text={type === 'self' ? 'Update' : 'Request assessment'}
-            size={'small'}
-            role={'secondary'}
-          />
-          {/* <button className="mt-2 rounded-lg bg-gradient-to-r from-green-400 to-blue-500 py-1 text-xs hover:from-pink-500 hover:to-yellow-500">
-            {type === 'self' ? 'Update' : 'Request assessment'}
-          </button> */}
-        </div>
+          <div className="mx-auto flex justify-center">
+            <input
+              type="number"
+              className="mr-2 w-1/2 rounded-md border bg-slate-700 py-1 text-center"
+            />
+            <CustomButton
+              text={type === 'self' ? 'Update' : 'Request assessment'}
+              size={'small'}
+              role={'secondary'}
+            />
+          </div>
+        </div> */}
       </Popover.Panel>
       {/* <Popover.Overlay className="fixed inset-0 bg-black opacity-30" /> */}
     </Popover>

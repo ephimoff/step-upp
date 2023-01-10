@@ -6,10 +6,12 @@ import CustomButton from '../CustomButton';
 
 interface Props {
   competencies: CompetencyType[];
+  profileId: string;
 }
 
-const CompetencyCard = ({ competencies }: any) => {
-  console.log('competencies', competencies);
+const CompetencyCard = ({ competencies, profileId }: any) => {
+  // console.log('competencies====');
+  // console.dir(competencies, { depth: null });
   return (
     <>
       {competencies.map((element: any, index: number) => {
@@ -37,8 +39,16 @@ const CompetencyCard = ({ competencies }: any) => {
               return (
                 <React.Fragment key={skillIndex}>
                   <div className="col-span-2 font-normal">{skill.name}</div>
-                  <ProgressBar value={skill.score} type="self" />
-                  <ProgressBar value={skill.score360} type="360" />
+                  <ProgressBar
+                    value={skill.scores[0]?.score}
+                    profileId={profileId}
+                    type="self"
+                  />
+                  <ProgressBar
+                    value={skill.scores[0]?.score360}
+                    type="360"
+                    profileId={profileId}
+                  />
                   <div>
                     <CustomButton text={'+ 2'} size={'small'} />
                   </div>

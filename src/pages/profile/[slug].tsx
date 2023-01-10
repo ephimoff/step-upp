@@ -28,7 +28,10 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
               competencies={competencies}
             />
 
-            <CompetencyCard competencies={assignedCompetencies} />
+            <CompetencyCard
+              competencies={assignedCompetencies}
+              profileId={profile.id}
+            />
           </div>
         ) : (
           <div>
@@ -98,7 +101,7 @@ export const getServerSideProps = async (context: any) => {
       },
     });
 
-    console.dir(assignedCompetencies, { depth: null });
+    // console.dir(assignedCompetencies, { depth: null });
 
     const refreshCompetenciesList = () => {
       competencies.forEach(function (competency: any) {
