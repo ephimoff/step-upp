@@ -17,7 +17,7 @@ type DropdownProps = {
 const Dropdown = ({ options, selected, setSelected }: DropdownProps) => {
   return (
     <Listbox value={selected} onChange={setSelected}>
-      <Listbox.Button className="relative w-full max-w-xs cursor-default rounded-lg bg-gray-900 py-2.5 pl-3 pr-10 text-left shadow-md sm:text-sm">
+      <Listbox.Button className="relative w-full max-w-xs cursor-pointer rounded-lg bg-gray-900 py-2.5 pl-3 pr-10 text-left shadow-md sm:text-sm">
         <span className="block truncate">{selected.name}</span>
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <HiOutlineSelector
@@ -39,12 +39,12 @@ const Dropdown = ({ options, selected, setSelected }: DropdownProps) => {
               value={option}
               disabled={option.unavailable}
               className={({ active, disabled }) =>
-                `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                `relative select-none py-2 pl-10 pr-4 ${
                   active
                     ? 'bg-gray-700'
                     : disabled
-                    ? 'text-gray-700'
-                    : 'text-white'
+                    ? 'cursor-default text-gray-700'
+                    : 'cursor-pointer text-white'
                 }`
               }
             >
