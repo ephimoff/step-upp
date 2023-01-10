@@ -6,6 +6,8 @@ type CustomButtonProps = {
   fullWidth?: boolean;
   role?: 'secondary' | 'primary';
   size?: 'small';
+  type?: 'button' | 'submit';
+  disabled?: boolean;
 };
 const primary = `bg-gradient-to-r from-fuchsia-700 to-purple-500 hover:bg-gradient-to-l`;
 const secondary = `bg-gradient-to-l from-[#00B4DB] to-[#0083B0] hover:bg-gradient-to-r`;
@@ -16,16 +18,19 @@ const CustomButton = ({
   fullWidth = false,
   role = 'primary',
   size,
+  type = 'button',
+  disabled = true,
 }: CustomButtonProps) => {
   return (
     <button
-      type="button"
-      className={`rounded-lg shadow-md  ${
+      type={type}
+      className={`cursor-pointer rounded-lg shadow-md  ${
         role === 'secondary' ? secondary : primary
       } ${fullWidth ? 'w-full ' : ''} ${
         size === 'small' ? 'px-2 text-sm' : 'p-2'
       }`}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </button>
