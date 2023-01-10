@@ -39,24 +39,24 @@ const ProfileCompetenciesLoading = ({
     if (competencyId === 'none') {
       setError('Please choose one of the competencies to assign');
     }
-    const newConnection = {
+    const newRecord = {
       competencyId: competencyId,
       profileId: profileId,
     };
     try {
       setLoading(true);
-      const response = await fetch('/api/connection', {
+      const response = await fetch('/api/assigncompetency', {
         method: 'POST',
-        body: JSON.stringify(newConnection),
+        body: JSON.stringify(newRecord),
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      const connectionResponse = await response.json();
+      const jsonResponse = await response.json();
       updateAvailability(competencyId);
       setLoading(false);
       // console.log(competencies);
-      return newConnection;
+      return newRecord;
     } catch (error) {
       console.error(error);
     }

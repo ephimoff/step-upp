@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';
 import InputAndLabel from '@/components/InputAndLabel';
-import { profileSchema } from '@/schemas/profileSchema';
+import { profileSchema } from '@/schemas/validationSchemas';
+import CustomButton from '@/components/CustomButton';
 
 export default function MyProfilePage() {
   const { data: session, status } = useSession();

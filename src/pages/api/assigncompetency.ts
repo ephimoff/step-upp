@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { competencyId, profileId } = req.body;
     // console.log('api', { competencyId, profileId });
     try {
-      const savedConnection = await prisma.profileCompetencies
+      const savedRecord = await prisma.profileCompetencies
         .create({
           data: {
             profile: {
@@ -20,8 +20,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .catch(async (e) => {
           console.error(e);
         });
-      // console.log('api savedConnection: ', savedConnection);
-      res.status(200).json(savedConnection);
+      // console.log('api savedRecord: ', savedRecord);
+      res.status(200).json(savedRecord);
     } catch (error) {
       res.status(500).json({ msg: 'Something went wrong', error });
     }
