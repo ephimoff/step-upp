@@ -16,6 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'PUT') {
     const { email } = req.query;
     const profile = req.body;
+    // update profile
     try {
       const updatedProfile = await prisma.profile.update({
         where: {

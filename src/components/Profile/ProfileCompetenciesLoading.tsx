@@ -35,10 +35,31 @@ const ProfileCompetenciesLoading = ({
     );
     competencies[competencyIndex].unavailable = true;
   }
+  const assignScores = async (profileId: string, skills: any) => {
+    if (skills.length === 0) {
+      return setError('Please choose one of the competencies to assign');
+    }
+
+    try {
+      skills.map(async (skill: any) => {
+        const response = await fetch('/api/score', {
+          method: 'POST',
+          body: JSON.stringify({ profileId: profileId, skillId: skill.id }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const jsonResponse = await response.json();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const assignCompetency = async (competencyId: string, profileId: string) => {
     if (competencyId === 'none') {
-      setError('Please choose one of the competencies to assign');
+      return setError('Please choose one of the competencies to assign');
     }
+    setError('');
     const newRecord = {
       competencyId: competencyId,
       profileId: profileId,
@@ -54,8 +75,12 @@ const ProfileCompetenciesLoading = ({
       });
       const jsonResponse = await response.json();
       updateAvailability(competencyId);
+      const skillsArray = competencies.find(
+        (element) => element.id === competencyId
+      );
+      assignScores(profileId, skillsArray?.skills);
+      // console.log(competencies.find((element) => element.id === competencyId));
       setLoading(false);
-      // console.log(competencies);
       return newRecord;
     } catch (error) {
       console.error(error);

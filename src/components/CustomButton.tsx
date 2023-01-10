@@ -19,7 +19,7 @@ const CustomButton = ({
   role = 'primary',
   size,
   type = 'button',
-  disabled = true,
+  disabled = false,
 }: CustomButtonProps) => {
   return (
     <button
