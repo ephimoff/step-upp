@@ -1,12 +1,14 @@
 import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
+import { json } from 'stream/consumers';
 
 type PopoverPanelProps = {
   type: 'self' | '360';
   value: number | null;
   profileId: string;
   skillId: string;
+  setScore: any;
 };
 
 const PopoverPanel = ({
@@ -14,6 +16,7 @@ const PopoverPanel = ({
   value,
   profileId,
   skillId,
+  setScore,
 }: PopoverPanelProps) => {
   const updateScore = async (
     profileId: string,
@@ -37,10 +40,15 @@ const PopoverPanel = ({
         },
       });
       const jsonResponse = await response.json();
+      if (jsonResponse.count > 0) {
+        setScore(score);
+      }
+      console.log('jsonResponse', jsonResponse);
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
       <strong
