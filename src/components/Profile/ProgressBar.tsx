@@ -48,13 +48,16 @@ const ProgressBar = ({ value, type, profileId, skillId }: ProgressBarProps) => {
         </div>
       </Popover.Button>
       <Popover.Panel className="absolute -top-24 z-10">
-        <PopoverPanel
-          type={type}
-          value={value}
-          profileId={profileId}
-          skillId={skillId}
-          setScore={setScore}
-        />
+        {({ close }) => (
+          <PopoverPanel
+            type={type}
+            value={value}
+            profileId={profileId}
+            skillId={skillId}
+            setScore={setScore}
+            close={close}
+          />
+        )}
       </Popover.Panel>
     </Popover>
   );

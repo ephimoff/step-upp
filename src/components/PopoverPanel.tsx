@@ -9,6 +9,7 @@ type PopoverPanelProps = {
   profileId: string;
   skillId: string;
   setScore: any;
+  close: any;
 };
 
 const PopoverPanel = ({
@@ -17,6 +18,7 @@ const PopoverPanel = ({
   profileId,
   skillId,
   setScore,
+  close,
 }: PopoverPanelProps) => {
   const updateScore = async (
     profileId: string,
@@ -42,6 +44,7 @@ const PopoverPanel = ({
       const jsonResponse = await response.json();
       if (jsonResponse.count > 0) {
         setScore(score);
+        close();
       }
       console.log('jsonResponse', jsonResponse);
     } catch (error) {
@@ -94,14 +97,7 @@ const PopoverPanel = ({
               setSubmitting(false);
             }}
           >
-            {({
-              values,
-              errors,
-              // handleChange,
-              // handleBlur,
-              // handleSubmit,
-              isSubmitting,
-            }) => (
+            {({ values, errors, isSubmitting }) => (
               <Form className="flex justify-center">
                 <Field
                   name="score"
@@ -120,7 +116,6 @@ const PopoverPanel = ({
             )}
           </Formik>
         ) : (
-          //
           <CustomButton
             text={'Request assessment'}
             size={'small'}
