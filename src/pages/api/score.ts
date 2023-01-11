@@ -16,22 +16,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .catch(async (e) => {
           console.error(e);
         });
-
-      // const savedRecord = await prisma.profile
-      //   .update({
-      //     where: {
-      //       id: profileId
-      //     },
-      //     data: {
-      //       skills: {
-      //         connectOrCreate
-      //       }
-      //     }
-      //   })
-      //   .catch(async (e) => {
-      //     console.error(e);
-      //   });
-      // console.log('api savedRecord: ', savedRecord);
+      res.status(200).json(savedRecord);
+    } catch (error) {
+      res.status(500).json({ msg: 'Something went wrong', error });
+    }
+  }
+  if (req.method === 'PUT') {
+    const { profileId, skillId, score } = req.body;
+    console.log('api', { profileId, skillId, score });
+    try {
+      const savedRecord = await prisma.profileScores
+        .updateMany({
+          where: {
+            profileId: profileId,
+            skillId: skillId,
+          },
+          data: {
+            score: score,
+          },
+        })
+        .catch(async (e) => {
+          console.error(e);
+        });
       res.status(200).json(savedRecord);
     } catch (error) {
       res.status(500).json({ msg: 'Something went wrong', error });

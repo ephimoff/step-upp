@@ -6,9 +6,41 @@ type PopoverPanelProps = {
   type: 'self' | '360';
   value: number | null;
   profileId: string;
+  skillId: string;
 };
 
-const PopoverPanel = ({ type, value, profileId }: PopoverPanelProps) => {
+const PopoverPanel = ({
+  type,
+  value,
+  profileId,
+  skillId,
+}: PopoverPanelProps) => {
+  const updateScore = async (
+    profileId: string,
+    skillId: string,
+    score: number | null
+  ) => {
+    if (!score) {
+      return null;
+    }
+
+    try {
+      const response = await fetch('/api/score', {
+        method: 'PUT',
+        body: JSON.stringify({
+          profileId: profileId,
+          skillId: skillId,
+          score: Number(score),
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const jsonResponse = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
       <strong
@@ -50,16 +82,16 @@ const PopoverPanel = ({ type, value, profileId }: PopoverPanelProps) => {
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
               console.log(values);
-              // updateProfile(values);
+              updateScore(profileId, skillId, values.score as number);
               setSubmitting(false);
             }}
           >
             {({
               values,
               errors,
-              handleChange,
-              handleBlur,
-              handleSubmit,
+              // handleChange,
+              // handleBlur,
+              // handleSubmit,
               isSubmitting,
             }) => (
               <Form className="flex justify-center">

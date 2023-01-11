@@ -6,11 +6,11 @@ type ProgressBarProps = {
   value: number | null;
   type: 'self' | '360';
   profileId: string;
+  skillId: string;
 };
 
-const ProgressBar = ({ value, type, profileId }: ProgressBarProps) => {
+const ProgressBar = ({ value, type, profileId, skillId }: ProgressBarProps) => {
   return (
-    // <div className="flex h-full items-center gap-x-2">
     <Popover className="relative">
       <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 focus:outline-none">
         <div className="flex h-full items-center gap-x-2">
@@ -47,7 +47,12 @@ const ProgressBar = ({ value, type, profileId }: ProgressBarProps) => {
         </div>
       </Popover.Button>
       <Popover.Panel className="absolute -top-24 z-10">
-        <PopoverPanel type={type} value={value} profileId={profileId} />
+        <PopoverPanel
+          type={type}
+          value={value}
+          profileId={profileId}
+          skillId={skillId}
+        />
         {/* <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
           <strong
             className={`${

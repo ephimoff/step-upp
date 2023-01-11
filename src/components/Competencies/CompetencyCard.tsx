@@ -42,12 +42,14 @@ const CompetencyCard = ({ competencies, profileId }: any) => {
                   <ProgressBar
                     value={skill.scores[0]?.score}
                     profileId={profileId}
+                    skillId={skill.id}
                     type="self"
                   />
                   <ProgressBar
                     value={skill.scores[0]?.score360}
                     type="360"
                     profileId={profileId}
+                    skillId={skill.id}
                   />
                   <div>
                     <CustomButton text={'+ 2'} size={'small'} />
