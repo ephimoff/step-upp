@@ -13,7 +13,7 @@ It has the following features:
 - [x] Rewrite the logic of the `/profile` using either SWR or useForm or Formik
 - [ ] Check labels for input in different resolutions. It hides behind the field and doesn't wrap
 - [x] Set up some styles for buttons so they are consistent
-- [ ] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
+- [x] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
 - [ ] Generate slug automatically
 - [ ] Check for uniqueness
 - [ ] Add a picture from the SSO service

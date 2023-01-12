@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import {
   BiHomeAlt,
@@ -13,6 +12,7 @@ import SidebarLink from './SidebarLink';
 import SignInOutButton from './SingInOutButton';
 import { siteTitle } from '@/data/data';
 import Head from 'next/head';
+import { useUser } from '@/contexts/user.context';
 
 type SidebarProps = {
   children: React.ReactNode;
@@ -35,8 +35,8 @@ export const sidebarLinks = [
 
 export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
   const { data: session, status } = useSession();
+  const { open, setOpen } = useUser();
 
-  const [open, setOpen] = useState(true);
   const toggleSidebar = () => {
     setOpen(!open);
   };

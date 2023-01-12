@@ -4,18 +4,18 @@ import { siteDescription } from '@/data/data';
 import React, { useEffect } from 'react';
 import prisma from '@/utils/prisma';
 import { UserType } from '@/types/types';
-import { useUser } from '@/contexts/global.context';
+// import { useUser } from '@/contexts/user.context';
 
 type HomePageProps = {
   user: UserType;
 };
 
 export default function HomePage({ user }: HomePageProps) {
-  const { currentUser, setCurrentUser } = useUser();
-  useEffect(() => {
-    setCurrentUser(user);
-  }, []);
-  console.log('currentUser', currentUser);
+  // const { currentUser, setCurrentUser } = useUser();
+  // useEffect(() => {
+  //   setCurrentUser(user);
+  // }, []);
+  // console.log('currentUser', currentUser);
   return (
     <>
       <Sidebar>
@@ -38,23 +38,23 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session!.user!.email as string,
-    },
-    include: {
-      profile: { include: { competencies: true, skills: true } },
-    },
-  });
-  console.dir(user, { depth: null });
-
-  // const profile = await prisma.profile.findUnique({
+  // const user = await prisma.user.findUnique({
   //   where: {
   //     email: session!.user!.email as string,
   //   },
+  //   include: {
+  //     profile: { include: { competencies: true, skills: true } },
+  //   },
   // });
+  // console.dir(user, { depth: null });
 
-  if (!user?.profile) {
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
+
+  if (!profile) {
     return {
       redirect: {
         destination: '/myprofile',
@@ -63,6 +63,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, user },
+    props: { session, profile },
   };
 };

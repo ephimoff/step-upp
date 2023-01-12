@@ -1,14 +1,43 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';
 import InputAndLabel from '@/components/InputAndLabel';
 import { profileSchema } from '@/schemas/validationSchemas';
-import CustomButton from '@/components/CustomButton';
+import { useUser } from '@/contexts/user.context';
+
+// const initialValue = {
+//   name: '',
+//   email: '',
+//   title: '',
+//   team: '',
+//   slug: '',
+//   phone: '',
+//   twitter: '',
+//   linkedin: '',
+//   github: '',
+// };
+
+// const reducer = (state: any, action: any) => {
+//   switch (action.type) {
+//     case 'update':
+//       return {
+//         ...state,
+//         [action.payload.key]: action.payload.value,
+//       };
+//     default:
+//       throw new Error(`Unknown action type: ${action.type}`);
+//   }
+// };
 
 export default function MyProfilePage() {
   const { data: session, status } = useSession();
+  // const { currentUser } = useUser();
+  // const [state, dispatch] = useReducer(reducer, initialValue);
+  // console.log('page');
+  // console.dir(currentUser, { depth: null });
+
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [name, setName] = useState<string>(session!.user!.name as string);
   const [email, setEmail] = useState<string>(session!.user!.email as string);
@@ -22,6 +51,8 @@ export default function MyProfilePage() {
   const queryEmail = session!.user!.email;
 
   useEffect(() => {
+    // console.log('useEffect');
+    // console.dir(currentUser, { depth: null });
     const fetchProfile = async (email: string) => {
       const res = await fetch(`/api/profile?email=${email}`);
       const profile: ProfileType = await res.json();
