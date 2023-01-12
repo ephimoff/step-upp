@@ -15,7 +15,7 @@ const CompetencyCard = ({ competencies, profileId }: any) => {
   return (
     <>
       {competencies.map((element: any, index: number) => {
-        console.log(element.competency);
+        // console.log(element.competency);
         return (
           <Card grid={true} key={index}>
             <div className="col-span-5">

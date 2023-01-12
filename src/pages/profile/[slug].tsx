@@ -1,9 +1,8 @@
 import Sidebar from '@/components/Sidebar';
-import UserInfo from '@/components/Profile/ProfileCard';
-import { dataFull, dataEmpty } from '@/data/data';
+import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
-import React, { useState } from 'react';
+import React from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
@@ -17,7 +16,7 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
       <Sidebar title={title}>
         {profile ? (
           <div className="">
-            <UserInfo
+            <ProfileCard
               name={profile.name}
               title={profile.title}
               team={profile.team}
@@ -70,6 +69,7 @@ export const getServerSideProps = async (context: any) => {
     },
     include: { competencies: true },
   });
+  console.log(profile);
 
   let competencies: any = null;
   let assignedCompetencies: any = null;
@@ -97,11 +97,8 @@ export const getServerSideProps = async (context: any) => {
             },
           },
         },
-        // profile: { include: { skills: true } },
       },
     });
-
-    // console.dir(assignedCompetencies, { depth: null });
 
     const refreshCompetenciesList = () => {
       competencies.forEach(function (competency: any) {
