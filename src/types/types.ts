@@ -26,3 +26,13 @@ export type ProfileType = {
   userId?: string;
   competencies?: CompetencyType[];
 };
+
+export type UserType = {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: string | null;
+  image: string;
+  role: string;
+  profile: ProfileType;
+};

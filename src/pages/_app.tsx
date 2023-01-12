@@ -3,6 +3,8 @@ import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { Josefin_Sans, Nunito, Inter } from '@next/font/google';
 
+import { GlobalContextProvider } from '@/contexts/global.context';
+
 const josefin = Josefin_Sans({
   subsets: ['latin'],
   variable: '--font-josefin',
@@ -22,9 +24,11 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <main className={`${nunito.variable} font-sans`}>
-        <Component {...pageProps} />
-      </main>
+      <GlobalContextProvider>
+        <main className={`${nunito.variable} font-sans`}>
+          <Component {...pageProps} />
+        </main>
+      </GlobalContextProvider>
     </SessionProvider>
   );
 }
