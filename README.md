@@ -14,6 +14,7 @@ It has the following features:
 - [ ] Check labels for input in different resolutions. It hides behind the field and doesn't wrap
 - [x] Set up some styles for buttons so they are consistent
 - [x] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
+- [ ] Store the state of the sidebar locally so it preserves after the refresh
 - [ ] Generate slug automatically
 - [ ] Check for uniqueness
 - [ ] Add a picture from the SSO service

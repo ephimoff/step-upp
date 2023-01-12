@@ -9,8 +9,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           skills: {
             select: {
               name: true,
-              score: true,
-              score360: true,
             },
           },
         },
