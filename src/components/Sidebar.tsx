@@ -98,9 +98,17 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
         <div className="absolute bottom-4 ml-0 mr-4 flex items-center gap-x-4 py-3 pl-3">
           {status === 'authenticated' ? (
             <>
-              <Link href="/myprofile" className="flex gap-x-4">
+              <Link href="/myprofile" className="flex items-center gap-x-4">
                 <span className="text-2xl">
-                  <BiUserCircle />
+                  {session.user!.image ? (
+                    <img
+                      src={session.user!.image as string}
+                      alt=""
+                      className="h-8 w-8 rounded-full shadow-lg "
+                    />
+                  ) : (
+                    <BiUserCircle />
+                  )}
                 </span>
                 <span
                   className={`${
