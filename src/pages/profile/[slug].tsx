@@ -21,6 +21,7 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
               title={profile.title}
               team={profile.team}
               email={profile.email}
+              userpic={profile.userpic}
             />
             <ProfileCompetenciesLoading
               profile={profile}

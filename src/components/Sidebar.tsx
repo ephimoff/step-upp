@@ -36,6 +36,7 @@ export const sidebarLinks = [
 export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
   const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
+  console.log('session', session);
 
   const toggleSidebar = () => {
     setOpen(!open);

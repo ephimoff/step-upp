@@ -5,42 +5,17 @@ import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';
 import InputAndLabel from '@/components/InputAndLabel';
 import { profileSchema } from '@/schemas/validationSchemas';
-import { useUser } from '@/contexts/user.context';
-
-// const initialValue = {
-//   name: '',
-//   email: '',
-//   title: '',
-//   team: '',
-//   slug: '',
-//   phone: '',
-//   twitter: '',
-//   linkedin: '',
-//   github: '',
-// };
-
-// const reducer = (state: any, action: any) => {
-//   switch (action.type) {
-//     case 'update':
-//       return {
-//         ...state,
-//         [action.payload.key]: action.payload.value,
-//       };
-//     default:
-//       throw new Error(`Unknown action type: ${action.type}`);
-//   }
-// };
 
 export default function MyProfilePage() {
   const { data: session, status } = useSession();
-  // const { currentUser } = useUser();
-  // const [state, dispatch] = useReducer(reducer, initialValue);
-  // console.log('page');
-  // console.dir(currentUser, { depth: null });
-
+  // profile
   const [profile, setProfile] = useState<ProfileType | null>(null);
+  // profile fields
   const [name, setName] = useState<string>(session!.user!.name as string);
   const [email, setEmail] = useState<string>(session!.user!.email as string);
+  const [userpic, setUserpic] = useState<string>(
+    session!.user!.image as string
+  );
   const [title, setTitle] = useState<string>('');
   const [team, setTeam] = useState<string>('');
   const [slug, setSlug] = useState<string>('');
@@ -48,6 +23,7 @@ export default function MyProfilePage() {
   const [twitter, setTwitter] = useState<string>('');
   const [linkedin, setLinkedin] = useState<string>('');
   const [github, setGithub] = useState<string>('');
+  // email to query
   const queryEmail = session!.user!.email;
 
   useEffect(() => {
@@ -61,6 +37,7 @@ export default function MyProfilePage() {
         setProfile(profile);
         setName(profile.name);
         setEmail(profile.email);
+        setUserpic(profile.userpic as string);
         setTitle(profile.title as string);
         setTeam(profile.team as string);
         setSlug(profile.slug as string);
@@ -81,6 +58,7 @@ export default function MyProfilePage() {
     const newProfile = {
       name: values.name,
       email: values.email,
+      userpic: values.userpic,
       title: values.title,
       team: values.team,
       slug: values.slug,
@@ -133,6 +111,7 @@ export default function MyProfilePage() {
                 initialValues={{
                   name: name,
                   email: email,
+                  userpic: userpic,
                   title: title,
                   team: team,
                   slug: slug,
@@ -158,6 +137,11 @@ export default function MyProfilePage() {
                   isSubmitting,
                 }) => (
                   <Form className="">
+                    <img
+                      src={userpic}
+                      alt=""
+                      className="mx-auto my-4 h-32 w-32 rounded-full shadow-md"
+                    />
                     <InputAndLabel
                       label="Name"
                       name="name"
