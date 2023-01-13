@@ -2,6 +2,7 @@ import { siteTitle } from '@/data/data';
 import { getProviders, signIn, getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import CustomButton from '@/components/CustomButton';
 
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
@@ -31,7 +32,7 @@ const getErrorMessage = (errorType: string) => {
 const SignIn = ({ providers }: any) => {
   const router = useRouter();
   const { callbackUrl = '/', error: errorType } = router.query;
-
+  console.log('providers', providers);
   const error = getErrorMessage(errorType as string);
   return (
     <>
@@ -40,22 +41,51 @@ const SignIn = ({ providers }: any) => {
       </Head>
       <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500">
         <div className="flex h-screen items-center justify-center">
-          <div className="w-96 rounded-xl bg-sky-400 p-10 shadow-xl">
+          <div className="w-96 rounded-xl bg-sky-900 p-10 shadow-xl">
+            <span className="text- flex justify-center font-thin">
+              Welcome to
+            </span>
+            <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
+              Step<strong className="font-black">Upp</strong>
+            </h1>
             {error && (
               <div className="mb-2 rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-center text-sm text-white">
                 <p>{error}</p>
               </div>
             )}
-            {Object.values(providers).map((provider: any) => (
-              <div key={provider.name}>
-                <button
-                  onClick={() => signIn(provider.id)}
-                  className="my-2 w-full rounded border bg-blue-500 py-1 hover:bg-blue-600"
-                >
-                  Sign in with {provider.name}
-                </button>
+            <form action="">
+              <input
+                type="text"
+                className="mt-4 w-full rounded-lg py-2 px-3 font-semibold text-purple-600 shadow-lg"
+                placeholder="email@example.com"
+              />
+              <div className="mt-4">
+                <CustomButton text="Continue with Email" fullWidth />
               </div>
-            ))}
+            </form>
+            <div className="mb-6 flex items-center justify-between pt-6">
+              <hr className="w-full border-gray-300" />
+              <span className="px-4 font-light tracking-wider text-gray-300">
+                or
+              </span>
+              <hr className="w-full border-gray-300" />
+            </div>
+            <div key="google">
+              <CustomButton
+                text="Sign in with Google"
+                role="secondary"
+                fullWidth
+                onClick={() => signIn('google')}
+              />
+            </div>
+            <div key="github" className="my-4">
+              <CustomButton
+                text="Sign in with GitHub"
+                role="secondary"
+                fullWidth
+                onClick={() => signIn('github')}
+              />
+            </div>
           </div>
         </div>
       </div>
