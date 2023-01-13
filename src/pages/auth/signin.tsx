@@ -42,14 +42,16 @@ const SignIn = ({ providers }: any) => {
       <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500">
         <div className="flex h-screen items-center justify-center">
           <div className="w-96 rounded-xl bg-sky-900 p-10 shadow-xl">
-            <span className="text- flex justify-center font-thin">
-              Welcome to
-            </span>
-            <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
-              Step<strong className="font-black">Upp</strong>
-            </h1>
+            <div>
+              <span className="text- flex justify-center font-thin">
+                Welcome to
+              </span>
+              <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
+                Step<strong className="font-black">Upp</strong>
+              </h1>
+            </div>
             {error && (
-              <div className="mb-2 rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-center text-sm text-white">
+              <div className="m-2 mx-0 w-full rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-center text-sm text-white">
                 <p>{error}</p>
               </div>
             )}
@@ -64,11 +66,11 @@ const SignIn = ({ providers }: any) => {
               </div>
             </form>
             <div className="mb-6 flex items-center justify-between pt-6">
-              <hr className="w-full border-gray-300" />
-              <span className="px-4 font-light tracking-wider text-gray-300">
+              <hr className="w-full border-sky-300" />
+              <span className="px-4 font-light tracking-wider text-sky-300">
                 or
               </span>
-              <hr className="w-full border-gray-300" />
+              <hr className="w-full border-sky-300" />
             </div>
             <div key="google">
               <CustomButton
