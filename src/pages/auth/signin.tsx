@@ -65,7 +65,7 @@ const SignIn = () => {
               validationSchema={emailSchema}
               onSubmit={({ email }, { setSubmitting }) => {
                 setSubmitting(true);
-                signIn('email', { email, callbackUrl });
+                signIn('email', { email, callbackUrl: callbackUrl.toString() });
                 setSubmitting(false);
               }}
             >
@@ -91,7 +91,7 @@ const SignIn = () => {
                       disabled={isSubmitting}
                       text="Continue with Email"
                       fullWidth
-                      type={'submit'}
+                      type="submit"
                     />
                   </div>
                 </Form>
@@ -124,7 +124,9 @@ const SignIn = () => {
                 text="Sign in with Google"
                 role="secondary"
                 fullWidth
-                onClick={() => signIn('google')}
+                onClick={() =>
+                  signIn('google', { callbackUrl: callbackUrl.toString() })
+                }
               />
             </div>
             <div key="github" className="my-4">
@@ -132,7 +134,9 @@ const SignIn = () => {
                 text="Sign in with GitHub"
                 role="secondary"
                 fullWidth
-                onClick={() => signIn('github')}
+                onClick={() =>
+                  signIn('github', { callbackUrl: callbackUrl.toString() })
+                }
               />
             </div>
           </div>
