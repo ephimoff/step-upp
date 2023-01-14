@@ -1,8 +1,10 @@
 import { siteTitle } from '@/data/data';
-import { getProviders, signIn, getSession } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import CustomButton from '@/components/CustomButton';
+import { Form, Formik, Field } from 'formik';
+import { emailSchema } from '@/schemas/validationSchemas';
 
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
@@ -29,7 +31,7 @@ const getErrorMessage = (errorType: string) => {
     : errors.default;
 };
 
-const SignIn = ({ providers }: any) => {
+const SignIn = () => {
   const router = useRouter();
   const { callbackUrl = '/', error: errorType } = router.query;
   const error = getErrorMessage(errorType as string);
@@ -54,7 +56,49 @@ const SignIn = ({ providers }: any) => {
                 <p>{error}</p>
               </div>
             )}
-            <form action="">
+
+            <Formik
+              enableReinitialize
+              initialValues={{
+                email: '',
+              }}
+              validationSchema={emailSchema}
+              onSubmit={({ email }, { setSubmitting }) => {
+                setSubmitting(true);
+                signIn('email', { email, callbackUrl });
+                setSubmitting(false);
+              }}
+            >
+              {({
+                values,
+                errors,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+              }) => (
+                <Form className="">
+                  <div className="my-4">
+                    <Field
+                      name="email"
+                      type="email"
+                      className="mt-4 w-full rounded-lg py-2 px-3 font-semibold text-purple-600 shadow-lg"
+                      placeholder="email@example.com"
+                    />
+                  </div>
+                  <div>
+                    <CustomButton
+                      disabled={isSubmitting}
+                      text="Continue with Email"
+                      fullWidth
+                      type={'submit'}
+                    />
+                  </div>
+                </Form>
+              )}
+            </Formik>
+
+            {/* <form action="">
               <input
                 type="text"
                 className="mt-4 w-full rounded-lg py-2 px-3 font-semibold text-purple-600 shadow-lg"
@@ -67,7 +111,7 @@ const SignIn = ({ providers }: any) => {
                   onClick={() => signIn('email')}
                 />
               </div>
-            </form>
+            </form> */}
             <div className="mb-6 flex items-center justify-between pt-6">
               <hr className="w-full border-sky-300" />
               <span className="px-4 font-light tracking-wider text-sky-300">
@@ -109,8 +153,8 @@ export async function getServerSideProps(context: any) {
       },
     };
   }
-  const providers = await getProviders();
+  // const providers = await getProviders();
   return {
-    props: { providers },
+    props: { session },
   };
 }

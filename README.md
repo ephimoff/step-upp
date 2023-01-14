@@ -20,6 +20,7 @@ It has the following features:
 - [ ] Add a picture from the SSO service
 - [ ] Allow to change the picture
 - [ ] Add credentials login
+- [ ] Replace myprofile with `newUser` endpoint from next-auth
 
 ## Marketing speech
 

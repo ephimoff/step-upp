@@ -48,7 +48,8 @@ export const authOptions: NextAuthOptions = {
     updateAge: TWENTY_FOUR_HOURS,
   },
   pages: {
-    // signIn: '/auth/signin',
+    signIn: '/auth/signin',
+    verifyRequest: '/auth/verify',
   },
 };
 
