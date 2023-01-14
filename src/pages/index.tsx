@@ -1,24 +1,13 @@
 import Sidebar from '@/components/Sidebar';
 import { getSession } from 'next-auth/react';
 import { siteDescription } from '@/data/data';
-import React, { useEffect } from 'react';
+import React from 'react';
 import prisma from '@/utils/prisma';
-import { UserType } from '@/types/types';
-// import { useUser } from '@/contexts/user.context';
 
-type HomePageProps = {
-  user: UserType;
-};
-
-export default function HomePage({ user }: HomePageProps) {
-  // const { currentUser, setCurrentUser } = useUser();
-  // useEffect(() => {
-  //   setCurrentUser(user);
-  // }, []);
-  // console.log('currentUser', currentUser);
+export default function HomePage({ profile }: any) {
   return (
     <>
-      <Sidebar>
+      <Sidebar name={profile.name}>
         <div>
           <h1>Welcome to StepUpp</h1>
           <p>{siteDescription}</p>
@@ -38,15 +27,6 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     email: session!.user!.email as string,
-  //   },
-  //   include: {
-  //     profile: { include: { competencies: true, skills: true } },
-  //   },
-  // });
-  // console.dir(user, { depth: null });
 
   const profile = await prisma.profile.findUnique({
     where: {

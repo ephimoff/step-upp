@@ -24,7 +24,6 @@ const ProfileCompetenciesLoading = ({
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(empty[0]);
   const [error, setError] = useState('');
-  // console.log('competencies', competencies);
 
   function handleSelected(value: any) {
     setSelected(value);
@@ -79,7 +78,6 @@ const ProfileCompetenciesLoading = ({
         (element) => element.id === competencyId
       );
       assignScores(profileId, skillsArray?.skills);
-      // console.log(competencies.find((element) => element.id === competencyId));
       setLoading(false);
       return newRecord;
     } catch (error) {

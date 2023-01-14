@@ -16,6 +16,7 @@ import { useUser } from '@/contexts/user.context';
 
 type SidebarProps = {
   children: React.ReactNode;
+  name: string;
   title?: string;
 };
 
@@ -33,10 +34,13 @@ export const sidebarLinks = [
   { name: 'Competencies', path: '/competency', icon: <BiFoodMenu /> },
 ];
 
-export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
+export default function Sidebar({
+  children,
+  name,
+  title = siteTitle,
+}: SidebarProps) {
   const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
-  console.log('session', session);
 
   const toggleSidebar = () => {
     setOpen(!open);
@@ -115,7 +119,7 @@ export default function Sidebar({ children, title = siteTitle }: SidebarProps) {
                     !open && 'hidden'
                   } origin-left whitespace-nowrap duration-200`}
                 >
-                  {session.user!.name}
+                  {name ? name : session.user!.name}
                 </span>
               </Link>
               <button

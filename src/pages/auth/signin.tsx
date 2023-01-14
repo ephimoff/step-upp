@@ -13,7 +13,7 @@ const errors: { [key: string]: any } = {
   Callback: 'Try singing in with a different account',
   OAuthAccountNotLinked:
     'To confirm your identity, sign in with the same account you used originally to log in',
-  EmailSignin: 'Check your email inbox',
+  EmailSignin: 'Sending the e-mail with the verification token failed',
   CredentialsSignin:
     'Sign in failed. Check the details you provided are correct',
   SessionRequired: 'Please sign in to access this page',
@@ -32,7 +32,6 @@ const getErrorMessage = (errorType: string) => {
 const SignIn = ({ providers }: any) => {
   const router = useRouter();
   const { callbackUrl = '/', error: errorType } = router.query;
-  console.log('providers', providers);
   const error = getErrorMessage(errorType as string);
   return (
     <>
@@ -62,7 +61,11 @@ const SignIn = ({ providers }: any) => {
                 placeholder="email@example.com"
               />
               <div className="mt-4">
-                <CustomButton text="Continue with Email" fullWidth />
+                <CustomButton
+                  text="Continue with Email"
+                  fullWidth
+                  onClick={() => signIn('email')}
+                />
               </div>
             </form>
             <div className="mb-6 flex items-center justify-between pt-6">

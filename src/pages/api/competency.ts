@@ -24,7 +24,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const competencyData = req.body;
-    // console.log('inside API: ', competencyData);
     let isSuccess = true;
     try {
       competencyData.map(async (competency: any, index: number) => {

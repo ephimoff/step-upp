@@ -4,20 +4,15 @@ import { Formik, Form, FieldArray } from 'formik';
 import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
+import prisma from '@/utils/prisma';
 
 const initialValues = {
-  competencies: [
-    // {
-    //   name: '',
-    //   skills: [{ name: '' }, { name: '' }, { name: '' }],
-    // },
-  ],
+  competencies: [],
 };
 
 async function createCompetency(values: any) {
   let url = '/api/competency';
   let method = 'POST';
-  // console.log('values', values);
   try {
     const response = await fetch(url, {
       method: method,
@@ -27,18 +22,17 @@ async function createCompetency(values: any) {
       },
     });
     const jsonResponse = await response.json();
-    // console.log(jsonResponse);
   } catch (error) {
     console.error(error);
   }
 }
 
-export default function CompetenciesPage() {
+export default function CompetenciesPage({ profile }: any) {
   const { data: session, status } = useSession();
 
   return (
     <>
-      <Sidebar>
+      <Sidebar name={profile.name}>
         {status === 'authenticated' ? (
           <div className="">
             <h1 className="text-2xl">Competencies management</h1>
@@ -110,7 +104,22 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
+
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
+
+  if (!profile) {
+    return {
+      redirect: {
+        destination: '/myprofile',
+      },
+    };
+  }
+
   return {
-    props: { session },
+    props: { session, profile },
   };
 };

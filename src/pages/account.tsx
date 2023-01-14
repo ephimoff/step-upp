@@ -1,11 +1,12 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
+import prisma from '@/utils/prisma';
 
-export default function AccountPage() {
+export default function AccountPage({ profile }: any) {
   const { data: session, status } = useSession();
   return (
     <>
-      <Sidebar>
+      <Sidebar name={profile.name}>
         {status === 'authenticated' ? (
           <>
             <p>Welcome {session.user!.name}</p>
@@ -28,7 +29,21 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
+
+  if (!profile) {
+    return {
+      redirect: {
+        destination: '/myprofile',
+      },
+    };
+  }
+
   return {
-    props: { session },
+    props: { session, profile },
   };
 };

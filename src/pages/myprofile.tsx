@@ -1,17 +1,26 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';
 import InputAndLabel from '@/components/InputAndLabel';
 import { profileSchema } from '@/schemas/validationSchemas';
+import prisma from '@/utils/prisma';
+import NoAvatar from '@/components/NoAvatar';
 
-export default function MyProfilePage() {
+export default function MyProfilePage({ profile }: any) {
   const { data: session, status } = useSession();
   // profile
-  const [profile, setProfile] = useState<ProfileType | null>(null);
+  const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
+    null
+  );
   // profile fields
-  const [name, setName] = useState<string>(session!.user!.name as string);
+  const initialName = profile.name
+    ? profile.name
+    : session!.user!.name
+    ? session!.user!.name
+    : session!.user!.email!.split('@')[0];
+  const [name, setName] = useState<string>(initialName);
   const [email, setEmail] = useState<string>(session!.user!.email as string);
   const [userpic, setUserpic] = useState<string>(
     session!.user!.image as string
@@ -25,31 +34,43 @@ export default function MyProfilePage() {
   const [github, setGithub] = useState<string>('');
   // email to query
   const queryEmail = session!.user!.email;
+  console.log(session);
 
   useEffect(() => {
-    // console.log('useEffect');
-    // console.dir(currentUser, { depth: null });
-    const fetchProfile = async (email: string) => {
-      const res = await fetch(`/api/profile?email=${email}`);
-      const profile: ProfileType = await res.json();
+    if (profile) {
+      setCurrentProfile(profile);
+      setName(profile.name);
+      setEmail(profile.email);
+      setUserpic(profile.userpic as string);
+      setTitle(profile.title as string);
+      setTeam(profile.team as string);
+      setSlug(profile.slug as string);
+      setPhone(profile.phone as string);
+      setTwitter(profile.twitter as string);
+      setLinkedin(profile.linkedin as string);
+      setGithub(profile.github as string);
+    }
+    // const fetchProfile = async (email: string) => {
+    //   const res = await fetch(`/api/profile?email=${email}`);
+    //   const profile: ProfileType = await res.json();
 
-      if (res.status === 200) {
-        setProfile(profile);
-        setName(profile.name);
-        setEmail(profile.email);
-        setUserpic(profile.userpic as string);
-        setTitle(profile.title as string);
-        setTeam(profile.team as string);
-        setSlug(profile.slug as string);
-        setPhone(profile.phone as string);
-        setTwitter(profile.twitter as string);
-        setLinkedin(profile.linkedin as string);
-        setGithub(profile.github as string);
-      } else {
-        setProfile(null);
-      }
-    };
-    fetchProfile(queryEmail as string);
+    //   if (res.status === 200) {
+    //     setProfile(profile);
+    //     setName(profile.name);
+    //     setEmail(profile.email);
+    //     setUserpic(profile.userpic as string);
+    //     setTitle(profile.title as string);
+    //     setTeam(profile.team as string);
+    //     setSlug(profile.slug as string);
+    //     setPhone(profile.phone as string);
+    //     setTwitter(profile.twitter as string);
+    //     setLinkedin(profile.linkedin as string);
+    //     setGithub(profile.github as string);
+    //   } else {
+    //     setProfile(null);
+    //   }
+    // };
+    // fetchProfile(queryEmail as string);
   }, []);
 
   async function updateProfile(values: any) {
@@ -82,7 +103,7 @@ export default function MyProfilePage() {
       });
       const profileResponse = await response.json();
 
-      setProfile(profileResponse);
+      setCurrentProfile(profileResponse);
       return profileResponse;
     } catch (error) {
       console.error(error);
@@ -91,19 +112,19 @@ export default function MyProfilePage() {
 
   return (
     <>
-      <Sidebar>
+      <Sidebar name={initialName}>
         {status === 'authenticated' ? (
           <>
             <div className="mx-auto w-full max-w-2xl rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl">
               {!profile ? (
                 <p className="font-thin">
-                  You logged in as {session.user!.name} but don't have a profile
-                  yet. Please fill it up down below and save.
+                  You logged in as <strong>{initialName}</strong> but don't have
+                  a profile yet. Please fill it up down below and save.
                 </p>
               ) : (
                 <p className="font-thin">
-                  Welcome back {session.user!.name}. Here you can edit your
-                  profile.
+                  Welcome back <strong>{initialName}</strong>. Here you can edit
+                  your profile.
                 </p>
               )}
               <Formik
@@ -123,7 +144,6 @@ export default function MyProfilePage() {
                 validationSchema={profileSchema}
                 onSubmit={(values, { setSubmitting }) => {
                   setSubmitting(true);
-                  // console.log(values);
                   updateProfile(values);
                   setSubmitting(false);
                 }}
@@ -137,11 +157,18 @@ export default function MyProfilePage() {
                   isSubmitting,
                 }) => (
                   <Form className="">
-                    <img
-                      src={userpic}
-                      alt=""
-                      className="mx-auto my-4 h-32 w-32 rounded-full shadow-md"
-                    />
+                    <div className="mx-auto my-4 h-32 w-32">
+                      {userpic ? (
+                        <img
+                          src={userpic}
+                          alt=""
+                          className="rounded-full shadow-md"
+                        />
+                      ) : (
+                        <NoAvatar name={initialName} size={32} />
+                      )}
+                    </div>
+
                     <InputAndLabel
                       label="Name"
                       name="name"
@@ -240,8 +267,13 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
 
   return {
-    props: { session },
+    props: { session, profile },
   };
 };

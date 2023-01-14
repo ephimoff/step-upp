@@ -4,7 +4,6 @@ import prisma from '@/utils/prisma';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { profileId, skillId } = req.body;
-    // console.log('api', { profileId, skillId });
     try {
       const savedRecord = await prisma.profileScores
         .create({
@@ -23,7 +22,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PUT') {
     const { profileId, skillId, score } = req.body;
-    // console.log('api', { profileId, skillId, score });
     try {
       const savedRecord = await prisma.profileScores
         .updateMany({

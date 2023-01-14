@@ -13,7 +13,7 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
     : 'No profile was found';
   return (
     <>
-      <Sidebar title={title}>
+      <Sidebar title={title} name={profile.name}>
         {profile ? (
           <div className="">
             <ProfileCard
@@ -35,7 +35,7 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
           </div>
         ) : (
           <div>
-            <h2>No competency with such is found</h2>
+            <h2>No profile with such slug is found</h2>
             <ul>
               <li>
                 <Link
@@ -70,7 +70,6 @@ export const getServerSideProps = async (context: any) => {
     },
     include: { competencies: true },
   });
-  console.log(profile);
 
   let competencies: any = null;
   let assignedCompetencies: any = null;

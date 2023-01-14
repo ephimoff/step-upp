@@ -10,12 +10,9 @@ interface Props {
 }
 
 const CompetencyCard = ({ competencies, profileId }: any) => {
-  // console.log('competencies====');
-  // console.dir(competencies, { depth: null });
   return (
     <>
       {competencies.map((element: any, index: number) => {
-        // console.log(element.competency);
         return (
           <Card grid={true} key={index}>
             <div className="col-span-5">

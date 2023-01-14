@@ -46,7 +46,6 @@ const PopoverPanel = ({
         setScore(score);
         close();
       }
-      // console.log('jsonResponse', jsonResponse);
     } catch (error) {
       console.error(error);
     }
@@ -92,7 +91,6 @@ const PopoverPanel = ({
             validationSchema={scoreSchema}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(true);
-              // console.log(values);
               updateScore(profileId, skillId, values.score as number);
               setSubmitting(false);
             }}

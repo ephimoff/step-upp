@@ -3,13 +3,13 @@ import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 
-const CompetencyPage = ({ competency }: any) => {
+const CompetencyPage = ({ competency, profile }: any) => {
   const title = competency
     ? `${competency.name}'s profile on StepUpp`
     : 'No competency was found';
   return (
     <>
-      <Sidebar title={title}>
+      <Sidebar title={title} name={profile.name}>
         {competency ? (
           <div>yes</div>
         ) : (
@@ -47,7 +47,21 @@ export const getServerSideProps = async (context: any) => {
     };
   }
 
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
+
+  if (!profile) {
+    return {
+      redirect: {
+        destination: '/myprofile',
+      },
+    };
+  }
+
   return {
-    props: { session, competency },
+    props: { session, competency, profile },
   };
 };
