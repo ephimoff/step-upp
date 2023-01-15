@@ -1,8 +1,13 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar';
 import prisma from '@/utils/prisma';
+import { ProfileType } from '@/types/types';
 
-export default function AccountPage({ profile }: any) {
+type AccountPageProps = {
+  profile: ProfileType;
+};
+
+export default function AccountPage({ profile }: AccountPageProps) {
   const { data: session, status } = useSession();
   return (
     <>

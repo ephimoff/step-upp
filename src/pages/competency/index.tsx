@@ -5,6 +5,11 @@ import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
 import prisma from '@/utils/prisma';
+import { ProfileType } from '@/types/types';
+
+type CompetenciesPageProps = {
+  profile: ProfileType;
+};
 
 const initialValues = {
   competencies: [],
@@ -27,7 +32,7 @@ async function createCompetency(values: any) {
   }
 }
 
-export default function CompetenciesPage({ profile }: any) {
+export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
   const { data: session, status } = useSession();
 
   return (

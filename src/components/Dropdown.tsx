@@ -1,5 +1,5 @@
 import { Listbox, Transition } from '@headlessui/react';
-import { useState, Fragment } from 'react';
+import { Fragment } from 'react';
 import { CompetencyType } from '@/types/types';
 import { HiCheck, HiOutlineSelector } from 'react-icons/hi';
 

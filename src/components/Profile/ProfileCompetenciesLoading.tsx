@@ -1,4 +1,4 @@
-import { CompetencyType, ProfileType } from '@/types/types';
+import { CompetencyType, ProfileType, SkillType } from '@/types/types';
 import { useState } from 'react';
 import CustomButton from '../CustomButton';
 import Dropdown from '../Dropdown';
@@ -36,13 +36,13 @@ const ProfileCompetenciesLoading = ({
     );
     competencies[competencyIndex].unavailable = true;
   }
-  const assignScores = async (profileId: string, skills: any) => {
+  const assignScores = async (profileId: string, skills: SkillType[]) => {
     if (skills.length === 0) {
       return setError('Please choose one of the competencies to assign');
     }
 
     try {
-      skills.map(async (skill: any) => {
+      skills.map(async (skill: SkillType) => {
         const response = await fetch('/api/score', {
           method: 'POST',
           body: JSON.stringify({ profileId: profileId, skillId: skill.id }),
@@ -76,7 +76,7 @@ const ProfileCompetenciesLoading = ({
       });
       const jsonResponse = await response.json();
       updateAvailability(competencyId);
-      const skillsArray = competencies.find(
+      const skillsArray: any = competencies.find(
         (element) => element.id === competencyId
       );
       assignScores(profileId, skillsArray?.skills);

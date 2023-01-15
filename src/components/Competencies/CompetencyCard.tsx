@@ -4,12 +4,12 @@ import Card from '../Card';
 import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
 
-interface Props {
+interface CompetencyCardProps {
   competency: CompetencyType;
   profileId: string;
 }
 
-const CompetencyCard = ({ competency, profileId }: any) => {
+const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
   // console.dir(competency, { depth: null });
   return (
     <>
@@ -29,7 +29,7 @@ const CompetencyCard = ({ competency, profileId }: any) => {
         <div className=" text-sm text-slate-400">
           <h2>Actions</h2>
         </div>
-        {competency.skills.map((skill: any, skillIndex: number) => {
+        {competency.skills?.map((skill: any, skillIndex: number) => {
           return (
             <React.Fragment key={skillIndex}>
               <div className="col-span-2 font-normal">{skill.name}</div>

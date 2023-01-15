@@ -3,8 +3,13 @@ import { getSession } from 'next-auth/react';
 import { siteDescription } from '@/data/data';
 import React from 'react';
 import prisma from '@/utils/prisma';
+import { ProfileType } from '@/types/types';
 
-export default function HomePage({ profile }: any) {
+type HomePageProps = {
+  profile: ProfileType;
+};
+
+export default function HomePage({ profile }: HomePageProps) {
   return (
     <>
       <Sidebar name={profile.name}>

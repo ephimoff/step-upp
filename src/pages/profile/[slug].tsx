@@ -6,9 +6,14 @@ import React, { useEffect, useState } from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
-import { CompetencyType } from '@/types/types';
+import { CompetencyType, ProfileType } from '@/types/types';
 
-const ProfilePage = ({ profile, competencies }: any) => {
+type ProfilePageProps = {
+  competencies: any;
+  profile: ProfileType;
+};
+
+const ProfilePage = ({ profile, competencies }: ProfilePageProps) => {
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -31,7 +36,6 @@ const ProfilePage = ({ profile, competencies }: any) => {
     fetchAssignedCompetencies();
   }, []);
 
-  console.log('assignedCompetencies', assignedCompetencies);
   return (
     <>
       <Sidebar title={title} name={profile.name}>

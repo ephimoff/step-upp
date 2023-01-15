@@ -1,5 +1,5 @@
 import { FieldArray, useFormikContext } from 'formik';
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
 import Card from '../Card';

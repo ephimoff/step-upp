@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/utils/prisma';
+import { CompetencyType } from '@/types/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -26,7 +27,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const competencyData = req.body;
     let isSuccess = true;
     try {
-      competencyData.map(async (competency: any, index: number) => {
+      competencyData.map(async (competency: CompetencyType, index: number) => {
         const savedCompetency = await prisma.competency.create({
           data: {
             name: competency.name,

@@ -1,4 +1,5 @@
 export type SkillType = {
+  id?: string;
   name: string;
   score?: number | null;
   score360?: number | null;

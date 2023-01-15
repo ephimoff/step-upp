@@ -8,7 +8,11 @@ import { profileSchema } from '@/schemas/validationSchemas';
 import prisma from '@/utils/prisma';
 import NoAvatar from '@/components/NoAvatar';
 
-export default function MyProfilePage({ profile }: any) {
+type MyProfilePageProps = {
+  profile: ProfileType;
+};
+
+export default function MyProfilePage({ profile }: MyProfilePageProps) {
   const { data: session, status } = useSession();
   // profile
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
@@ -50,27 +54,6 @@ export default function MyProfilePage({ profile }: any) {
       setLinkedin(profile.linkedin as string);
       setGithub(profile.github as string);
     }
-    // const fetchProfile = async (email: string) => {
-    //   const res = await fetch(`/api/profile?email=${email}`);
-    //   const profile: ProfileType = await res.json();
-
-    //   if (res.status === 200) {
-    //     setProfile(profile);
-    //     setName(profile.name);
-    //     setEmail(profile.email);
-    //     setUserpic(profile.userpic as string);
-    //     setTitle(profile.title as string);
-    //     setTeam(profile.team as string);
-    //     setSlug(profile.slug as string);
-    //     setPhone(profile.phone as string);
-    //     setTwitter(profile.twitter as string);
-    //     setLinkedin(profile.linkedin as string);
-    //     setGithub(profile.github as string);
-    //   } else {
-    //     setProfile(null);
-    //   }
-    // };
-    // fetchProfile(queryEmail as string);
   }, []);
 
   async function updateProfile(values: any) {

@@ -1,9 +1,15 @@
 import Sidebar from '@/components/Sidebar';
+import { CompetencyType, ProfileType } from '@/types/types';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 
-const CompetencyPage = ({ competency, profile }: any) => {
+type CompetencyPageProps = {
+  competency: CompetencyType;
+  profile: ProfileType;
+};
+
+const CompetencyPage = ({ competency, profile }: CompetencyPageProps) => {
   const title = competency
     ? `${competency.name}'s profile on StepUpp`
     : 'No competency was found';
