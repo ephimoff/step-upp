@@ -97,21 +97,6 @@ const SignIn = () => {
                 </Form>
               )}
             </Formik>
-
-            {/* <form action="">
-              <input
-                type="text"
-                className="mt-4 w-full rounded-lg py-2 px-3 font-semibold text-purple-600 shadow-lg"
-                placeholder="email@example.com"
-              />
-              <div className="mt-4">
-                <CustomButton
-                  text="Continue with Email"
-                  fullWidth
-                  onClick={() => signIn('email')}
-                />
-              </div>
-            </form> */}
             <div className="mb-6 flex items-center justify-between pt-6">
               <hr className="w-full border-sky-300" />
               <span className="px-4 font-light tracking-wider text-sky-300">

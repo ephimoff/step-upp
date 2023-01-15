@@ -1,5 +1,5 @@
 import { CompetencyType, ProfileType } from '@/types/types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CustomButton from '../CustomButton';
 import Dropdown from '../Dropdown';
 import Spinner from '../Spinner';
@@ -91,7 +91,7 @@ const ProfileCompetenciesLoading = ({
         <Spinner />
       ) : (
         <>
-          <div>
+          <div className="mr-2">
             <Dropdown
               options={competencies}
               selected={selected}
@@ -100,7 +100,7 @@ const ProfileCompetenciesLoading = ({
           </div>
           <div>
             <CustomButton
-              text={'Assign'}
+              text="Assign"
               onClick={() => assignCompetency(selected.id, profile.id)}
             />
           </div>

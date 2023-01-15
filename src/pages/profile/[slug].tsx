@@ -11,6 +11,7 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
+  console.log('assignedCompetencies', assignedCompetencies);
   return (
     <>
       <Sidebar title={title} name={profile.name}>
@@ -27,11 +28,16 @@ const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
               profile={profile}
               competencies={competencies}
             />
-
-            <CompetencyCard
-              competencies={assignedCompetencies}
-              profileId={profile.id}
-            />
+            {assignedCompetencies.map(({ competency }: any, index: number) => {
+              return (
+                <div key={index}>
+                  <CompetencyCard
+                    competency={competency}
+                    profileId={profile.id}
+                  />
+                </div>
+              );
+            })}
           </div>
         ) : (
           <div>

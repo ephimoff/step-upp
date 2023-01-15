@@ -11,16 +11,16 @@ It has the following features:
 
 - [x] Add validation to the fields on the `/profile` screen
 - [x] Rewrite the logic of the `/profile` using either SWR or useForm or Formik
-- [ ] Check labels for input in different resolutions. It hides behind the field and doesn't wrap
+- [ ] Check input labels in different resolutions. They hide behind the field and doesn't wrap
 - [x] Set up some styles for buttons so they are consistent
 - [x] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
 - [ ] Store the state of the sidebar locally so it preserves after the refresh
 - [ ] Generate slug automatically
-- [ ] Check for uniqueness
-- [ ] Add a picture from the SSO service
+- [ ] Check it ^^^ for uniqueness
+- [x] Add a picture from the SSO service
 - [ ] Allow to change the picture
-- [ ] Add credentials login
-- [ ] Replace myprofile with `newUser` endpoint from next-auth
+- [x] Add email login
+- [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 
 ## Marketing speech
 
