@@ -7,6 +7,7 @@ import InputAndLabel from '@/components/InputAndLabel';
 import { profileSchema } from '@/schemas/validationSchemas';
 import prisma from '@/utils/prisma';
 import NoAvatar from '@/components/NoAvatar';
+import { myProfileFields } from '@/data/data';
 
 type MyProfilePageProps = {
   profile: ProfileType;
@@ -38,7 +39,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
   const [github, setGithub] = useState<string>('');
   // email to query
   const queryEmail = session!.user!.email;
-  console.log(session);
+  // console.log(session);
 
   useEffect(() => {
     if (profile) {
@@ -134,9 +135,9 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                 {({
                   values,
                   errors,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
+                  // handleChange,
+                  // handleBlur,
+                  // handleSubmit,
                   isSubmitting,
                 }) => (
                   <Form className="">
@@ -151,63 +152,21 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                         <NoAvatar name={initialName} size={32} />
                       )}
                     </div>
-
-                    <InputAndLabel
-                      label="Name"
-                      name="name"
-                      type="input"
-                      placeholder="John Doe"
-                      required
-                    />
-                    <InputAndLabel
-                      label="Email"
-                      name="email"
-                      type="input"
-                      placeholder="email@example.com"
-                      required
-                    />
-                    <InputAndLabel
-                      label="Title"
-                      name="title"
-                      type="input"
-                      placeholder="Senior Product Manager"
-                    />
-                    <InputAndLabel
-                      label="Team"
-                      name="team"
-                      type="input"
-                      placeholder="Platform team"
-                    />
-                    <InputAndLabel
-                      label="Slug"
-                      name="slug"
-                      type="input"
-                      placeholder="your-slug"
-                    />
-                    <InputAndLabel
-                      label="Phone"
-                      name="phone"
-                      type="input"
-                      placeholder="1234567"
-                    />
-                    <InputAndLabel
-                      label="Twitter"
-                      name="twitter"
-                      type="input"
-                      placeholder="@johndoe"
-                    />
-                    <InputAndLabel
-                      label="LinkedIn"
-                      name="linkedin"
-                      type="input"
-                      placeholder="https://www.linkedin.com/in/johndoe/"
-                    />
-                    <InputAndLabel
-                      label="GitHub"
-                      name="github"
-                      type="input"
-                      placeholder="@johndoe"
-                    />
+                    <div className="">
+                      {myProfileFields.map((field, index) => {
+                        return (
+                          <div key={index} className="mx-auto">
+                            <InputAndLabel
+                              label={field.label}
+                              name={field.name}
+                              type={field.type as 'input' | 'email'}
+                              placeholder={field.placeholder}
+                              required={field.required}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                     <pre className="text-sm font-thin text-white">
                       {JSON.stringify(values, null, 2)}
                     </pre>

@@ -6,6 +6,72 @@ personalized recommendations for how to improve your skills and competencies.
 Whether you're just starting out in your career or you're an experienced pro, StepUpp is 
 the perfect tool to help you reach your professional goals.`;
 
+export const myProfileFields = [
+  {
+    label: 'Name',
+    name: 'name',
+    type: 'input',
+    placeholder: 'John Doe',
+    required: true,
+  },
+  {
+    label: 'Email',
+    name: 'email',
+    type: 'email',
+    placeholder: 'email@example.com',
+    required: true,
+  },
+  {
+    label: 'Title',
+    name: 'title',
+    type: 'input',
+    placeholder: 'Senior Product Manager',
+    required: true,
+  },
+  {
+    label: 'Team',
+    name: 'team',
+    type: 'input',
+    placeholder: 'Platform team',
+    required: false,
+  },
+  {
+    label: 'Slug',
+    name: 'slug',
+    type: 'input',
+    placeholder: 'your-slug',
+    required: true,
+  },
+  {
+    label: 'Phone',
+    name: 'phone',
+    type: 'input',
+    placeholder: '1234567',
+    required: false,
+  },
+  {
+    label: 'Twitter',
+    name: 'twitter',
+    type: 'input',
+    placeholder: '@johndoe',
+    required: false,
+  },
+  {
+    label: 'LinkedIn',
+    name: 'linkedin',
+    type: 'input',
+    placeholder: 'https://www.linkedin.com/in/johndoe/',
+    required: false,
+  },
+  {
+    label: 'GitHub',
+    name: 'github',
+    type: 'input',
+    placeholder: '@johndoe',
+    required: false,
+  },
+];
+
 export const dataFull = [
   {
     name: 'Product strategy',

@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'GET') {
     const { profileId } = req.query;
-    console.log('api', req.body);
+    // console.log('api', req.body);
     try {
       const assignedCompetencies = await prisma.profileCompetencies
         .findMany({

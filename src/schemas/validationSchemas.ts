@@ -5,9 +5,9 @@ export const profileSchema = yup.object().shape({
   email: yup.string().email('Please enter a valid email').required('Required'),
   slug: yup.string().required('Required'),
   phone: yup.string(),
-  twitter: yup.string().url('The field must be a valid URL'),
+  twitter: yup.string(),
   linkedin: yup.string().url('The field must be a valid URL'),
-  github: yup.string().url('The field must be a valid URL'),
+  github: yup.string(),
 });
 
 export const scoreSchema = yup.object().shape({
