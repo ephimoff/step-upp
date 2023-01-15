@@ -17,16 +17,17 @@ const ProfilePage = ({ profile, competencies }: any) => {
     CompetencyType[] | []
   >([]);
 
+  const fetchAssignedCompetencies = async () => {
+    const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
+    const resJson: CompetencyType[] = await res.json();
+    if (res.status === 200) {
+      setAssignedCompetencies(resJson);
+    } else {
+      setAssignedCompetencies([]);
+    }
+  };
+
   useEffect(() => {
-    const fetchAssignedCompetencies = async () => {
-      const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
-      const resJson: CompetencyType[] = await res.json();
-      if (res.status === 200) {
-        setAssignedCompetencies(resJson);
-      } else {
-        setAssignedCompetencies([]);
-      }
-    };
     fetchAssignedCompetencies();
   }, []);
 
@@ -46,6 +47,7 @@ const ProfilePage = ({ profile, competencies }: any) => {
             <ProfileCompetenciesLoading
               profile={profile}
               competencies={competencies}
+              fetchAssignedCompetencies={fetchAssignedCompetencies}
             />
             {assignedCompetencies.map(({ competency }: any, index: number) => {
               return (

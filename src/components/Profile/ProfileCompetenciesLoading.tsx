@@ -15,11 +15,13 @@ interface CompetencyOption extends CompetencyType {
 type ProfileCompetenciesLoadingProps = {
   profile: ProfileType;
   competencies: CompetencyOption[];
+  fetchAssignedCompetencies: any;
 };
 
 const ProfileCompetenciesLoading = ({
   profile,
   competencies,
+  fetchAssignedCompetencies,
 }: ProfileCompetenciesLoadingProps) => {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(empty[0]);
@@ -78,6 +80,7 @@ const ProfileCompetenciesLoading = ({
         (element) => element.id === competencyId
       );
       assignScores(profileId, skillsArray?.skills);
+      fetchAssignedCompetencies();
       setLoading(false);
       return newRecord;
     } catch (error) {
