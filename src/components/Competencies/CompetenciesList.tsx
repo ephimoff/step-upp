@@ -27,27 +27,29 @@ const CompetenciesList = () => {
                 Exisiting competencies
               </h2>
               <ul>
-                {competencies.map((competency, index) => {
-                  return (
-                    <li className="text-lg" key={index}>
-                      {competency.name}
-                      <ul>
-                        {competency.skills.map(
-                          (skill: SkillType, skillIndex: number) => {
-                            return (
-                              <li
-                                className="pl-4 text-sm text-gray-400"
-                                key={skillIndex}
-                              >
-                                {skill.name}
-                              </li>
-                            );
-                          }
-                        )}
-                      </ul>
-                    </li>
-                  );
-                })}
+                {competencies.map(
+                  (competency: CompetencyType, index: number) => {
+                    return (
+                      <li className="text-lg" key={index}>
+                        {competency.name}
+                        <ul>
+                          {competency.skills?.map(
+                            (skill: SkillType, skillIndex: number) => {
+                              return (
+                                <li
+                                  className="pl-4 text-sm text-gray-400"
+                                  key={skillIndex}
+                                >
+                                  {skill.name}
+                                </li>
+                              );
+                            }
+                          )}
+                        </ul>
+                      </li>
+                    );
+                  }
+                )}
               </ul>
             </div>
           ) : (

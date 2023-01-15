@@ -21,6 +21,7 @@ It has the following features:
 - [ ] Allow to change the picture
 - [x] Add email login
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
+- [ ] Refresh instantly the view of competencies right adding a new competency
 
 ## Marketing speech
 

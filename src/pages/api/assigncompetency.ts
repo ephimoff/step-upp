@@ -24,4 +24,37 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(500).json({ msg: 'Something went wrong', error });
     }
   }
+  if (req.method === 'GET') {
+    const { profileId } = req.query;
+    console.log('api', req.body);
+    try {
+      const assignedCompetencies = await prisma.profileCompetencies
+        .findMany({
+          where: {
+            profileId: profileId as string,
+          },
+          select: {
+            competency: {
+              select: {
+                id: true,
+                name: true,
+                skills: {
+                  select: {
+                    id: true,
+                    name: true,
+                    scores: { where: { profileId: profileId as string } },
+                  },
+                },
+              },
+            },
+          },
+        })
+        .catch(async (e) => {
+          console.error(e);
+        });
+      res.status(200).json(assignedCompetencies);
+    } catch (error) {
+      res.status(500).json({ msg: 'Something went wrong', error });
+    }
+  }
 };

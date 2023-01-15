@@ -2,15 +2,34 @@ import Sidebar from '@/components/Sidebar';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
+import { CompetencyType } from '@/types/types';
 
-const ProfilePage = ({ profile, competencies, assignedCompetencies }: any) => {
+const ProfilePage = ({ profile, competencies }: any) => {
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
+
+  const [assignedCompetencies, setAssignedCompetencies] = useState<
+    CompetencyType[] | []
+  >([]);
+
+  useEffect(() => {
+    const fetchAssignedCompetencies = async () => {
+      const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
+      const resJson: CompetencyType[] = await res.json();
+      if (res.status === 200) {
+        setAssignedCompetencies(resJson);
+      } else {
+        setAssignedCompetencies([]);
+      }
+    };
+    fetchAssignedCompetencies();
+  }, []);
+
   console.log('assignedCompetencies', assignedCompetencies);
   return (
     <>
@@ -78,33 +97,33 @@ export const getServerSideProps = async (context: any) => {
   });
 
   let competencies: any = null;
-  let assignedCompetencies: any = null;
+  // let assignedCompetencies: any = null;
 
   if (profile) {
     competencies = await prisma.competency.findMany({
       include: { skills: true },
     });
 
-    assignedCompetencies = await prisma.profileCompetencies.findMany({
-      where: {
-        profileId: profile?.id,
-      },
-      select: {
-        competency: {
-          select: {
-            id: true,
-            name: true,
-            skills: {
-              select: {
-                id: true,
-                name: true,
-                scores: { where: { profileId: profile.id } },
-              },
-            },
-          },
-        },
-      },
-    });
+    // assignedCompetencies = await prisma.profileCompetencies.findMany({
+    //   where: {
+    //     profileId: profile?.id,
+    //   },
+    //   select: {
+    //     competency: {
+    //       select: {
+    //         id: true,
+    //         name: true,
+    //         skills: {
+    //           select: {
+    //             id: true,
+    //             name: true,
+    //             scores: { where: { profileId: profile.id } },
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // });
 
     const refreshCompetenciesList = () => {
       competencies.forEach(function (competency: any) {
@@ -134,6 +153,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, profile, competencies, assignedCompetencies },
+    props: { session, profile, competencies },
   };
 };
