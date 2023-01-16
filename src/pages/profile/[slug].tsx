@@ -7,6 +7,7 @@ import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
 import { CompetencyType, ProfileType } from '@/types/types';
+import Spinner from '@/components/Spinner';
 
 type ProfilePageProps = {
   competencies: any;
@@ -21,14 +22,22 @@ const ProfilePage = ({ profile, competencies }: ProfilePageProps) => {
   const [assignedCompetencies, setAssignedCompetencies] = useState<
     CompetencyType[] | []
   >([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchAssignedCompetencies = async () => {
-    const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
-    const resJson: CompetencyType[] = await res.json();
-    if (res.status === 200) {
-      setAssignedCompetencies(resJson);
-    } else {
-      setAssignedCompetencies([]);
+    try {
+      const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
+      const resJson: CompetencyType[] = await res.json();
+      if (res.status === 200) {
+        setAssignedCompetencies(resJson);
+      } else {
+        setAssignedCompetencies([]);
+      }
+    } catch (e: any) {
+      setError(e);
+    } finally {
+      () => setLoading(false);
     }
   };
 
@@ -53,16 +62,21 @@ const ProfilePage = ({ profile, competencies }: ProfilePageProps) => {
               competencies={competencies}
               fetchAssignedCompetencies={fetchAssignedCompetencies}
             />
-            {assignedCompetencies.map(({ competency }: any, index: number) => {
-              return (
-                <div key={index}>
-                  <CompetencyCard
-                    competency={competency}
-                    profileId={profile.id}
-                  />
-                </div>
-              );
-            })}
+            {error && <div className="bg-red-500 text-white">{error}</div>}
+            {loading ? (
+              <Spinner />
+            ) : (
+              assignedCompetencies.map(({ competency }: any, index: number) => {
+                return (
+                  <div key={index}>
+                    <CompetencyCard
+                      competency={competency}
+                      profileId={profile.id}
+                    />
+                  </div>
+                );
+              })
+            )}
           </div>
         ) : (
           <div>
@@ -103,33 +117,11 @@ export const getServerSideProps = async (context: any) => {
   });
 
   let competencies: any = null;
-  // let assignedCompetencies: any = null;
 
   if (profile) {
     competencies = await prisma.competency.findMany({
       include: { skills: true },
     });
-
-    // assignedCompetencies = await prisma.profileCompetencies.findMany({
-    //   where: {
-    //     profileId: profile?.id,
-    //   },
-    //   select: {
-    //     competency: {
-    //       select: {
-    //         id: true,
-    //         name: true,
-    //         skills: {
-    //           select: {
-    //             id: true,
-    //             name: true,
-    //             scores: { where: { profileId: profile.id } },
-    //           },
-    //         },
-    //       },
-    //     },
-    //   },
-    // });
 
     const refreshCompetenciesList = () => {
       competencies.forEach(function (competency: any) {
