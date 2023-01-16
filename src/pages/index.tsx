@@ -1,4 +1,4 @@
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import { getSession } from 'next-auth/react';
 import { siteDescription } from '@/data/data';
 import React from 'react';

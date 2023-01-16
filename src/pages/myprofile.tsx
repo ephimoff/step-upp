@@ -1,5 +1,5 @@
 import { useSession, getSession } from 'next-auth/react';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import { useState, useEffect } from 'react';
 import { Profile as ProfileType } from '@prisma/client';
 import { Form, Formik } from 'formik';

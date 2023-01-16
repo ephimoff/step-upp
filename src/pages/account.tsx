@@ -1,5 +1,5 @@
 import { useSession, getSession } from 'next-auth/react';
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import { ProfileType } from '@/types/types';
 

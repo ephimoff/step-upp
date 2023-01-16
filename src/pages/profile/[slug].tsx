@@ -1,4 +1,4 @@
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
@@ -37,7 +37,7 @@ const ProfilePage = ({ profile, competencies }: ProfilePageProps) => {
     } catch (e: any) {
       setError(e);
     } finally {
-      () => setLoading(false);
+      setLoading(false);
     }
   };
 

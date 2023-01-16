@@ -8,11 +8,13 @@ import {
 } from 'react-icons/bi';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import SidebarLink from './SidebarLink';
-import SignInOutButton from './SingInOutButton';
+import SidebarLink from '../SidebarLink';
+import SignInOutButton from '../SingInOutButton';
 import { siteTitle } from '@/data/data';
 import Head from 'next/head';
 import { useUser } from '@/contexts/user.context';
+import ThemeToggle from './ThemeToggle';
+import { useEffect, useState } from 'react';
 
 type SidebarProps = {
   children: React.ReactNode;
@@ -39,8 +41,12 @@ export default function Sidebar({
   name,
   title = siteTitle,
 }: SidebarProps) {
+  // required for theme switching
+  const [mounted, setMounted] = useState(false);
   const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
+
+  useEffect(() => setMounted(true), []);
 
   const toggleSidebar = () => {
     setOpen(!open);
@@ -60,7 +66,7 @@ export default function Sidebar({
       >
         <div
           onClick={toggleSidebar}
-          className="absolute -right-4 top-9 w-7 cursor-pointer rounded-full border-2 border-purple-500 bg-purple-300 text-2xl text-purple-500 shadow"
+          className="absolute -right-3 top-9 h-6 w-6 cursor-pointer rounded-full bg-purple-300 text-2xl text-purple-500 shadow"
         >
           {open ? <HiChevronLeft /> : <HiChevronRight />}
         </div>
@@ -99,41 +105,45 @@ export default function Sidebar({
             );
           })}
         </ul>
-        <div className="absolute bottom-4 ml-0 mr-4 flex items-center gap-x-4 py-3 pl-3">
-          {status === 'authenticated' ? (
-            <>
-              <Link href="/myprofile" className="flex items-center gap-x-4">
-                <span className="text-2xl">
-                  {session.user!.image ? (
-                    <img
-                      src={session.user!.image as string}
-                      alt=""
-                      className="h-8 w-8 rounded-full shadow-lg "
-                    />
-                  ) : (
-                    <BiUserCircle />
-                  )}
-                </span>
-                <span
+        <div className="absolute bottom-0 ml-0 mr-4 ">
+          <div className="flex items-center gap-x-4 py-3 pl-3">
+            {status === 'authenticated' ? (
+              <>
+                <Link href="/myprofile" className="flex items-center gap-x-4">
+                  <span className="text-2xl">
+                    {session.user!.image ? (
+                      <img
+                        src={session.user!.image as string}
+                        alt=""
+                        className="h-8 w-8 rounded-full shadow-lg "
+                      />
+                    ) : (
+                      <BiUserCircle />
+                    )}
+                  </span>
+                  <span
+                    className={`${
+                      !open && 'hidden'
+                    } origin-left whitespace-nowrap duration-200`}
+                  >
+                    {name ? name : session.user!.name}
+                  </span>
+                </Link>
+                <button
+                  onClick={() => signOut()}
                   className={`${
                     !open && 'hidden'
-                  } origin-left whitespace-nowrap duration-200`}
+                  } origin-left text-2xl duration-200`}
                 >
-                  {name ? name : session.user!.name}
-                </span>
-              </Link>
-              <button
-                onClick={() => signOut()}
-                className={`${
-                  !open && 'hidden'
-                } origin-left text-2xl duration-200`}
-              >
-                <BiExit />
-              </button>
-            </>
-          ) : (
-            <SignInOutButton type="signin" />
-          )}
+                  <BiExit />
+                </button>
+              </>
+            ) : (
+              <SignInOutButton type="signin" />
+            )}
+          </div>
+
+          <div className="mb-2 pl-3">{mounted && <ThemeToggle />}</div>
         </div>
       </div>
       <div className="flex-1 p-7">

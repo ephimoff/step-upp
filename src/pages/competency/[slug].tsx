@@ -1,4 +1,4 @@
-import Sidebar from '@/components/Sidebar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import { CompetencyType, ProfileType } from '@/types/types';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';

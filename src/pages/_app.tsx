@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+import { ThemeProvider } from 'next-themes';
 import { Josefin_Sans, Nunito, Inter } from '@next/font/google';
 
 import { UserContextProvider } from '@/contexts/user.context';
@@ -24,11 +25,13 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <UserContextProvider>
-        <main className={`${nunito.variable} font-sans`}>
-          <Component {...pageProps} />
-        </main>
-      </UserContextProvider>
+      <ThemeProvider attribute="class">
+        <UserContextProvider>
+          <main className={`${nunito.variable} font-sans`}>
+            <Component {...pageProps} />
+          </main>
+        </UserContextProvider>
+      </ThemeProvider>
     </SessionProvider>
   );
 }
