@@ -1,62 +1,66 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import Card from '../Card';
 import { SkillType, CompetencyType } from '@/types/types';
+import { useFetch } from '@/hooks/useFetch';
+import Spinner from '../Spinner';
 
 const CompetenciesList = () => {
-  const [competencies, setCompetencies] = useState<CompetencyType[] | null>([]);
+  const {
+    response: competencies,
+    error,
+    loading,
+  }: { response: CompetencyType[]; error: any; loading: boolean } = useFetch(
+    `/api/competency`
+  );
 
-  useEffect(() => {
-    const fetchCompetencies = async () => {
-      const res = await fetch(`/api/competency`);
-      const competencies: CompetencyType[] = await res.json();
-      if (res.status === 200) {
-        setCompetencies(competencies);
-      } else {
-        setCompetencies([]);
-      }
-    };
-    fetchCompetencies();
-  }, []);
+  if (loading) {
+    return (
+      <Card>
+        <Spinner />
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <div className="text-red-500">Error: {error}</div>
+      </Card>
+    );
+  }
+
   return (
     <Card>
-      <div>
+      {competencies && competencies.length > 0 ? (
         <div>
-          {competencies && competencies.length > 0 ? (
-            <div>
-              <h2 className="text-xl text-purple-400">
-                Exisiting competencies
-              </h2>
-              <ul>
-                {competencies.map(
-                  (competency: CompetencyType, index: number) => {
-                    return (
-                      <li className="text-lg" key={index}>
-                        {competency.name}
-                        <ul>
-                          {competency.skills?.map(
-                            (skill: SkillType, skillIndex: number) => {
-                              return (
-                                <li
-                                  className="pl-4 text-sm text-gray-400"
-                                  key={skillIndex}
-                                >
-                                  {skill.name}
-                                </li>
-                              );
-                            }
-                          )}
-                        </ul>
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
-            </div>
-          ) : (
-            <div>No competencies found</div>
-          )}
+          <h2 className="text-xl text-purple-400">Exisiting competencies</h2>
+          <ul>
+            {competencies.map((competency: CompetencyType, index: number) => {
+              return (
+                <li className="text-lg" key={index}>
+                  {competency.name}
+                  <ul>
+                    {competency.skills?.map(
+                      (skill: SkillType, skillIndex: number) => {
+                        return (
+                          <li
+                            className="pl-4 text-sm text-gray-400"
+                            key={skillIndex}
+                          >
+                            {skill.name}
+                          </li>
+                        );
+                      }
+                    )}
+                  </ul>
+                </li>
+              );
+            })}
+          </ul>
         </div>
-      </div>
+      ) : (
+        <div>No competencies found</div>
+      )}
     </Card>
   );
 };
