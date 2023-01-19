@@ -15,6 +15,8 @@ import Head from 'next/head';
 import { useUser } from '@/contexts/user.context';
 import ThemeToggle from './ThemeToggle';
 import { useEffect, useState } from 'react';
+import Logo from './Logo';
+import SidebarProfile from './SidebarProfile';
 
 type SidebarProps = {
   children: React.ReactNode;
@@ -52,8 +54,8 @@ export default function Sidebar({
     setOpen(!open);
   };
   // const sidebarGradient = `bg-gradient-to-br from-[#c9def4] via-[#f5ccd4] to-[#b8a4c9]`;
-  const sidebarGradient = `bg-gradient-to-tl from-[#595cff] to-[#c6f8ff]`;
-  const logoGradient = `bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent`;
+  // const sidebarGradient = `bg-gradient-to-tl from-[#595cff] to-[#c6f8ff]`;
+  // const logoGradient = `bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent`;
   return (
     <div className="flex">
       <Head>
@@ -61,89 +63,40 @@ export default function Sidebar({
       </Head>
       <div
         className={`${
-          open ? 'w-72' : 'w-24'
-        } sticky top-0 h-screen p-4 pt-8 text-black duration-300 ${sidebarGradient}`}
+          open ? 'w-72' : 'w-28'
+        } sticky top-0 h-screen text-black duration-300`}
       >
-        <div
-          onClick={toggleSidebar}
-          className="absolute -right-3 top-9 h-6 w-6 cursor-pointer rounded-full bg-purple-300 text-2xl text-purple-500 shadow"
-        >
-          {open ? <HiChevronLeft /> : <HiChevronRight />}
-        </div>
-        <div>
-          <Link className="flex items-center gap-x-4" href="/">
-            <span
-              className={`rounded-xl bg-purple-500 p-2 text-3xl text-white duration-500 ${
-                open && 'rotate-[360deg]'
-              }`}
+        <div className="relative m-4 h-5/6 rounded-xl bg-white pt-8">
+          <div className="px-4">
+            <div
+              onClick={toggleSidebar}
+              className="absolute -right-3 top-3 h-6 w-6 cursor-pointer rounded-full bg-gray-300 text-2xl text-gray-400 shadow-lg"
             >
-              <BiHomeAlt className="duration-500" size={32} />
-            </span>
-            <h1
-              className={`${
-                !open && 'scale-0'
-              } origin-left whitespace-nowrap text-3xl font-medium duration-300`}
-            >
-              Step
-              <strong className={`font-extrabold text-black ${logoGradient}`}>
-                Upp
-              </strong>
-            </h1>
-          </Link>
-        </div>
-        <ul className="pt-6">
-          {sidebarLinks.map((link, index) => {
-            return (
-              <li key={index} className="mb-3">
-                <SidebarLink
-                  path={link.path}
-                  name={link.name}
-                  open={open}
-                  icon={link.icon}
-                />
-              </li>
-            );
-          })}
-        </ul>
-        <div className="absolute bottom-0 ml-0 mr-4 ">
-          <div className="flex items-center gap-x-4 py-3 pl-3">
-            {status === 'authenticated' ? (
-              <>
-                <Link href="/myprofile" className="flex items-center gap-x-4">
-                  <span className="text-2xl">
-                    {session.user!.image ? (
-                      <img
-                        src={session.user!.image as string}
-                        alt=""
-                        className="h-8 w-8 rounded-full shadow-lg "
-                      />
-                    ) : (
-                      <BiUserCircle />
-                    )}
-                  </span>
-                  <span
-                    className={`${
-                      !open && 'hidden'
-                    } origin-left whitespace-nowrap duration-200`}
-                  >
-                    {name ? name : session.user!.name}
-                  </span>
-                </Link>
-                <button
-                  onClick={() => signOut()}
-                  className={`${
-                    !open && 'hidden'
-                  } origin-left text-2xl duration-200`}
-                >
-                  <BiExit />
-                </button>
-              </>
-            ) : (
-              <SignInOutButton type="signin" />
-            )}
+              {open ? <HiChevronLeft /> : <HiChevronRight />}
+            </div>
+            <div>
+              <Link href="/">
+                <Logo open={open} />
+              </Link>
+            </div>
+            <ul className="pt-6">
+              {sidebarLinks.map((link, index) => {
+                return (
+                  <li key={index} className="mb-3">
+                    <SidebarLink
+                      path={link.path}
+                      name={link.name}
+                      open={open}
+                      icon={link.icon}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-
-          <div className="mb-2 pl-3">{mounted && <ThemeToggle />}</div>
+          <div className="absolute bottom-4 w-full px-4">
+            <SidebarProfile mounted={mounted} open={open} name={name} />
+          </div>
         </div>
       </div>
       <div className="flex-1 p-7">

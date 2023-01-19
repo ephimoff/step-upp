@@ -27,13 +27,13 @@ function getInitials(name: string) {
   return initials;
 }
 
-function generateGradient(arr: string[]) {
-  const randomNumber = Math.floor(Math.random() * (arr.length - 1));
-  return arr[randomNumber];
-}
+// function generateGradient(arr: string[]) {
+//   const randomNumber = Math.floor(Math.random() * (arr.length - 1));
+//   return arr[randomNumber];
+// }
 
 const NoAvatar = ({ name, size }: NoAvatarProps) => {
-  const randomGradient = generateGradient(LIST_OF_GRADIENTS);
+  const randomGradient = `from-[#f953c6] to-[#b91d73]`;
   const width = `w-${size}`;
   const height = `h-${size}`;
   return (
