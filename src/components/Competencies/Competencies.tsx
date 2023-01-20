@@ -57,7 +57,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
           </FieldArray>
           <button
             type="button"
-            className="mx-auto flex items-center text-sm font-bold text-red-400 hover:text-red-500"
+            className="mx-auto flex items-center text-sm font-bold text-red-400 hover:text-red-500 dark:text-red-800 dark:hover:text-red-500"
             onClick={() => handleRemoveCompetency(index)}
           >
             <span>Remove</span> <MdDelete size={16} />

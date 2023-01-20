@@ -40,7 +40,7 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
                   name={`competencies.${competencyIndex}.skills.${index}.name`}
                   placeholder={'Strategic impact'}
                   required
-                  className={`w-full rounded-md border border-gray-400 bg-slate-300 px-2 py-1`}
+                  className={`w-full rounded-md border border-gray-400 bg-slate-300 px-2 py-1 dark:border-gray-700 dark:bg-slate-900`}
                 />
               </div>
               <div className="pl-2">
