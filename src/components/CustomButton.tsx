@@ -24,7 +24,7 @@ const CustomButton = ({
   return (
     <button
       type={type}
-      className={`cursor-pointer rounded-lg shadow-md  ${
+      className={`cursor-pointer rounded-lg text-white shadow-md ${
         role === 'secondary' ? secondary : primary
       } ${fullWidth ? 'w-full ' : ''} ${
         size === 'small' ? 'px-2 text-sm' : 'p-2'

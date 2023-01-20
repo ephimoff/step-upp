@@ -1,19 +1,11 @@
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import {
-  BiHomeAlt,
-  BiExit,
-  BiUser,
-  BiUserCircle,
-  BiFoodMenu,
-} from 'react-icons/bi';
+import { BiHomeAlt, BiUser, BiFoodMenu } from 'react-icons/bi';
 import Link from 'next/link';
-import { useSession, signOut } from 'next-auth/react';
+// import { useSession } from 'next-auth/react';
 import SidebarLink from '../SidebarLink';
-import SignInOutButton from '../SingInOutButton';
 import { siteTitle } from '@/data/data';
 import Head from 'next/head';
 import { useUser } from '@/contexts/user.context';
-import ThemeToggle from './ThemeToggle';
 import { useEffect, useState } from 'react';
 import Logo from './Logo';
 import SidebarProfile from './SidebarProfile';
@@ -45,7 +37,7 @@ export default function Sidebar({
 }: SidebarProps) {
   // required for theme switching
   const [mounted, setMounted] = useState(false);
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
 
   useEffect(() => setMounted(true), []);
@@ -57,7 +49,7 @@ export default function Sidebar({
   // const sidebarGradient = `bg-gradient-to-tl from-[#595cff] to-[#c6f8ff]`;
   // const logoGradient = `bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent`;
   return (
-    <div className="flex">
+    <div className="flex bg-gray-200">
       <Head>
         <title>{title}</title>
       </Head>

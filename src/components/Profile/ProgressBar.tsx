@@ -17,7 +17,7 @@ const ProgressBar = ({ value, type, profileId, skillId }: ProgressBarProps) => {
         <div className="flex h-full items-center gap-x-2">
           <span>
             {!score
-              ? '❔'
+              ? '❓'
               : score <= 2
               ? '🍄'
               : score <= 4
@@ -44,7 +44,7 @@ const ProgressBar = ({ value, type, profileId, skillId }: ProgressBarProps) => {
               }`}
             ></div>
           </div>
-          <span>{!score ? '❔' : score}</span>
+          <span>{!score ? '❓' : score}</span>
         </div>
       </Popover.Button>
       <Popover.Panel className="absolute -top-24 z-10">

@@ -8,6 +8,7 @@ import { profileSchema } from '@/schemas/validationSchemas';
 import prisma from '@/utils/prisma';
 import NoAvatar from '@/components/NoAvatar';
 import { myProfileFields } from '@/data/data';
+import Card from '@/components/Card';
 
 type MyProfilePageProps = {
   profile: ProfileType;
@@ -99,7 +100,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
       <Sidebar name={initialName}>
         {status === 'authenticated' ? (
           <>
-            <div className="mx-auto w-full max-w-2xl rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl">
+            <Card>
               {!profile ? (
                 <p className="font-thin">
                   You logged in as <strong>{initialName}</strong> but don't have
@@ -182,14 +183,14 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                       className={`${
                         (isSubmitting || Object.keys(errors).length !== 0) &&
                         'opacity-40'
-                      }  w-full rounded-lg bg-gradient-to-l from-[#00B4DB] to-[#0083B0] py-2 shadow-md hover:bg-gradient-to-r `}
+                      }  w-full rounded-lg bg-gradient-to-l from-[#00B4DB] to-[#0083B0] py-2 text-white shadow-md hover:bg-gradient-to-r `}
                     >
                       {profile ? 'Update profile' : 'Save new profile'}
                     </button>
                   </Form>
                 )}
               </Formik>
-            </div>
+            </Card>
           </>
         ) : (
           <p>You are not signed in</p>

@@ -33,7 +33,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
 
       {values.competencies.map((competency: CompetencyType, index: number) => (
         <Card key={index}>
-          <h1 className="text-xl text-purple-400">
+          <h1 className="text-xl text-purple-600">
             {values.competencies[index].name
               ? values.competencies[index].name
               : 'Create a new competency'}
@@ -57,7 +57,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
           </FieldArray>
           <button
             type="button"
-            className="mx-auto flex items-center text-sm font-bold text-red-700 hover:text-red-500"
+            className="mx-auto flex items-center text-sm font-bold text-red-400 hover:text-red-500"
             onClick={() => handleRemoveCompetency(index)}
           >
             <span>Remove</span> <MdDelete size={16} />

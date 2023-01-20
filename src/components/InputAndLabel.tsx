@@ -17,17 +17,17 @@ const InputAndLabel = ({
   const [field, meta] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
   return (
-    <div className="flex items-baseline justify-center py-3">
+    <div className="flex items-baseline py-3">
       <label className="w-1/5 font-thin ">{label} </label>
       <div className="w-3/5">
         <input
           placeholder={placeholder}
           required={required}
           {...field}
-          className={`w-full rounded-md border bg-slate-700 px-2 py-1 ${
+          className={`w-full rounded-md border bg-slate-300 px-2 py-1 ${
             meta.touched && meta.error
               ? 'border-2 border-[#fc8181]'
-              : 'border-gray-500'
+              : 'border-gray-400'
           }`}
         />
         {meta.touched && meta.error ? (

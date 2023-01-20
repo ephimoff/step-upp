@@ -20,7 +20,7 @@ const CompetencyPage = ({ competency, profile }: CompetencyPageProps) => {
           <div>yes</div>
         ) : (
           <div>
-            <h2>No competency with such is found</h2>
+            <h2>No competency with such slug is found</h2>
             <Link
               href="/competency"
               className="border-b border-b-orange-500 text-orange-400"

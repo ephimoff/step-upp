@@ -32,7 +32,7 @@ const CompetenciesList = () => {
     <Card>
       {competencies && competencies.length > 0 ? (
         <div>
-          <h2 className="text-xl text-purple-400">Exisiting competencies</h2>
+          <h2 className="text-xl text-purple-600">Exisiting competencies</h2>
           <ul>
             {competencies.map((competency: CompetencyType, index: number) => {
               return (
@@ -43,7 +43,7 @@ const CompetenciesList = () => {
                       (skill: SkillType, skillIndex: number) => {
                         return (
                           <li
-                            className="pl-4 text-sm text-gray-400"
+                            className="pl-4 text-sm text-gray-500"
                             key={skillIndex}
                           >
                             {skill.name}

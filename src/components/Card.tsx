@@ -8,7 +8,7 @@ const Card = ({ children, grid = false }: CardProps) => {
     <section
       className={`${
         grid && 'grid grid-cols-5 gap-4'
-      } my-10 rounded-xl bg-slate-900 py-4 px-6 drop-shadow-2xl`}
+      } my-10 rounded-xl bg-slate-200 py-4 px-6 drop-shadow-2xl`}
     >
       {children}
     </section>

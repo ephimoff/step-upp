@@ -22,6 +22,7 @@ It has the following features:
 - [x] Add email login
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [x] Refresh instantly the view of competencies right adding a new competency
+- [ ] Fix the sidebar for small height screens. it hides the menu on the top. maybe need to add `overflow:hidden`
 
 ## Marketing speech
 

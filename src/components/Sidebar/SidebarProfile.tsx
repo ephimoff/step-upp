@@ -14,7 +14,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
   const { data: session } = useSession();
 
   return (
-    <div className={`rounded-md bg-gray-200 py-2 ${open && 'p-4'}`}>
+    <div className={`rounded-md  py-2 ${open && 'p-4'}`}>
       <div className="flex items-center justify-center ">
         <Link href="/myprofile" className="">
           {session!.user!.image ? (
@@ -47,7 +47,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
         <div className="mt-3 flex justify-center rounded-lg">
           <button
             onClick={() => signOut()}
-            className="flex items-center justify-center rounded-lg bg-gray-300 p-2 text-gray-500 transition-colors hover:bg-purple-500 hover:text-white"
+            className="flex items-center justify-center rounded-lg bg-gray-100 p-2 text-gray-500 transition-colors hover:bg-purple-500 hover:text-white"
           >
             <BiExit className="h-5 w-5" />
           </button>
