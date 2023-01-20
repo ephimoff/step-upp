@@ -23,7 +23,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
               alt=""
               className={`${
                 !open ? 'h-10' && 'w-10' : 'h-12' && 'w-12'
-              } mx-auto rounded-full shadow-lg`}
+              } mx-auto mb-2 rounded-full shadow-lg`}
             />
           ) : (
             <NoAvatar
@@ -34,7 +34,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
           <span
             className={`${
               !open && 'hidden'
-            } origin-left whitespace-nowrap duration-500`}
+            } origin-left whitespace-nowrap duration-500 dark:text-white`}
           >
             {name ? name : session!.user!.name}
           </span>
@@ -47,7 +47,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
         <div className="mt-3 flex justify-center rounded-lg">
           <button
             onClick={() => signOut()}
-            className="flex items-center justify-center rounded-lg bg-gray-100 p-2 text-gray-500 transition-colors hover:bg-purple-500 hover:text-white"
+            className="flex items-center justify-center rounded-lg bg-gray-100 p-2 text-gray-500 transition-colors hover:bg-purple-500 hover:text-white dark:bg-gray-900 dark:hover:bg-purple-500"
           >
             <BiExit className="h-5 w-5" />
           </button>
