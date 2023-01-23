@@ -58,11 +58,11 @@ export default function Sidebar({
           open ? 'w-72' : 'w-28'
         } sticky top-0 h-screen text-black duration-300`}
       >
-        <div className="relative m-4 h-5/6 rounded-xl bg-white pt-8 dark:bg-slate-800">
+        <div className="relative m-4 h-5/6 rounded-xl bg-white pt-8 drop-shadow-2xl dark:bg-slate-800 dark:bg-gradient-to-tl dark:from-slate-800 dark:to-[#334562]">
           <div className="px-4">
             <div
               onClick={toggleSidebar}
-              className="absolute -right-3 top-3 h-6 w-6 cursor-pointer rounded-full bg-gray-300 text-2xl text-gray-400 shadow-lg dark:bg-gray-700"
+              className="absolute -right-3 top-3 h-6 w-6 cursor-pointer rounded-full bg-gray-200 text-2xl text-gray-400 shadow-lg drop-shadow-xl dark:bg-gray-900"
             >
               {open ? <HiChevronLeft /> : <HiChevronRight />}
             </div>
