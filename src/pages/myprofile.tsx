@@ -40,7 +40,6 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
   const [github, setGithub] = useState<string>('');
   // email to query
   const queryEmail = session!.user!.email;
-  // console.log(session);
 
   useEffect(() => {
     if (profile) {
@@ -133,14 +132,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                   setSubmitting(false);
                 }}
               >
-                {({
-                  values,
-                  errors,
-                  // handleChange,
-                  // handleBlur,
-                  // handleSubmit,
-                  isSubmitting,
-                }) => (
+                {({ values, errors, isSubmitting }) => (
                   <Form className="">
                     <div className="mx-auto my-4 h-32 w-32">
                       {userpic ? (
@@ -156,13 +148,14 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                     <div className="">
                       {myProfileFields.map((field, index) => {
                         return (
-                          <div key={index} className="mx-auto">
+                          <div key={index}>
                             <InputAndLabel
                               label={field.label}
                               name={field.name}
                               type={field.type as 'input' | 'email'}
                               placeholder={field.placeholder}
                               required={field.required}
+                              button={field.button}
                             />
                           </div>
                         );

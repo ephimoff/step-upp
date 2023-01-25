@@ -41,6 +41,7 @@ export const myProfileFields = [
     type: 'input',
     placeholder: 'your-slug',
     required: true,
+    button: true,
   },
   {
     label: 'Phone',
