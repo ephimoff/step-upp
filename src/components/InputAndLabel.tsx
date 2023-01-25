@@ -1,5 +1,6 @@
 import { useField } from 'formik';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import { generateSlug, generateUniqueSlug } from '@/utils/functions';
 
 type InputAndLabelProps = {
   label: string;
@@ -8,6 +9,7 @@ type InputAndLabelProps = {
   type: 'input' | 'email';
   required?: boolean;
   button?: boolean;
+  initialName?: string;
 };
 
 const InputAndLabel = ({
@@ -15,16 +17,19 @@ const InputAndLabel = ({
   placeholder,
   required,
   button,
+  initialName,
   ...props
 }: InputAndLabelProps) => {
   const [field, meta, helpers] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
 
   function handleSlug() {
-    // console.log(field);
-    // console.log(meta);
+    // generateSlug()
+    // console.log(initialName);
+    const slug = generateSlug(initialName as string);
+    // console.log(slug);
     // console.log(helpers);
-    helpers.setValue('blah');
+    helpers.setValue(slug);
   }
   return (
     <div className="flex items-baseline py-3">

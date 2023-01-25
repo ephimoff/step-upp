@@ -156,6 +156,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                               placeholder={field.placeholder}
                               required={field.required}
                               button={field.button}
+                              initialName={initialName}
                             />
                           </div>
                         );
