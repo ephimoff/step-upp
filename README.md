@@ -15,14 +15,15 @@ It has the following features:
 - [x] Set up some styles for buttons so they are consistent
 - [x] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
 - [ ] Store the state of the sidebar locally so it preserves after the refresh
-- [ ] Generate slug automatically
-- [ ] Check it ^^^ for uniqueness
+- [x] Generate slug automatically
+- [x] Check it ^^^ for uniqueness
 - [x] Add a picture from the SSO service
 - [ ] Allow to change the picture
 - [x] Add email login
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [x] Refresh instantly the view of competencies right adding a new competency
-- [ ] Fix the sidebar for small height screens. it hides the menu on the top. maybe need to add `overflow:hidden`
+- [ ] Fix the sidebar for small height screens. it hides the menu on the top. Maybe need to add `overflow:hidden`
+- [ ] Refresh `myprofile` after profile is created
 
 ## Marketing speech
 

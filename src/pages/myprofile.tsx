@@ -17,10 +17,12 @@ type MyProfilePageProps = {
 
 export default function MyProfilePage({ profile }: MyProfilePageProps) {
   const { data: session, status } = useSession();
+
   // profile
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
     null
   );
+
   // profile fields
   const initialName = profile?.name
     ? profile.name
@@ -59,6 +61,9 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
       setGithub(profile.github as string);
     }
   }, []);
+
+  console.log('profile', profile);
+  console.log('currentProfile', currentProfile);
 
   async function updateProfile(values: any) {
     let url = '/api/profile';
@@ -103,9 +108,9 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
         {status === 'authenticated' ? (
           <>
             <Card>
-              {!profile ? (
+              {!currentProfile ? (
                 <p className="font-thin">
-                  You have <strong>create</strong> your profile first before
+                  You have to <strong>create</strong> your profile first before
                   proceeding.
                 </p>
               ) : (
@@ -181,7 +186,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                         'opacity-40'
                       }  w-full rounded-lg bg-gradient-to-l from-[#00B4DB] to-[#0083B0] py-2 text-white shadow-md hover:bg-gradient-to-r `}
                     >
-                      {profile ? 'Update profile' : 'Create profile'}
+                      {currentProfile ? 'Update profile' : 'Create profile'}
                     </button>
                   </Form>
                 )}
