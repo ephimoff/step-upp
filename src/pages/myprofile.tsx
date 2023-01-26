@@ -9,7 +9,7 @@ import prisma from '@/utils/prisma';
 import NoAvatar from '@/components/NoAvatar';
 import { myProfileFields } from '@/data/data';
 import Card from '@/components/Card';
-import { generateSlug, generateUniqueSlug } from '@/utils/functions';
+import { generateSlug } from '@/utils/functions';
 
 type MyProfilePageProps = {
   profile: ProfileType;
@@ -158,8 +158,8 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                               type={field.type as 'input' | 'email'}
                               placeholder={field.placeholder}
                               required={field.required}
-                              button={field.button}
                               initialName={initialName}
+                              email={email}
                             />
                           </div>
                         );

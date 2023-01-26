@@ -9,6 +9,7 @@ type InputAndLabelProps = {
   type: 'input' | 'email';
   required?: boolean;
   initialName?: string;
+  email?: string;
 };
 
 const InputAndLabel = ({
@@ -16,15 +17,11 @@ const InputAndLabel = ({
   placeholder,
   required,
   initialName,
+  email,
   ...props
 }: InputAndLabelProps) => {
   const [field, meta, helpers] = useField(props);
   const errorText = meta.error && meta.touched ? meta.error : '';
-
-  // if (field.name === 'slug') {
-  //   console.log(meta);
-  //   console.log(helpers);
-  // }
 
   function handleSlug() {
     const slug = generateUniqueSlug(field.value);

@@ -6,11 +6,20 @@ export const profileSchema = yup.object().shape({
   slug: yup
     .string()
     .required('Required')
-    .test('Unique slug', 'Slug is already in use', async (value) => {
-      const response = await fetch(`/api/profile?slug=${value}`);
-      console.log(response);
-      return response.ok ? false : true;
-    }),
+    .test(
+      'Unique slug',
+      'Slug is already in use. Change it or generate a new one',
+      async (value, slug) => {
+        const { status } = await fetch('/api/validate-slug', {
+          method: 'POST',
+          body: JSON.stringify({ slug: value, email: slug.parent.email }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return status === 200 ? true : false;
+      }
+    ),
   phone: yup.string(),
   twitter: yup.string(),
   linkedin: yup.string().url('The field must be a valid URL'),
