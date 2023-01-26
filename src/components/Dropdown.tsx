@@ -17,7 +17,7 @@ type DropdownProps = {
 const Dropdown = ({ options, selected, setSelected }: DropdownProps) => {
   return (
     <Listbox value={selected} onChange={setSelected}>
-      <Listbox.Button className="relative w-full max-w-xs cursor-pointer rounded-lg bg-gray-200 py-2.5 pl-3 pr-10 text-left shadow-md dark:bg-slate-800 sm:text-sm">
+      <Listbox.Button className="relative w-full max-w-xs cursor-pointer rounded-lg bg-white py-2.5 pl-3 pr-10 text-left shadow-md dark:bg-slate-800 sm:text-sm">
         <span className="block truncate">{selected.name}</span>
         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
           <HiOutlineSelector
@@ -32,7 +32,7 @@ const Dropdown = ({ options, selected, setSelected }: DropdownProps) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full max-w-lg overflow-auto rounded-md bg-gray-200 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-800 sm:text-sm">
+        <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full max-w-lg overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-800 sm:text-sm">
           {options?.map((option) => (
             <Listbox.Option
               key={option.id}
