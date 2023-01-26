@@ -26,7 +26,7 @@ export const myProfileFields = [
     name: 'title',
     type: 'input',
     placeholder: 'Senior Product Manager',
-    required: true,
+    required: false,
   },
   {
     label: 'Team',

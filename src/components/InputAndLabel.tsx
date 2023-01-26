@@ -9,7 +9,6 @@ type InputAndLabelProps = {
   type: 'input' | 'email';
   required?: boolean;
   initialName?: string;
-  email?: string;
 };
 
 const InputAndLabel = ({
@@ -17,7 +16,6 @@ const InputAndLabel = ({
   placeholder,
   required,
   initialName,
-  email,
   ...props
 }: InputAndLabelProps) => {
   const [field, meta, helpers] = useField(props);

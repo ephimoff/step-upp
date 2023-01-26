@@ -159,7 +159,6 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                               placeholder={field.placeholder}
                               required={field.required}
                               initialName={initialName}
-                              email={email}
                             />
                           </div>
                         );
