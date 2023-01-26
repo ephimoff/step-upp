@@ -82,7 +82,7 @@ const SignIn = () => {
                     <Field
                       name="email"
                       type="email"
-                      className="mt-4 w-full rounded-lg py-2 px-3 font-semibold text-purple-600 shadow-lg"
+                      className="mt-4 w-full rounded-lg bg-gray-200 py-2 px-3 font-semibold text-purple-600 shadow-lg"
                       placeholder="email@example.com"
                     />
                   </div>

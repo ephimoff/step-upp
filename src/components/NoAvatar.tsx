@@ -33,12 +33,15 @@ function getInitials(name: string) {
 // }
 
 const NoAvatar = ({ name, size }: NoAvatarProps) => {
+  console.log(size);
   const randomGradient = `from-[#f953c6] to-[#b91d73]`;
   const width = `w-${size}`;
   const height = `h-${size}`;
   return (
     <div
-      className={`${randomGradient} ${width} ${height} flex items-center justify-center rounded-full bg-gradient-to-br text-3xl font-bold text-white shadow-lg`}
+      className={`${randomGradient} ${width} ${height} flex items-center justify-center rounded-full bg-gradient-to-br ${
+        size < 20 ? 'text-lg' : 'text-3xl'
+      } font-bold text-white shadow-lg`}
     >
       {getInitials(name)}
     </div>
