@@ -9,6 +9,7 @@ import prisma from '@/utils/prisma';
 import NoAvatar from '@/components/NoAvatar';
 import { myProfileFields } from '@/data/data';
 import Card from '@/components/Card';
+import { generateSlug, generateUniqueSlug } from '@/utils/functions';
 
 type MyProfilePageProps = {
   profile: ProfileType;
@@ -21,11 +22,13 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
     null
   );
   // profile fields
-  const initialName = profile.name
+  const initialName = profile?.name
     ? profile.name
     : session!.user!.name
     ? session!.user!.name
     : session!.user!.email!.split('@')[0];
+
+  const initialSlug = generateSlug(initialName);
   const [name, setName] = useState<string>(initialName);
   const [email, setEmail] = useState<string>(session!.user!.email as string);
   const [userpic, setUserpic] = useState<string>(
@@ -33,7 +36,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
   );
   const [title, setTitle] = useState<string>('');
   const [team, setTeam] = useState<string>('');
-  const [slug, setSlug] = useState<string>('');
+  const [slug, setSlug] = useState<string>(initialSlug);
   const [phone, setPhone] = useState<string>('');
   const [twitter, setTwitter] = useState<string>('');
   const [linkedin, setLinkedin] = useState<string>('');
@@ -102,8 +105,8 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
             <Card>
               {!profile ? (
                 <p className="font-thin">
-                  You logged in as <strong>{initialName}</strong> but don't have
-                  a profile yet. Please fill it up down below and save.
+                  You have <strong>create</strong> your profile first before
+                  proceeding.
                 </p>
               ) : (
                 <p className="font-thin">
@@ -179,7 +182,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                         'opacity-40'
                       }  w-full rounded-lg bg-gradient-to-l from-[#00B4DB] to-[#0083B0] py-2 text-white shadow-md hover:bg-gradient-to-r `}
                     >
-                      {profile ? 'Update profile' : 'Save new profile'}
+                      {profile ? 'Update profile' : 'Create profile'}
                     </button>
                   </Form>
                 )}

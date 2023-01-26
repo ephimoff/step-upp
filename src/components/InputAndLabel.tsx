@@ -1,5 +1,6 @@
 import { useField } from 'formik';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import { HiOutlineArrowRightCircle } from 'react-icons/hi2';
 import { generateSlug, generateUniqueSlug } from '@/utils/functions';
 
 type InputAndLabelProps = {
@@ -25,14 +26,14 @@ const InputAndLabel = ({
 
   function handleSlug() {
     // generateSlug()
-    // console.log(initialName);
-    const slug = generateSlug(initialName as string);
+    // console.log(field);
+    const slug = generateUniqueSlug(field.value);
     // console.log(slug);
     // console.log(helpers);
     helpers.setValue(slug);
   }
   return (
-    <div className="flex items-baseline py-3">
+    <div className="flex items-center py-3">
       <label className="w-1/5 font-thin ">{label} </label>
       <div className="w-3/5">
         <input
@@ -52,12 +53,18 @@ const InputAndLabel = ({
         ) : null}
       </div>
       {button ? (
-        <div className="w-1/5 pl-2 text-gray-400">
-          <button type="button" onClick={handleSlug}>
-            <HiOutlineRefresh />
-          </button>
-        </div>
-      ) : null}
+        // <div className="w-1/5 items-center justify-center pl-2 ">
+        <button
+          type="button"
+          onClick={handleSlug}
+          className="ml-2 flex items-start text-gray-400"
+        >
+          {/* <HiOutlineRefresh /> */}
+          <HiOutlineArrowRightCircle size={18} />
+          {/* check */}
+        </button>
+      ) : // </div>
+      null}
     </div>
   );
 };
