@@ -91,8 +91,8 @@ export default function Sidebar({
           </div>
         </div>
       </div>
-      <div className="flex-1 p-7">
-        <div className="mx-auto sm:w-full md:w-3/5">{children}</div>
+      <div className="flex-1">
+        <div className="mx-auto mt-4 sm:w-full md:w-3/5">{children}</div>
       </div>
     </div>
   );

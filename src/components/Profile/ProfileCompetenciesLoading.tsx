@@ -89,7 +89,7 @@ const ProfileCompetenciesLoading = ({
   };
 
   return (
-    <div className="flex items-center">
+    <div className="mb-10 flex items-center">
       {loading ? (
         <Spinner />
       ) : (
