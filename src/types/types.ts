@@ -6,6 +6,14 @@ export type SkillType = {
   actions?: number | null;
 };
 
+type ProfileSkillType = {
+  id: string;
+  profileId: string;
+  score: number;
+  score360: number;
+  skillId: string;
+};
+
 export type CompetencyType = {
   id?: string;
   name: string;
@@ -26,6 +34,7 @@ export type ProfileType = {
   github: string;
   userId?: string;
   competencies?: CompetencyType[];
+  skills?: ProfileSkillType[];
 };
 
 export type UserType = {

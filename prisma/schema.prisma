@@ -78,6 +78,7 @@ model Profile {
   user         User                  @relation(fields: [userId], references: [id])
   competencies ProfileCompetencies[]
   skills       ProfileScores[]
+  appraised    ThreeSixtyScores[]
 }
 
 model Competency {
@@ -104,11 +105,21 @@ model ProfileCompetencies {
 }
 
 model ProfileScores {
-  id        String   @id @default(cuid())
-  profile   Profile? @relation(fields: [profileId], references: [id])
+  id        String             @id @default(cuid())
+  profile   Profile?           @relation(fields: [profileId], references: [id])
   profileId String?
-  skill     Skill?   @relation(fields: [skillId], references: [id])
+  skill     Skill?             @relation(fields: [skillId], references: [id])
   skillId   String?
   score     Int?
-  score360  Int?
+  scores360 ThreeSixtyScores[]
+}
+
+model ThreeSixtyScores {
+  id          String        @id @default(cuid())
+  score       Int
+  date        DateTime
+  appraiser   Profile       @relation(fields: [profileId], references: [id])
+  profileId   String
+  appraisee   ProfileScores @relation(fields: [appraiseeId], references: [id])
+  appraiseeId String
 }

@@ -20,5 +20,6 @@
 - [x] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
 - [ ] Store the state of the sidebar locally so it preserves after the refresh
 - [ ] Fix the sidebar for small height screens. it hides the menu on the top. Maybe need to add `overflow:hidden`
+- [ ] Fix an issue with the progress bar when adding a new competency. Somehow it appears cyan
 
 ## Notes
