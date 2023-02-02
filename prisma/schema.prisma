@@ -105,21 +105,23 @@ model ProfileCompetencies {
 }
 
 model ProfileScores {
-  id        String             @id @default(cuid())
   profile   Profile?           @relation(fields: [profileId], references: [id])
-  profileId String?
+  profileId String
   skill     Skill?             @relation(fields: [skillId], references: [id])
-  skillId   String?
+  skillId   String
   score     Int?
   scores360 ThreeSixtyScores[]
+
+  @@id([profileId, skillId])
 }
 
 model ThreeSixtyScores {
-  id          String        @id @default(cuid())
-  score       Int
-  date        DateTime      @default(now())
-  appraiser   Profile       @relation(fields: [appraiserId], references: [id])
-  appraiserId String
-  appraisee   ProfileScores @relation(fields: [appraiseeId], references: [id])
-  appraiseeId String
+  id                 String        @id @default(cuid())
+  score              Int
+  date               DateTime      @default(now())
+  appraiser          Profile       @relation(fields: [appraiserId], references: [id])
+  appraiserId        String
+  appraisee          ProfileScores @relation(fields: [appraiseeProfileId, appraiseeSkillId], references: [profileId, skillId])
+  appraiseeProfileId String
+  appraiseeSkillId   String
 }

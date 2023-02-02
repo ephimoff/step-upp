@@ -29,7 +29,7 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
     return errorMessage;
   };
 
-  const submitScore = (
+  const submitScore = async (
     values: any,
     appraiseeId: string,
     appraiserId: string
@@ -38,7 +38,9 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
     // also converting string values to numbers
     const scores = Object.entries(values).map((e) => {
       const obj = {
-        [e[0]]: Number(e[1]),
+        skillId: e[0],
+        // [e[0]]: Number(e[1]),
+        score: Number(e[1]),
       };
       // console.log(obj);
       return obj;
@@ -49,6 +51,18 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
       scores: scores,
     };
     console.log(reqBody);
+    try {
+      const response = await fetch('/api/score360', {
+        method: 'POST',
+        body: JSON.stringify(reqBody),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const jsonResponse = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
