@@ -6,25 +6,29 @@ import Card from '@/components/Card';
 import Scores from '@/components/Scores';
 
 type ThreeSixtyPageProps = {
-  profile: ProfileType;
+  // session: any;
+  appraiseeProfile: ProfileType;
+  appraiserProfile: ProfileType;
 };
 
-const ThreeSixtyPage = ({ profile }: ThreeSixtyPageProps) => {
-  const title = profile
-    ? `${profile.name}'s profile on StepUpp`
+const ThreeSixtyPage = ({
+  appraiseeProfile,
+  appraiserProfile,
+}: ThreeSixtyPageProps) => {
+  const title = appraiseeProfile
+    ? `${appraiseeProfile.name}'s profile on StepUpp`
     : 'No profile was found';
-  // console.log('profile', profile);
-  const skills = profile.skills;
+  const skills = appraiseeProfile.skills;
 
   return (
     <>
-      <Sidebar title={title} name={profile.name}>
+      <Sidebar title={title} name={appraiseeProfile.name}>
         <div>
-          <h2>{profile.name}</h2>
+          <h2>{appraiseeProfile.name}</h2>
           <Card>
             <p>
-              Please review the below skills of {profile.name} and evaluate them
-              on a scale from 1 to 10:
+              Please review the below skills of {appraiseeProfile.name} and
+              evaluate them on a scale from 1 to 10:
             </p>
             <ul className="my-2 text-sm text-gray-400">
               <li>
@@ -48,7 +52,11 @@ const ThreeSixtyPage = ({ profile }: ThreeSixtyPageProps) => {
                 others and write books about it
               </li>
             </ul>
-            <Scores skills={skills} />
+            <Scores
+              skills={skills}
+              appraiseeId={appraiseeProfile.id}
+              appraiserId={appraiserProfile.id}
+            />
           </Card>
         </div>
       </Sidebar>
@@ -58,16 +66,24 @@ const ThreeSixtyPage = ({ profile }: ThreeSixtyPageProps) => {
 export default ThreeSixtyPage;
 
 export const getServerSideProps = async (context: any) => {
+  const session = await getSession(context);
+  // console.log(session);
   const slug = context.query.slug.toLowerCase();
-  const profile = await prisma.profile.findUnique({
+  const appraiseeProfile = await prisma.profile.findUnique({
     where: {
       slug: slug,
     },
     include: { skills: { include: { skill: true, scores360: true } } },
   });
 
-  const session = await getSession(context);
-
+  let appraiserProfile = null;
+  if (session) {
+    appraiserProfile = await prisma.profile.findUnique({
+      where: {
+        email: session.user!.email as string,
+      },
+    });
+  }
   if (!session) {
     return {
       redirect: {
@@ -77,6 +93,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, profile },
+    props: { session, appraiseeProfile, appraiserProfile },
   };
 };

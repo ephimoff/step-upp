@@ -1,11 +1,13 @@
-import { Formik, Field, Form, FieldArray } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import CustomButton from './CustomButton';
 
 type ScoresProps = {
   skills: any;
+  appraiseeId: string;
+  appraiserId: string;
 };
 
-const Scores = ({ skills }: ScoresProps) => {
+const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
   const initialFields = {};
   const extraFields = skills.map((e: any) => {
     return {
@@ -27,13 +29,36 @@ const Scores = ({ skills }: ScoresProps) => {
     return errorMessage;
   };
 
+  const submitScore = (
+    values: any,
+    appraiseeId: string,
+    appraiserId: string
+  ) => {
+    // converting an object to an array of objects
+    // also converting string values to numbers
+    const scores = Object.entries(values).map((e) => {
+      const obj = {
+        [e[0]]: Number(e[1]),
+      };
+      // console.log(obj);
+      return obj;
+    });
+    const reqBody = {
+      appraiseeId: appraiseeId,
+      appraiserId: appraiserId,
+      scores: scores,
+    };
+    console.log(reqBody);
+  };
+
   return (
     <div>
       <Formik
         initialValues={Object.assign(initialFields, ...extraFields)}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
-          console.log(values);
+          submitScore(values, appraiseeId, appraiserId);
+          // console.log(values);
           setSubmitting(false);
         }}
       >
@@ -67,7 +92,7 @@ const Scores = ({ skills }: ScoresProps) => {
                   </div>
                 );
               })}
-              <pre className="text-sm font-thin text-white">
+              <pre className="text-sm font-thin text-black dark:text-white">
                 {JSON.stringify(values, null, 2)}
               </pre>
               <pre className="text-sm font-thin text-red-500">
