@@ -6,11 +6,21 @@ export type SkillType = {
   actions?: number | null;
 };
 
-type ProfileSkillType = {
+export type ThreeSixtyType = {
+  id: string;
+  score: number;
+  date: Date;
+  appraiser: ProfileType;
+  profileId: string;
+  appraisee: any;
+};
+
+export type ProfileSkillType = {
   id: string;
   profileId: string;
   score: number;
-  score360: number;
+  scores360: ThreeSixtyType[];
+  skill: SkillType[];
   skillId: string;
 };
 

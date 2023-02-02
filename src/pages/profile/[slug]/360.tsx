@@ -3,26 +3,19 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import { ProfileType } from '@/types/types';
 import { getSession } from 'next-auth/react';
 import Card from '@/components/Card';
+import Scores from '@/components/Scores';
 
 type ThreeSixtyPageProps = {
   profile: ProfileType;
 };
 
-// 2
-//           ? 'Very high-level knowledge. No practical experience'
-//           : value <= 4
-//           ? 'Maybe used the skill once or twice'
-//           : value <= 6
-//           ? 'Can finish all the assigned tasks'
-//           : value <= 8
-//           ? 'Can use this skill in the work without any guidence from the side
-
 const ThreeSixtyPage = ({ profile }: ThreeSixtyPageProps) => {
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';
-  console.log('profile', profile);
+  // console.log('profile', profile);
   const skills = profile.skills;
+
   return (
     <>
       <Sidebar title={title} name={profile.name}>
@@ -31,9 +24,9 @@ const ThreeSixtyPage = ({ profile }: ThreeSixtyPageProps) => {
           <Card>
             <p>
               Please review the below skills of {profile.name} and evaluate them
-              on a scale from 1 to 10.
+              on a scale from 1 to 10:
             </p>
-            <ul>
+            <ul className="my-2 text-sm text-gray-400">
               <li>
                 <strong>Up to 2</strong> - Very high-level knowledge. No
                 practical experience
@@ -55,6 +48,7 @@ const ThreeSixtyPage = ({ profile }: ThreeSixtyPageProps) => {
                 others and write books about it
               </li>
             </ul>
+            <Scores skills={skills} />
           </Card>
         </div>
       </Sidebar>
