@@ -42,18 +42,28 @@ const Scores = ({ skills }: ScoresProps) => {
             <div>
               {skills?.map((element: any, index: number) => {
                 return (
-                  <div key={index}>
-                    <span>{element.skill.name}</span>
-                    <Field
-                      name={element.skillId}
-                      type="text"
-                      className="mr-2 w-1/3 rounded-md border bg-slate-700 py-1 text-center"
-                      placeholder="0"
-                      validate={validate}
-                    />
-                    {errors[element.skillId] && touched[element.skillId] ? (
-                      <div>{errors[element.skillId] as string}</div>
-                    ) : null}
+                  <div key={index} className="flex items-baseline py-3">
+                    <label className="w-3/5 font-thin">
+                      {element.skill.name}
+                    </label>
+                    <div>
+                      <Field
+                        name={element.skillId}
+                        type="text"
+                        className={`w-20 rounded-md border ${
+                          touched[element.skillId] && errors[element.skillId]
+                            ? 'border-2 border-[#fc8181]'
+                            : 'border-gray-400 dark:border-gray-700'
+                        } bg-slate-300 px-2 py-1 text-center dark:bg-slate-900`}
+                        placeholder="0"
+                        validate={validate}
+                      />
+                      {errors[element.skillId] && touched[element.skillId] ? (
+                        <div className="mt-1 text-sm font-normal text-[#fc8181]">
+                          {errors[element.skillId] as string}
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 );
               })}
@@ -73,28 +83,6 @@ const Scores = ({ skills }: ScoresProps) => {
         )}
       </Formik>
     </div>
-    // <div className="flex items-baseline py-3">
-    //   <label className="w-2/5 font-thin ">{skill.name} </label>
-    //   <div>
-    //     <input
-    //       type="text"
-    //       placeholder="7"
-    //       maxLength={2}
-    //       size={2}
-    //       {...field}
-    //       className={`w-20 rounded-md border ${
-    //         meta.touched && meta.error
-    //           ? 'border-2 border-[#fc8181]'
-    //           : 'border-gray-400'
-    //       } bg-slate-300 px-2 py-1 text-center dark:border-gray-700 dark:bg-slate-900`}
-    //     />
-    //     {meta.touched && meta.error ? (
-    //       <div className="mt-1 text-sm font-normal text-[#fc8181]">
-    //         {errorText}
-    //       </div>
-    //     ) : null}
-    //   </div>
-    // </div>
   );
 };
 export default Scores;
