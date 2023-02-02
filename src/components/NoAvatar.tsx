@@ -33,7 +33,6 @@ function getInitials(name: string) {
 // }
 
 const NoAvatar = ({ name, size }: NoAvatarProps) => {
-  console.log(size);
   const randomGradient = `from-[#f953c6] to-[#b91d73]`;
   const width = `w-${size}`;
   const height = `h-${size}`;

@@ -1,7 +1,6 @@
 import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
-import { json } from 'stream/consumers';
 
 type PopoverPanelProps = {
   type: 'self' | '360';

@@ -62,9 +62,6 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
     }
   }, []);
 
-  console.log('profile', profile);
-  console.log('currentProfile', currentProfile);
-
   async function updateProfile(values: any) {
     let url = '/api/profile';
     let method = 'POST';

@@ -10,7 +10,7 @@ interface CompetencyCardProps {
 }
 
 const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
-  // console.dir(competency, { depth: null });
+  console.dir(competency, { depth: null });
   return (
     <>
       <Card grid={true}>
