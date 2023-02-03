@@ -3,6 +3,7 @@ import ProgressBar from '../Profile/ProgressBar';
 import Card from '../Card';
 import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
+import ProgressBar360 from '../Profile/ProgressBar360';
 
 interface CompetencyCardProps {
   competency: CompetencyType;
@@ -30,6 +31,7 @@ const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
           <h2>Actions</h2>
         </div>
         {competency.skills?.map((skill: any, skillIndex: number) => {
+          // console.log(skill);
           return (
             <React.Fragment key={skillIndex}>
               <div className="col-span-2 font-normal">{skill.name}</div>
@@ -39,11 +41,10 @@ const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
                 skillId={skill.id}
                 type="self"
               />
-              <ProgressBar
-                value={skill.scores[0]?.score360}
-                type="360"
+              <ProgressBar360
                 profileId={profileId}
                 skillId={skill.id}
+                scores={skill.scores[0]?.scores360}
               />
               <div>
                 <CustomButton text={'+ 2'} size={'small'} />

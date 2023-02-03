@@ -29,7 +29,7 @@ const ProfilePage = ({ profile, competencies }: ProfilePageProps) => {
     try {
       const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
       const resJson: CompetencyType[] = await res.json();
-      console.dir(resJson, { depth: null });
+      // console.dir(resJson, { depth: null });
       if (res.status === 200) {
         setAssignedCompetencies(resJson);
       } else {
