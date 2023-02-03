@@ -73,8 +73,10 @@ export const getServerSideProps = async (context: any) => {
     where: {
       slug: slug,
     },
-    include: { skills: { include: { skill: true, scores360: true } } },
+    include: { skills: { include: { skill: true } } },
   });
+
+  console.dir(appraiseeProfile, { depth: null });
 
   let appraiserProfile = null;
   if (session) {

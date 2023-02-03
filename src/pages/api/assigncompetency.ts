@@ -42,7 +42,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                   select: {
                     id: true,
                     name: true,
-                    scores: { where: { profileId: profileId as string } },
+                    scores: {
+                      where: { profileId: profileId as string },
+                      select: {
+                        profileId: true,
+                        skillId: true,
+                        score: true,
+                        scores360: {
+                          select: {
+                            appraiser: true,
+                            date: true,
+                            score: true,
+                          },
+                        },
+                      },
+                    },
                   },
                 },
               },
