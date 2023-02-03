@@ -113,11 +113,24 @@ const PopoverPanel = ({
             )}
           </Formik>
         ) : (
-          <CustomButton
-            text={'Request assessment'}
-            size={'small'}
-            role={'secondary'}
-          />
+          <div>
+            <div>
+              <p>This number is an average based on X number of reviews:</p>
+              <ul>
+                <li>
+                  <strong>8</strong> rated by email@example.com on 27 Jan 2023
+                </li>
+                <li>
+                  <strong>8</strong> rated by email@example.com on 27 Jan 2023
+                </li>
+              </ul>
+            </div>
+            <CustomButton
+              text={'Request assessment'}
+              size={'small'}
+              role={'secondary'}
+            />
+          </div>
         )}
       </div>
     </div>

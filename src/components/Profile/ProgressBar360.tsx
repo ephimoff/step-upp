@@ -34,7 +34,7 @@ const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
   console.log(scores);
   console.log(value);
   return (
-    <Popover className="relative">
+    <Popover className="">
       <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 focus:outline-none">
         <div className="flex h-full items-center gap-x-2">
           <span>
@@ -69,7 +69,8 @@ const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
           <span>{!score ? '❓' : score}</span>
         </div>
       </Popover.Button>
-      <Popover.Panel className="absolute -top-24 z-10">
+      <Popover.Overlay className="absolute inset-0 rounded-xl bg-black opacity-30" />
+      <Popover.Panel className="absolute left-1/2 top-1/2 z-10 w-screen max-w-sm -translate-x-1/2 -translate-y-1/2">
         {({ close }) => (
           <PopoverPanel
             type={'360'}
