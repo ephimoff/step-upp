@@ -104,11 +104,11 @@ const PopoverPanel = ({
             }}
           >
             {({ values, errors, isSubmitting }) => (
-              <Form className="flex justify-center">
+              <Form className="flex w-full justify-center">
                 <Field
                   name="score"
                   type="text"
-                  className="mr-2 w-1/3 rounded-md border bg-slate-700 py-1 text-center"
+                  className="mr-2 w-1/5 rounded-md border border-gray-400 bg-slate-300  py-1 px-2 text-center dark:border-gray-700 dark:bg-slate-900"
                   placeholder="10"
                 />
                 <CustomButton
@@ -123,7 +123,7 @@ const PopoverPanel = ({
           </Formik>
         ) : (
           <div>
-            <div className="text-gray-600">
+            <div className="text-gray-600 dark:text-gray-400">
               <p>
                 This number is an average based on{' '}
                 <strong>{scores.length}</strong> reviews:
@@ -133,8 +133,7 @@ const PopoverPanel = ({
                   return (
                     <li key={index} className="mb-2 ml-4 list-disc">
                       <strong>{e.score}</strong> by{' '}
-                      <span>{e.appraiser.name}</span> ({e.appraiser.email})
-                      rated on{' '}
+                      <span>{e.appraiser.name}</span> rated on{' '}
                       {new Intl.DateTimeFormat('en-GB', {
                         year: 'numeric',
                         month: 'long',
@@ -145,11 +144,7 @@ const PopoverPanel = ({
                 })}
               </ul>
             </div>
-            <CustomButton
-              text={'Request assessment'}
-              size={'small'}
-              role={'secondary'}
-            />
+            <CustomButton text={'Request assessment'} role={'secondary'} />
           </div>
         )}
       </div>

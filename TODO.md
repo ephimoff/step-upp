@@ -13,6 +13,8 @@
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [x] Refresh instantly the view of competencies right adding a new competency
 - [x] Refresh `myprofile` after profile is created
+- [ ] Don't allow the same user add 360 to an existing one. Instead rewrite the score
+- [ ] Rename 360 to Feedback Score or the likes
 
 ## Bugs
 

@@ -69,11 +69,12 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
     <div>
       <Formik
         initialValues={Object.assign(initialFields, ...extraFields)}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
           submitScore(values, appraiseeId, appraiserId);
-          // console.log(values);
           setSubmitting(false);
+          resetForm();
+          console.log('done');
         }}
       >
         {({ values, errors, touched, isSubmitting }) => (
