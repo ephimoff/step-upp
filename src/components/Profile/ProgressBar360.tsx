@@ -29,10 +29,6 @@ const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
   const value = calculateAverage(scores);
   const [score, setScore] = useState<number | null>(value);
 
-  console.log(profileId);
-  console.log(skillId);
-  console.log(scores);
-  console.log(value);
   return (
     <Popover className="">
       <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 focus:outline-none">

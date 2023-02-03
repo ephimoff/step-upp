@@ -53,36 +53,43 @@ const PopoverPanel = ({
   };
 
   return (
-    <div className="grid w-full rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-sm text-white shadow-xl">
-      <strong
-        className={`${
-          value! <= 2
-            ? 'text-red-400'
-            : value! <= 4
-            ? 'text-orange-400'
-            : value! <= 6
-            ? 'text-yellow-400'
-            : value! <= 8
-            ? 'text-green-400'
-            : 'text-cyan-400'
-        } text-xs`}
-      >
-        {!value ? '???' : `${value} out of 10:`}
-      </strong>
-      <span>
-        {!value
-          ? 'No assessment yet'
-          : value <= 2
-          ? 'Very high-level knowledge. No practical experience'
-          : value <= 4
-          ? 'Maybe used the skill once or twice'
-          : value <= 6
-          ? 'Can finish all the assigned tasks'
-          : value <= 8
-          ? 'Can use this skill in the work without any guidence from the side'
-          : 'An absolute MVP. Can teach others and write books about it'}
-      </span>
-      <div className="flex">
+    <div className="grid w-full rounded-xl bg-white text-sm shadow-xl dark:bg-slate-800">
+      <div className="w-full rounded-t-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 text-white">
+        <div>
+          <strong
+            className={`${
+              value! <= 2
+                ? 'text-red-400'
+                : value! <= 4
+                ? 'text-orange-400'
+                : value! <= 6
+                ? 'text-yellow-400'
+                : value! <= 8
+                ? 'text-green-400'
+                : 'text-cyan-400'
+            } text-xs`}
+          >
+            {!value ? '???' : `${value} out of 10:`}
+          </strong>
+        </div>
+        <div>
+          <span>
+            {!value
+              ? 'No assessment yet'
+              : value <= 2
+              ? 'Very high-level knowledge. No practical experience'
+              : value <= 4
+              ? 'Maybe used the skill once or twice'
+              : value <= 6
+              ? 'Can finish all the assigned tasks'
+              : value <= 8
+              ? 'Can use this skill in the work without any guidence from the side'
+              : 'An absolute MVP. Can teach others and write books about it'}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex p-4">
         {type === 'self' ? (
           <Formik
             enableReinitialize
@@ -116,15 +123,15 @@ const PopoverPanel = ({
           </Formik>
         ) : (
           <div>
-            <div>
+            <div className="text-gray-600">
               <p>
                 This number is an average based on{' '}
                 <strong>{scores.length}</strong> reviews:
               </p>
-              <ul>
+              <ul className="mt-2">
                 {scores.map((e: any, index: number) => {
                   return (
-                    <li key={index}>
+                    <li key={index} className="mb-2 ml-4 list-disc">
                       <strong>{e.score}</strong> by{' '}
                       <span>{e.appraiser.name}</span> ({e.appraiser.email})
                       rated on{' '}

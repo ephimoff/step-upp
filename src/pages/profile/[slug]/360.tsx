@@ -76,7 +76,7 @@ export const getServerSideProps = async (context: any) => {
     include: { skills: { include: { skill: true } } },
   });
 
-  console.dir(appraiseeProfile, { depth: null });
+  // console.dir(appraiseeProfile, { depth: null });
 
   let appraiserProfile = null;
   if (session) {
