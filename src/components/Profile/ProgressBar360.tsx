@@ -79,6 +79,7 @@ const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
             skillId={skillId}
             setScore={setScore}
             close={close}
+            scores={scores}
           />
         )}
       </Popover.Panel>

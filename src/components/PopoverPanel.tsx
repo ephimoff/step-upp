@@ -9,6 +9,7 @@ type PopoverPanelProps = {
   skillId: string;
   setScore: any;
   close: any;
+  scores?: any;
 };
 
 const PopoverPanel = ({
@@ -18,6 +19,7 @@ const PopoverPanel = ({
   skillId,
   setScore,
   close,
+  scores,
 }: PopoverPanelProps) => {
   const updateScore = async (
     profileId: string,
@@ -78,7 +80,7 @@ const PopoverPanel = ({
           ? 'Can finish all the assigned tasks'
           : value <= 8
           ? 'Can use this skill in the work without any guidence from the side'
-          : 'An absolute MVP. You can teach others and write books about it'}
+          : 'An absolute MVP. Can teach others and write books about it'}
       </span>
       <div className="flex">
         {type === 'self' ? (
@@ -115,14 +117,25 @@ const PopoverPanel = ({
         ) : (
           <div>
             <div>
-              <p>This number is an average based on X number of reviews:</p>
+              <p>
+                This number is an average based on{' '}
+                <strong>{scores.length}</strong> reviews:
+              </p>
               <ul>
-                <li>
-                  <strong>8</strong> rated by email@example.com on 27 Jan 2023
-                </li>
-                <li>
-                  <strong>8</strong> rated by email@example.com on 27 Jan 2023
-                </li>
+                {scores.map((e: any, index: number) => {
+                  return (
+                    <li key={index}>
+                      <strong>{e.score}</strong> by{' '}
+                      <span>{e.appraiser.name}</span> ({e.appraiser.email})
+                      rated on{' '}
+                      {new Intl.DateTimeFormat('en-GB', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: '2-digit',
+                      }).format(new Date(e.date))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
             <CustomButton
