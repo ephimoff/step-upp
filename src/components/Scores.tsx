@@ -50,7 +50,7 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
       appraiserId: appraiserId,
       scores: scores,
     };
-    console.log(reqBody);
+    // console.log(reqBody);
     try {
       const response = await fetch('/api/score360', {
         method: 'POST',

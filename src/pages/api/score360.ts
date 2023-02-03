@@ -4,7 +4,7 @@ import prisma from '@/utils/prisma';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { appraiseeId, appraiserId, scores } = req.body;
-    console.log(scores);
+    // console.log(scores);
     let isSuccess = true;
     try {
       scores.map(async (score: any, index: number) => {
