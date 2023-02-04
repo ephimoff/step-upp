@@ -9,12 +9,12 @@ import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetencies
 import { CompetencyType, ProfileType } from '@/types/types';
 import Spinner from '@/components/Spinner';
 
-type ProfilePageProps = {
+type Props = {
   competencies: any;
   profile: ProfileType;
 };
 
-const ProfilePage = ({ profile, competencies }: ProfilePageProps) => {
+const ProfilePage = ({ profile, competencies }: Props) => {
   const title = profile
     ? `${profile.name}'s profile on StepUpp`
     : 'No profile was found';

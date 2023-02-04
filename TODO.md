@@ -14,7 +14,13 @@
 - [x] Refresh instantly the view of competencies right adding a new competency
 - [x] Refresh `myprofile` after profile is created
 - [ ] Don't allow the same user add 360 to an existing one. Instead rewrite the score
-- [ ] Rename 360 to Feedback Score or the likes
+- [x] Rename 360 to Feedback Score or the likes
+- [ ] Add an expiration token for accessing feeback page
+- [ ] Send an email when requesting feedback
+- [ ] Protect the feedback page and won't allow to access it without a token
+- [ ] Update all users with the company name to limit the scope of users
+- [ ] Make the desing a bit more "enterprisee"
+- [ ] Add actions and tips or remove them for the first version
 
 ## Bugs
 

@@ -1,7 +1,6 @@
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import { BiHomeAlt, BiUser, BiFoodMenu } from 'react-icons/bi';
 import Link from 'next/link';
-// import { useSession } from 'next-auth/react';
 import SidebarLink from '../SidebarLink';
 import { siteTitle } from '@/data/data';
 import Head from 'next/head';
@@ -45,19 +44,19 @@ export default function Sidebar({
   const toggleSidebar = () => {
     setOpen(!open);
   };
-  // const sidebarGradient = `bg-gradient-to-br from-[#c9def4] via-[#f5ccd4] to-[#b8a4c9]`;
-  // const sidebarGradient = `bg-gradient-to-tl from-[#595cff] to-[#c6f8ff]`;
-  // const logoGradient = `bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent`;
+
   return (
     <div className="flex bg-gray-200 dark:bg-gray-900">
       <Head>
         <title>{title}</title>
       </Head>
+      {/* container of the sidebar */}
       <div
         className={`${
           open ? 'w-72' : 'w-28'
         } sticky top-0 h-screen text-black duration-300`}
       >
+        {/* visible part of the sidebar */}
         <div className="relative m-4 h-5/6 rounded-xl bg-white pt-8 drop-shadow-2xl dark:bg-slate-800 dark:bg-gradient-to-tl dark:from-slate-800 dark:to-[#334562]">
           <div className="px-4">
             <div

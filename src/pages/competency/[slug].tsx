@@ -4,12 +4,12 @@ import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 
-type CompetencyPageProps = {
+type Props = {
   competency: CompetencyType;
   profile: ProfileType;
 };
 
-const CompetencyPage = ({ competency, profile }: CompetencyPageProps) => {
+const CompetencyPage = ({ competency, profile }: Props) => {
   const title = competency
     ? `${competency.name}'s profile on StepUpp`
     : 'No competency was found';
