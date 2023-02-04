@@ -74,7 +74,7 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
           submitScore(values, appraiseeId, appraiserId);
           setSubmitting(false);
           resetForm();
-          console.log('done');
+          // console.log('done');
         }}
       >
         {({ values, errors, touched, isSubmitting }) => (

@@ -41,11 +41,18 @@ const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
                 skillId={skill.id}
                 type="self"
               />
-              <ProgressBarFeedback
+              <ProgressBar
+                value={null}
+                profileId={profileId}
+                skillId={skill.id}
+                type="feedback"
+                scores={skill.scores[0]?.feedbackScores}
+              />
+              {/* <ProgressBarFeedback
                 profileId={profileId}
                 skillId={skill.id}
                 scores={skill.scores[0]?.feedbackScores}
-              />
+              /> */}
               <div>
                 <CustomButton text={'+ 2'} size={'small'} />
               </div>

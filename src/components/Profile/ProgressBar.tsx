@@ -1,16 +1,42 @@
 import { Popover } from '@headlessui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PopoverPanel from '../PopoverPanel';
 
-type ProgressBarProps = {
+interface FeedbackScore {
+  appraiser: any;
+  date: Date;
+  score: number;
+}
+
+type Props = {
   value: number | null;
   type: 'self' | 'feedback';
   profileId: string;
   skillId: string;
+  scores?: FeedbackScore[];
 };
 
-const ProgressBar = ({ value, type, profileId, skillId }: ProgressBarProps) => {
-  const [score, setScore] = useState(value);
+const ProgressBar = ({ value, type, profileId, skillId, scores }: Props) => {
+  const [score, setScore] = useState<number | null>(value);
+
+  useEffect(() => {
+    const calculateAverage = (arr: any): null | number => {
+      // console.log(arr);
+      if (!arr) {
+        return null;
+      }
+      let score = 0;
+      arr.map((e: any) => {
+        score += e.score;
+      });
+      return Math.round(score / arr.length);
+    };
+
+    if (type === 'feedback') {
+      setScore(calculateAverage(scores));
+    }
+  }, []);
+
   return (
     <Popover className="">
       <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 focus:outline-none">
@@ -57,6 +83,7 @@ const ProgressBar = ({ value, type, profileId, skillId }: ProgressBarProps) => {
             skillId={skillId}
             setScore={setScore}
             close={close}
+            scores={scores}
           />
         )}
       </Popover.Panel>

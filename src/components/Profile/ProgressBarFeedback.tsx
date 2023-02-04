@@ -15,7 +15,7 @@ interface Props {
 }
 
 const calculateAverage = (arr: any): null | number => {
-  console.log(arr);
+  // console.log(arr);
   if (!arr) {
     return null;
   }
