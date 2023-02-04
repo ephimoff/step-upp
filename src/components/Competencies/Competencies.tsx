@@ -29,11 +29,13 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
 
   return (
     <>
-      <CustomButton text={'+ Add competency'} onClick={handleAddCompetency} />
+      <div className="mb-4">
+        <CustomButton text={'+ Add competency'} onClick={handleAddCompetency} />
+      </div>
 
       {values.competencies.map((competency: CompetencyType, index: number) => (
         <Card key={index}>
-          <h1 className="text-xl text-purple-600">
+          <h1 className="text-purple-600 sm:text-lg md:text-xl">
             {values.competencies[index].name
               ? values.competencies[index].name
               : 'Create a new competency'}

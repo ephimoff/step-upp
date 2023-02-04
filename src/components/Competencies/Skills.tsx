@@ -22,7 +22,7 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
   return (
     <>
       <div>
-        <span>Skills: </span>
+        <span className="mr-2 text-sm sm:text-base">Skills</span>
         <CustomButton
           text={'+ Add skill'}
           onClick={handleAddSkill}
@@ -34,13 +34,15 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
         (skill: SkillType, index: number) => (
           <div key={index} className="">
             <div className="flex items-baseline py-3 ">
-              <label className="w-1/5 font-thin">{`Skill ${index + 1}:`}</label>
-              <div className="w-3/5">
+              <label className="w-2/6 text-sm font-thin sm:text-base">{`Skill ${
+                index + 1
+              }:`}</label>
+              <div className="w-3/6">
                 <Field
                   name={`competencies.${competencyIndex}.skills.${index}.name`}
                   placeholder={'Strategic impact'}
                   required
-                  className={`w-full rounded-md border border-gray-400 bg-slate-300 px-2 py-1 dark:border-gray-700 dark:bg-slate-900`}
+                  className={`w-full rounded-md border border-gray-400 bg-slate-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-slate-900 sm:text-base`}
                 />
               </div>
               <div className="pl-2">

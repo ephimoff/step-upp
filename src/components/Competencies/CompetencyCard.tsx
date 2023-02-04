@@ -15,39 +15,43 @@ const CompetencyCard = ({ competency, profileId }: Props) => {
   return (
     <>
       <Card grid={true}>
-        <div className="col-span-5">
+        <div className="col-span-7">
           <h2 className="text-purple-400 sm:text-lg md:text-xl">
             {competency.name}
           </h2>
         </div>
-        <div className="col-span-1 text-xs text-slate-400 sm:col-span-3">
+        <div className="col-span-1 text-xs text-slate-400 lg:col-span-3">
           <h2>Skill</h2>
         </div>
-        <div className="col-span-2 text-xs text-slate-400 sm:col-span-1">
+        <div className="col-span-3 text-xs text-slate-400 lg:col-span-2">
           <h2>Self-score</h2>
         </div>
-        <div className="col-span-2 text-xs text-slate-400 sm:col-span-1">
+        <div className="col-span-3 text-xs text-slate-400 lg:col-span-2">
           <h2>Feedback-score</h2>
         </div>
         {competency.skills?.map((skill: any, skillIndex: number) => {
           return (
             <React.Fragment key={skillIndex}>
-              <div className="col-span-1 text-xs font-normal sm:col-span-3 sm:text-base">
+              <div className="text-2xs col-span-1 font-normal lg:col-span-3 lg:text-base">
                 {skill.name}
               </div>
-              <ProgressBar
-                value={skill.scores[0]?.score}
-                profileId={profileId}
-                skillId={skill.id}
-                type="self"
-              />
-              <ProgressBar
-                value={null}
-                profileId={profileId}
-                skillId={skill.id}
-                type="feedback"
-                scores={skill.scores[0]?.feedbackScores}
-              />
+              <div className="col-span-3 lg:col-span-2">
+                <ProgressBar
+                  value={skill.scores[0]?.score}
+                  profileId={profileId}
+                  skillId={skill.id}
+                  type="self"
+                />
+              </div>
+              <div className="col-span-3 lg:col-span-2">
+                <ProgressBar
+                  value={null}
+                  profileId={profileId}
+                  skillId={skill.id}
+                  type="feedback"
+                  scores={skill.scores[0]?.feedbackScores}
+                />
+              </div>
             </React.Fragment>
           );
         })}

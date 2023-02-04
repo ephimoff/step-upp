@@ -27,13 +27,13 @@ const InputAndLabel = ({
   }
   return (
     <div className="flex items-baseline py-3">
-      <label className="w-1/5 font-thin ">{label} </label>
-      <div className="relative w-3/5">
+      <label className="w-2/6 text-sm font-thin sm:text-base">{label} </label>
+      <div className="relative w-3/6">
         <input
           placeholder={placeholder}
           required={required}
           {...field}
-          className={`w-full rounded-md border bg-slate-300 px-2 py-1 dark:border-gray-700 dark:bg-slate-900 ${
+          className={`w-full rounded-md border bg-slate-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-slate-900 sm:text-base ${
             meta.touched && meta.error
               ? 'border-2 border-[#fc8181]'
               : 'border-gray-400'
