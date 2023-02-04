@@ -2,7 +2,7 @@ import { Popover } from '@headlessui/react';
 import { useState } from 'react';
 import PopoverPanel from '../PopoverPanel';
 
-interface Score360 {
+interface FeedbackScore {
   appraiser: any;
   date: Date;
   score: number;
@@ -11,11 +11,12 @@ interface Score360 {
 interface Props {
   profileId: string;
   skillId: string;
-  scores: Score360[];
+  scores: FeedbackScore[];
 }
 
 const calculateAverage = (arr: any): null | number => {
-  if (arr.length < 1) {
+  console.log(arr);
+  if (!arr) {
     return null;
   }
   let score = 0;
@@ -25,7 +26,7 @@ const calculateAverage = (arr: any): null | number => {
   return Math.round(score / arr.length);
 };
 
-const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
+const ProgressBarFeedback = ({ profileId, skillId, scores }: Props) => {
   const value = calculateAverage(scores);
   const [score, setScore] = useState<number | null>(value);
 
@@ -69,7 +70,7 @@ const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
       <Popover.Panel className="absolute left-1/2 top-1/2 z-10 w-screen max-w-sm -translate-x-1/2 -translate-y-1/2">
         {({ close }) => (
           <PopoverPanel
-            type={'360'}
+            type="feedback"
             value={value}
             profileId={profileId}
             skillId={skillId}
@@ -82,4 +83,4 @@ const ProgressBar360 = ({ profileId, skillId, scores }: Props) => {
     </Popover>
   );
 };
-export default ProgressBar360;
+export default ProgressBarFeedback;

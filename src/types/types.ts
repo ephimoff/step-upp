@@ -2,11 +2,11 @@ export type SkillType = {
   id?: string;
   name: string;
   score?: number | null;
-  score360?: number | null;
+  feedbackScores?: number | null;
   actions?: number | null;
 };
 
-export type ThreeSixtyType = {
+export type FeedbackScoreType = {
   id: string;
   score: number;
   date: Date;
@@ -19,7 +19,7 @@ export type ProfileSkillType = {
   id: string;
   profileId: string;
   score: number;
-  scores360: ThreeSixtyType[];
+  feedbackScores: FeedbackScoreType[];
   skill: SkillType[];
   skillId: string;
 };

@@ -5,16 +5,13 @@ import { getSession } from 'next-auth/react';
 import Card from '@/components/Card';
 import Scores from '@/components/Scores';
 
-type ThreeSixtyPageProps = {
+type Props = {
   // session: any;
   appraiseeProfile: ProfileType;
   appraiserProfile: ProfileType;
 };
 
-const ThreeSixtyPage = ({
-  appraiseeProfile,
-  appraiserProfile,
-}: ThreeSixtyPageProps) => {
+const FeedbackScoresPage = ({ appraiseeProfile, appraiserProfile }: Props) => {
   const title = appraiseeProfile
     ? `${appraiseeProfile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -63,7 +60,7 @@ const ThreeSixtyPage = ({
     </>
   );
 };
-export default ThreeSixtyPage;
+export default FeedbackScoresPage;
 
 export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);

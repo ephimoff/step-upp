@@ -3,7 +3,7 @@ import ProgressBar from '../Profile/ProgressBar';
 import Card from '../Card';
 import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
-import ProgressBar360 from '../Profile/ProgressBar360';
+import ProgressBarFeedback from '../Profile/ProgressBarFeedback';
 
 interface CompetencyCardProps {
   competency: CompetencyType;
@@ -25,7 +25,7 @@ const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
           <h2>Self-score</h2>
         </div>
         <div className=" text-sm text-slate-400">
-          <h2>360-score</h2>
+          <h2>Feedback-score</h2>
         </div>
         <div className=" text-sm text-slate-400">
           <h2>Actions</h2>
@@ -41,10 +41,10 @@ const CompetencyCard = ({ competency, profileId }: CompetencyCardProps) => {
                 skillId={skill.id}
                 type="self"
               />
-              <ProgressBar360
+              <ProgressBarFeedback
                 profileId={profileId}
                 skillId={skill.id}
-                scores={skill.scores[0]?.scores360}
+                scores={skill.scores[0]?.feedbackScores}
               />
               <div>
                 <CustomButton text={'+ 2'} size={'small'} />

@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         //     }
         //   })
-        const savedScore = await prisma.threeSixtyScores
+        const savedScore = await prisma.feedbackScores
           .create({
             data: {
               score: score.score,

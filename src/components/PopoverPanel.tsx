@@ -3,7 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
 
 type PopoverPanelProps = {
-  type: 'self' | '360';
+  type: 'self' | 'feedback';
   value: number | null;
   profileId: string;
   skillId: string;
@@ -123,27 +123,30 @@ const PopoverPanel = ({
           </Formik>
         ) : (
           <div>
-            <div className="text-gray-600 dark:text-gray-400">
-              <p>
-                This number is an average based on{' '}
-                <strong>{scores.length}</strong> reviews:
-              </p>
-              <ul className="mt-2">
-                {scores.map((e: any, index: number) => {
-                  return (
-                    <li key={index} className="mb-2 ml-4 list-disc">
-                      <strong>{e.score}</strong> by{' '}
-                      <span>{e.appraiser.name}</span> rated on{' '}
-                      {new Intl.DateTimeFormat('en-GB', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: '2-digit',
-                      }).format(new Date(e.date))}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+            {scores ? (
+              <div className="text-gray-600 dark:text-gray-400">
+                <p>
+                  This number is an average based on{' '}
+                  <strong>{scores.length}</strong> reviews:
+                </p>
+                <ul className="mt-2">
+                  {scores.map((e: any, index: number) => {
+                    return (
+                      <li key={index} className="mb-2 ml-4 list-disc">
+                        <strong>{e.score}</strong> by{' '}
+                        <span>{e.appraiser.name}</span> rated on{' '}
+                        {new Intl.DateTimeFormat('en-GB', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: '2-digit',
+                        }).format(new Date(e.date))}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : null}
+
             <CustomButton text={'Request assessment'} role={'secondary'} />
           </div>
         )}

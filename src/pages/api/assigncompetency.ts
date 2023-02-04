@@ -48,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         profileId: true,
                         skillId: true,
                         score: true,
-                        scores360: {
+                        feedbackScores: {
                           select: {
                             appraiser: true,
                             date: true,

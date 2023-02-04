@@ -52,7 +52,7 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
     };
     // console.log(reqBody);
     try {
-      const response = await fetch('/api/score360', {
+      const response = await fetch('/api/feedbackscore', {
         method: 'POST',
         body: JSON.stringify(reqBody),
         headers: {

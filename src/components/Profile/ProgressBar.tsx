@@ -4,7 +4,7 @@ import PopoverPanel from '../PopoverPanel';
 
 type ProgressBarProps = {
   value: number | null;
-  type: 'self' | '360';
+  type: 'self' | 'feedback';
   profileId: string;
   skillId: string;
 };
