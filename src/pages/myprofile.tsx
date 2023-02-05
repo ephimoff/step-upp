@@ -10,6 +10,7 @@ import NoAvatar from '@/components/NoAvatar';
 import { myProfileFields } from '@/data/data';
 import Card from '@/components/Card';
 import { generateSlug } from '@/utils/functions';
+import CustomButton from '@/components/CustomButton';
 
 type MyProfilePageProps = {
   profile: ProfileType;
@@ -137,7 +138,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                   setSubmitting(false);
                 }}
               >
-                {({ values, errors, isSubmitting }) => (
+                {({ values, errors, touched, isSubmitting }) => (
                   <Form className="">
                     <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
                       {userpic ? (
@@ -172,8 +173,18 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                     <pre className="text-sm font-thin text-red-500">
                       {JSON.stringify(errors, null, 2)}
                     </pre> */}
-
-                    <button
+                    <CustomButton
+                      type="submit"
+                      text={
+                        currentProfile ? 'Update profile' : 'Create profile'
+                      }
+                      role="primary"
+                      disabled={
+                        isSubmitting || Object.keys(errors).length !== 0
+                      }
+                      fullWidth
+                    />
+                    {/* <button
                       type="submit"
                       disabled={
                         isSubmitting || Object.keys(errors).length !== 0
@@ -184,7 +195,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                       }  w-full rounded-lg bg-gradient-to-l from-[#00B4DB] to-[#0083B0] py-2 text-white shadow-md hover:bg-gradient-to-r `}
                     >
                       {currentProfile ? 'Update profile' : 'Create profile'}
-                    </button>
+                    </button> */}
                   </Form>
                 )}
               </Formik>

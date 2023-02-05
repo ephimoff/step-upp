@@ -11,8 +11,8 @@ type CustomButtonProps = {
   icon?: React.ReactNode | string;
   iconAfter?: boolean;
 };
-const primary = `bg-gradient-to-r from-fuchsia-700 to-purple-500 hover:bg-gradient-to-l`;
-const secondary = `bg-gradient-to-l from-[#00B4DB] to-[#0083B0] hover:bg-gradient-to-r`;
+// const primary = `bg-gradient-to-r from-fuchsia-700 to-purple-500 hover:bg-gradient-to-l`;
+// const secondary = `bg-gradient-to-l from-[#00B4DB] to-[#0083B0] hover:bg-gradient-to-r`;
 
 const CustomButton = ({
   text,
@@ -40,6 +40,8 @@ const CustomButton = ({
       }
       ${size === 'small' ? 'py-0' : 'py-2'}
       ${fullWidth ? 'w-full' : null}
+      ${disabled ? 'cursor-auto opacity-40 dark:hover:bg-slate-900' : null}
+
       `}
       onClick={onClick}
       disabled={disabled}
