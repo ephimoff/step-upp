@@ -139,7 +139,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
               >
                 {({ values, errors, isSubmitting }) => (
                   <Form className="">
-                    <div className="mx-auto my-4 h-32 w-32">
+                    <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
                       {userpic ? (
                         <img
                           src={userpic}
@@ -166,12 +166,12 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                         );
                       })}
                     </div>
-                    <pre className="text-sm font-thin text-white">
+                    {/* <pre className="text-sm font-thin text-white">
                       {JSON.stringify(values, null, 2)}
                     </pre>
                     <pre className="text-sm font-thin text-red-500">
                       {JSON.stringify(errors, null, 2)}
-                    </pre>
+                    </pre> */}
 
                     <button
                       type="submit"

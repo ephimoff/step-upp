@@ -107,12 +107,12 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
                   </div>
                 );
               })}
-              <pre className="text-sm font-thin text-black dark:text-white">
+              {/* <pre className="text-sm font-thin text-black dark:text-white">
                 {JSON.stringify(values, null, 2)}
               </pre>
               <pre className="text-sm font-thin text-red-500">
                 {JSON.stringify(errors, null, 2)}
-              </pre>
+              </pre> */}
               <CustomButton
                 disabled={isSubmitting}
                 text={'Submit score'}

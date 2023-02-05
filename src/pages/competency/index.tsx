@@ -83,9 +83,9 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
                         />
                       ) : null}
 
-                      <pre className="text-sm font-thin text-white">
+                      {/* <pre className="text-sm font-thin text-white">
                         {JSON.stringify(values, null, 2)}
-                      </pre>
+                      </pre> */}
                     </>
                   </Form>
                 )}
