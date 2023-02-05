@@ -5,8 +5,7 @@ import Skills from './Skills';
 import Card from '../Card';
 import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
-
-import { MdDelete } from 'react-icons/md';
+import { BiTrash } from 'react-icons/bi';
 
 const Competencies = ({ competenciesArrayHelpers }: any) => {
   const [name, setName] = useState('');
@@ -30,7 +29,12 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
   return (
     <>
       <div className="mb-4">
-        <CustomButton text={'+ Add competency'} onClick={handleAddCompetency} />
+        <CustomButton
+          text="Add competency"
+          onClick={handleAddCompetency}
+          role="secondary"
+          icon="+"
+        />
       </div>
 
       {values.competencies.map((competency: CompetencyType, index: number) => (
@@ -57,13 +61,23 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
               </>
             )}
           </FieldArray>
-          <button
+          <div className="flex justify-center">
+            <CustomButton
+              text="Remove"
+              onClick={() => handleRemoveCompetency(index)}
+              role="red"
+              size={'small'}
+              icon={<BiTrash size={16} />}
+              iconAfter
+            />
+          </div>
+          {/* <button
             type="button"
             className="mx-auto flex items-center text-sm font-bold text-red-400 hover:text-red-500 dark:text-red-800 dark:hover:text-red-500"
             onClick={() => handleRemoveCompetency(index)}
           >
             <span>Remove</span> <MdDelete size={16} />
-          </button>
+          </button> */}
         </Card>
       ))}
     </>

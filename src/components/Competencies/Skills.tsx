@@ -2,6 +2,7 @@ import { Field, useFormikContext } from 'formik';
 import { useState } from 'react';
 import CustomButton from '../CustomButton';
 import { SkillType } from '@/types/types';
+import { BiTrash } from 'react-icons/bi';
 
 const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
   const [name, setName] = useState('');
@@ -21,19 +22,21 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
 
   return (
     <>
-      <div>
+      <div className="flex">
         <span className="mr-2 text-sm sm:text-base">Skills</span>
         <CustomButton
-          text={'+ Add skill'}
+          text="Add skill"
           onClick={handleAddSkill}
+          role="noborder"
           size={'small'}
+          icon="+"
         />
       </div>
 
       {values.competencies[competencyIndex].skills.map(
         (skill: SkillType, index: number) => (
           <div key={index} className="">
-            <div className="flex items-baseline py-3 ">
+            <div className="flex items-center py-3 ">
               <label className="w-2/6 text-sm font-thin sm:text-base">{`Skill ${
                 index + 1
               }:`}</label>
@@ -48,10 +51,10 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
               <div className="pl-2">
                 <button
                   type="button"
-                  className="h-6 w-5 text-gray-500 hover:text-red-500"
+                  className="h-6 w-6 text-gray-400 hover:text-red-500"
                   onClick={() => handleRemoveSkill(index)}
                 >
-                  x
+                  <BiTrash />
                 </button>
               </div>
             </div>

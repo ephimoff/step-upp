@@ -6,6 +6,7 @@ import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
 import prisma from '@/utils/prisma';
 import { ProfileType } from '@/types/types';
+import { useState } from 'react';
 
 type CompetenciesPageProps = {
   profile: ProfileType;
@@ -34,6 +35,7 @@ async function createCompetency(values: any) {
 
 export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
   const { data: session, status } = useSession();
+  const [btnClicked, setBtnClicked] = useState('');
 
   return (
     <>
@@ -53,13 +55,14 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
               <Formik
                 initialValues={initialValues}
                 enableReinitialize={true}
-                onSubmit={(values, { setSubmitting }) => {
+                onSubmit={(values, { setSubmitting, resetForm }) => {
                   setSubmitting(true);
                   createCompetency(values);
                   setSubmitting(false);
+                  resetForm();
                 }}
               >
-                {({ values, isSubmitting }) => (
+                {({ values, isSubmitting, resetForm }) => (
                   <Form onChange={(event) => {}}>
                     <>
                       <div>
@@ -76,11 +79,18 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
                         </FieldArray>
                       </div>
                       {values.competencies.length > 0 ? (
-                        <CustomButton
-                          text={'Save'}
-                          fullWidth={true}
-                          role={'secondary'}
-                        />
+                        <div className="mb-6 flex">
+                          <CustomButton
+                            type="submit"
+                            text="Submit"
+                            role="primary"
+                          />
+                          <CustomButton
+                            type="reset"
+                            text="Cancel"
+                            role="noborder"
+                          />
+                        </div>
                       ) : null}
 
                       {/* <pre className="text-sm font-thin text-white">
