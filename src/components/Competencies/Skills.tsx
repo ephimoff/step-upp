@@ -2,7 +2,7 @@ import { Field, useFormikContext } from 'formik';
 import { useState } from 'react';
 import CustomButton from '../CustomButton';
 import { SkillType } from '@/types/types';
-import { BiTrash } from 'react-icons/bi';
+import { Plus, Trash } from 'lucide-react';
 
 const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
   const [name, setName] = useState('');
@@ -29,7 +29,7 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
           onClick={handleAddSkill}
           role="noborder"
           size={'small'}
-          icon="+"
+          icon={<Plus size={14} strokeWidth={3} />}
         />
       </div>
 
@@ -45,7 +45,7 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
                   name={`competencies.${competencyIndex}.skills.${index}.name`}
                   placeholder={'Strategic impact'}
                   required
-                  className={`w-full rounded-md border border-gray-400 bg-slate-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-slate-900 sm:text-base`}
+                  className="input"
                 />
               </div>
               <div className="pl-2">
@@ -54,7 +54,7 @@ const Skills = ({ competencyIndex, skillsArrayHelpers }: any) => {
                   className="h-6 w-6 text-gray-400 hover:text-red-500"
                   onClick={() => handleRemoveSkill(index)}
                 >
-                  <BiTrash />
+                  <Trash size={14} />
                 </button>
               </div>
             </div>

@@ -6,6 +6,7 @@ import Card from '../Card';
 import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
 import { BiTrash } from 'react-icons/bi';
+import { Plus, Trash } from 'lucide-react';
 
 const Competencies = ({ competenciesArrayHelpers }: any) => {
   const [name, setName] = useState('');
@@ -33,7 +34,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
           text="Add competency"
           onClick={handleAddCompetency}
           role="secondary"
-          icon="+"
+          icon={<Plus size={16} strokeWidth={4} />}
         />
       </div>
 
@@ -67,7 +68,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
               onClick={() => handleRemoveCompetency(index)}
               role="red"
               size={'small'}
-              icon={<BiTrash size={16} />}
+              icon={<Trash size={14} />}
               iconAfter
             />
           </div>

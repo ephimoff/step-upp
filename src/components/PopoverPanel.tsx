@@ -1,6 +1,7 @@
 import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
+import { Save, Send } from 'lucide-react';
 
 type PopoverPanelProps = {
   type: 'self' | 'feedback';
@@ -108,15 +109,16 @@ const PopoverPanel = ({
                 <Field
                   name="score"
                   type="text"
-                  className="mr-2 w-1/5 rounded-md border border-gray-400 bg-slate-300  py-1 px-2 text-center dark:border-gray-700 dark:bg-slate-900"
+                  className="input input-short mr-2"
                   placeholder="10"
                 />
                 <CustomButton
                   disabled={isSubmitting}
-                  text={'Update'}
-                  size={'small'}
-                  role={'secondary'}
-                  type={'submit'}
+                  text="Update"
+                  size="small"
+                  role="secondary"
+                  type="submit"
+                  icon={<Save size={16} />}
                 />
               </Form>
             )}
@@ -147,7 +149,11 @@ const PopoverPanel = ({
               </div>
             ) : null}
 
-            <CustomButton text={'Request assessment'} role={'secondary'} />
+            <CustomButton
+              text="Request assessment"
+              role="secondary"
+              icon={<Send size={16} />}
+            />
           </div>
         )}
       </div>

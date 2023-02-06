@@ -2,11 +2,11 @@
 @tailwind components;
 
 .btn {
-  @apply mr-2 inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded px-5 py-2 text-base font-bold leading-snug tracking-wide transition duration-300 ease-in-out active:translate-y-1;
+  @apply mr-2 inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded px-5 py-1 text-base font-bold leading-snug tracking-wide transition duration-300 ease-in-out active:translate-y-1;
 }
 
 .btn.btn-sm {
-  @apply px-4 py-1 text-sm;
+  @apply px-4 py-0 text-sm;
 }
 
 .btn-primary {
@@ -39,6 +39,14 @@
 
 .btn-secondary.btn-outline {
   @apply border-[#00B4DB] bg-transparent text-[#00B4DB]  hover:bg-[#00B4DB] hover:text-white dark:bg-transparent dark:hover:bg-[#00B4DB];
+}
+
+.input {
+  @apply w-full rounded-md border-2 border-gray-400 bg-slate-300 px-2 py-1 text-sm focus:border-indigo-700 focus:outline-none dark:border-gray-700 dark:bg-gray-900 dark:focus:border-indigo-700 sm:text-base;
+}
+
+.input.input-short {
+  @apply w-1/5 text-center;
 }
 
 @tailwind utilities;

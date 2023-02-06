@@ -1,4 +1,5 @@
 import { HiOutlineBolt } from 'react-icons/hi2';
+import { Carrot } from 'lucide-react';
 
 type LogoProps = {
   open: boolean;
@@ -14,7 +15,7 @@ const Logo = ({ open }: LogoProps) => {
           open && 'rotate-[360deg]'
         }`}
       >
-        <HiOutlineBolt className="duration-500" size={32} />
+        <Carrot className="duration-500" size={32} />
       </span>
       <h1
         className={`${

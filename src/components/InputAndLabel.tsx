@@ -33,7 +33,7 @@ const InputAndLabel = ({
           placeholder={placeholder}
           required={required}
           {...field}
-          className={`w-full rounded-md border bg-slate-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-slate-900 sm:text-base ${
+          className={`input ${
             meta.touched && meta.error
               ? 'border-2 border-[#fc8181]'
               : 'border-gray-400'

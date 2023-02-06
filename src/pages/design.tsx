@@ -100,38 +100,40 @@ export default function DesignPage({ profile }: Props) {
             </div>
           </div>
         </Card>
-        <div>
-          <h2>Out of the card</h2>
-          <ul>
-            <li className="my-2">
-              <CustomButton text="Primary" />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Primary disabled" disabled />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Primary full length" fullWidth />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Primary" icon={<Check />} />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Primary" icon={<Check />} iconAfter />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Secondary" role="secondary" />
-            </li>
-            <li className="my-2">
-              <CustomButton text="No border" role="noborder" />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Remove" role="red" />
-            </li>
-            <li className="my-2">
-              <CustomButton text="Small" size="small" />
-            </li>
-          </ul>
-        </div>
+        <Card>
+          <h1>Inputs</h1>
+          <div className="flex items-baseline py-3">
+            <label className="w-2/6 text-sm font-thin sm:text-base">
+              Label
+            </label>
+            <div className="relative w-3/6">
+              <input placeholder="Placeholder" required className="input" />
+              <div className="mt-1 text-sm font-normal text-[#fc8181]">
+                Error text
+              </div>
+            </div>
+          </div>
+          <div className="flex items-baseline py-3">
+            <label className="w-2/6 text-sm font-thin sm:text-base">
+              Label
+            </label>
+            <div className="relative w-3/6">
+              <input placeholder="Placeholder" required className="input" />
+              <div className="mt-1 text-sm font-normal text-[#fc8181]">
+                Error text
+              </div>
+            </div>
+          </div>
+          <div>
+            <input
+              name="score"
+              type="text"
+              className="input input-short"
+              placeholder="10"
+            />
+            <CustomButton text="Primary" outline />
+          </div>
+        </Card>
       </Sidebar>
     </>
   );
