@@ -1,5 +1,13 @@
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-import { BiHomeAlt, BiUser, BiFoodMenu } from 'react-icons/bi';
+// import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+// import { BiHomeAlt, BiUser, BiFoodMenu } from 'react-icons/bi';
+import {
+  Home,
+  User,
+  BookOpenCheck,
+  ChevronLeft,
+  ChevronRight,
+  Paintbrush,
+} from 'lucide-react';
 import Link from 'next/link';
 import SidebarLink from '../SidebarLink';
 import { siteTitle } from '@/data/data';
@@ -19,14 +27,15 @@ export const sidebarLinks = [
   {
     name: 'Home',
     path: '/',
-    icon: <BiHomeAlt />,
+    icon: <Home />,
   },
   {
     name: 'Profiles',
     path: '/profile',
-    icon: <BiUser />,
+    icon: <User />,
   },
-  { name: 'Competencies', path: '/competency', icon: <BiFoodMenu /> },
+  { name: 'Competencies', path: '/competency', icon: <BookOpenCheck /> },
+  { name: 'Design', path: '/design', icon: <Paintbrush /> },
 ];
 
 export default function Sidebar({
@@ -61,9 +70,13 @@ export default function Sidebar({
           <div className="px-4">
             <div
               onClick={toggleSidebar}
-              className="absolute -right-3 top-3 h-6 w-6 cursor-pointer rounded-full bg-gray-200 text-2xl text-gray-400 shadow-lg drop-shadow-xl dark:bg-gray-900"
+              className="absolute -right-3 top-3 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-xl text-gray-400 shadow-lg drop-shadow-xl dark:bg-gray-900"
             >
-              {open ? <HiChevronLeft /> : <HiChevronRight />}
+              {open ? (
+                <ChevronLeft size={20} strokeWidth={3} />
+              ) : (
+                <ChevronRight size={20} strokeWidth={3} />
+              )}
             </div>
             <div>
               <Link href="/">
