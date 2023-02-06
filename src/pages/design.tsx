@@ -1,12 +1,11 @@
 import Sidebar from '@/components/Sidebar/Sidebar';
 import { getSession } from 'next-auth/react';
-import { siteDescription } from '@/data/data';
 import React from 'react';
 import prisma from '@/utils/prisma';
 import { ProfileType } from '@/types/types';
 import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
-import { Apple } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 type Props = {
   profile: ProfileType;
@@ -35,12 +34,12 @@ export default function DesignPage({ profile }: Props) {
                   <CustomButton text="Primary full length" fullWidth />
                 </li>
                 <li className="my-2">
-                  <CustomButton text="Primary" icon={<Apple size={20} />} />
+                  <CustomButton text="Primary" icon={<Check size={20} />} />
                 </li>
                 <li className="my-2">
                   <CustomButton
                     text="Primary"
-                    icon={<Apple size={20} />}
+                    icon={<Check size={20} />}
                     iconAfter
                   />
                 </li>
@@ -73,14 +72,14 @@ export default function DesignPage({ profile }: Props) {
                 <li className="my-2">
                   <CustomButton
                     text="Primary"
-                    icon={<Apple size={20} />}
+                    icon={<Check size={20} />}
                     outline
                   />
                 </li>
                 <li className="my-2">
                   <CustomButton
                     text="Primary"
-                    icon={<Apple size={20} />}
+                    icon={<Check size={20} />}
                     iconAfter
                     outline
                   />
@@ -114,10 +113,10 @@ export default function DesignPage({ profile }: Props) {
               <CustomButton text="Primary full length" fullWidth />
             </li>
             <li className="my-2">
-              <CustomButton text="Primary" icon={<Apple />} />
+              <CustomButton text="Primary" icon={<Check />} />
             </li>
             <li className="my-2">
-              <CustomButton text="Primary" icon={<Apple />} iconAfter />
+              <CustomButton text="Primary" icon={<Check />} iconAfter />
             </li>
             <li className="my-2">
               <CustomButton text="Secondary" role="secondary" />

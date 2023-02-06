@@ -30,7 +30,7 @@ const CustomButton = ({
   return (
     <button
       type={type}
-      className={`btn
+      className={`btn group
       ${
         role === 'noborder'
           ? 'btn-noborder'
@@ -43,19 +43,19 @@ const CustomButton = ({
       ${size === 'small' ? 'btn-sm' : null}
       ${fullWidth ? 'w-full' : null}
       ${outline ? 'btn-outline' : null}
-      ${
-        disabled
-          ? 'cursor-auto opacity-40 hover:bg-transparent hover:text-black dark:hover:bg-transparent dark:hover:text-white'
-          : null
-      }
+      ${disabled ? 'btn-disabled' : null}
 
       `}
       onClick={onClick}
       disabled={disabled}
     >
-      {icon && !iconAfter ? <span className="mr-1">{icon}</span> : null}
+      {icon && !iconAfter ? (
+        <span className="mr-1 group-hover:text-orange-500">{icon}</span>
+      ) : null}
       <span>{text}</span>
-      {icon && iconAfter ? <span className="ml-1">{icon}</span> : null}
+      {icon && iconAfter ? (
+        <span className="ml-1 group-hover:text-cyan-500">{icon}</span>
+      ) : null}
     </button>
   );
 };
