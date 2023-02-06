@@ -21,6 +21,7 @@
 - [ ] Update all users with the company name to limit the scope of users
 - [ ] Make the desing a bit more "enterprisee"
 - [ ] Add actions and tips or remove them for the first version
+- [ ] Add animations transitions for popups
 
 ## Bugs
 

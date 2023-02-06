@@ -39,7 +39,7 @@ const ProgressBar = ({ value, type, profileId, skillId, scores }: Props) => {
 
   return (
     <Popover className="">
-      <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 focus:outline-none">
+      <Popover.Button className="w-full rounded-xl px-4 hover:bg-blue-700 hover:text-white focus:outline-none">
         <div className="flex h-full items-center gap-x-2 ">
           <span className="text-xs sm:text-base">
             {!score

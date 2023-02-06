@@ -70,11 +70,13 @@ export default function Sidebar({
               onClick={toggleSidebar}
               className="absolute -right-3 top-3 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-xl text-gray-400 shadow-lg drop-shadow-xl dark:bg-gray-900"
             >
-              {open ? (
-                <ChevronLeft size={20} strokeWidth={3} />
-              ) : (
-                <ChevronRight size={20} strokeWidth={3} />
-              )}
+              <ChevronLeft
+                size={20}
+                strokeWidth={3}
+                className={`transition delay-300 duration-700 ${
+                  !open && 'rotate-180'
+                }`}
+              />
             </div>
             <div>
               <Link href="/">
