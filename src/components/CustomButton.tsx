@@ -28,7 +28,7 @@ const CustomButton = ({
   return (
     <button
       type={type}
-      className={`mr-2 flex cursor-pointer items-center justify-center whitespace-nowrap rounded bg-white px-4 font-semibold transition duration-300 ease-in-out
+      className={`mr-2 flex cursor-pointer items-center justify-center whitespace-nowrap rounded bg-white px-4 font-bold tracking-wide transition duration-300 ease-in-out active:translate-y-1
       ${
         role === 'noborder'
           ? ' bg-transparent text-purple-500 hover:bg-purple-700 hover:text-white dark:bg-transparent dark:hover:bg-purple-700'
