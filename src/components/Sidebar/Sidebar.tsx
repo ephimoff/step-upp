@@ -1,5 +1,3 @@
-// import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
-// import { BiHomeAlt, BiUser, BiFoodMenu } from 'react-icons/bi';
 import {
   Home,
   User,

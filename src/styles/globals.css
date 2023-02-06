@@ -1,7 +1,35 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
-/* body {
-  @apply bg-gray-800 text-white;
-} */
+.btn {
+  @apply mr-2 flex cursor-pointer items-center justify-center whitespace-nowrap rounded px-5 py-2 text-base font-bold leading-snug tracking-wide transition duration-300 ease-in-out active:translate-y-1;
+}
+
+.btn.btn-sm {
+  @apply px-4 py-1 text-sm;
+}
+
+.btn-primary {
+  @apply border-2 border-purple-600 bg-purple-600 text-white shadow-sm hover:bg-purple-700;
+}
+
+.btn-primary.btn-outline {
+  @apply border-purple-600 bg-transparent text-black hover:bg-purple-700 hover:text-white dark:bg-slate-900 dark:text-white dark:hover:bg-purple-700;
+}
+
+.btn-noborder {
+  @apply bg-transparent text-purple-600 hover:bg-purple-700 hover:text-white dark:bg-transparent dark:hover:bg-purple-700;
+}
+
+.btn-alert {
+  @apply bg-transparent text-red-400 hover:text-red-500 dark:border-none dark:bg-transparent dark:text-red-800 dark:hover:text-red-500;
+}
+
+.btn-secondary {
+  @apply border-2 border-[#00B4DB] bg-[#00B4DB] text-white shadow-sm hover:bg-[#389dc9];
+}
+
+.btn-secondary.btn-outline {
+  @apply border-[#00B4DB] bg-transparent text-[#0083B0] hover:bg-[#00B4DB] hover:text-white dark:bg-slate-900 dark:hover:bg-[#00B4DB];
+}
+@tailwind utilities;

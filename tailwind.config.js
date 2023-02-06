@@ -9,10 +9,6 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      // colors: {
-      //   primary: '#202225',
-      //   secondary: '#5865f2',
-      // },
       fontFamily: {
         sans: ['var(--font-nunito)', ...fontFamily.sans],
       },

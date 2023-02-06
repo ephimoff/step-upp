@@ -10,6 +10,7 @@ type CustomButtonProps = {
   disabled?: boolean;
   icon?: React.ReactNode | string;
   iconAfter?: boolean;
+  outline?: boolean;
 };
 // const primary = `bg-gradient-to-r from-fuchsia-700 to-purple-500 hover:bg-gradient-to-l`;
 // const secondary = `bg-gradient-to-l from-[#00B4DB] to-[#0083B0] hover:bg-gradient-to-r`;
@@ -24,23 +25,29 @@ const CustomButton = ({
   disabled = false,
   icon,
   iconAfter = false,
+  outline = false,
 }: CustomButtonProps) => {
   return (
     <button
       type={type}
-      className={`mr-2 flex cursor-pointer items-center justify-center whitespace-nowrap rounded bg-white px-4 font-bold tracking-wide transition duration-300 ease-in-out active:translate-y-1
+      className={`btn
       ${
         role === 'noborder'
-          ? ' bg-transparent text-purple-500 hover:bg-purple-700 hover:text-white dark:bg-transparent dark:hover:bg-purple-700'
+          ? 'btn-noborder'
           : role === 'red'
-          ? 'bg-transparent text-red-400 hover:text-red-500 dark:border-none dark:bg-transparent dark:text-red-800 dark:hover:text-red-500'
+          ? 'btn-alert'
           : role === 'secondary'
-          ? 'border-2 border-[#00B4DB] text-[#0083B0] shadow-sm hover:bg-[#00B4DB] hover:text-white dark:bg-slate-900 dark:hover:bg-[#00B4DB]'
-          : 'border-2 border-purple-600 text-black shadow-sm hover:bg-purple-700 hover:text-white dark:bg-slate-900 dark:text-white dark:hover:bg-purple-700'
+          ? 'btn-secondary'
+          : 'btn-primary'
       }
-      ${size === 'small' ? 'py-0' : 'py-2'}
+      ${size === 'small' ? 'btn-sm' : null}
       ${fullWidth ? 'w-full' : null}
-      ${disabled ? 'cursor-auto opacity-40 dark:hover:bg-slate-900' : null}
+      ${outline ? 'btn-outline' : null}
+      ${
+        disabled
+          ? 'cursor-auto opacity-40 hover:bg-transparent hover:text-black dark:hover:bg-transparent dark:hover:text-white'
+          : null
+      }
 
       `}
       onClick={onClick}
