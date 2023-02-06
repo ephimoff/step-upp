@@ -128,7 +128,7 @@ export default function DesignPage({ profile }: Props) {
             <input
               name="score"
               type="text"
-              className="input input-short"
+              className="input input-short mr-2"
               placeholder="10"
             />
             <CustomButton text="Primary" outline />
