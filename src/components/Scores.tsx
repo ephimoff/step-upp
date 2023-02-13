@@ -39,10 +39,8 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
     const scores = Object.entries(values).map((e) => {
       const obj = {
         skillId: e[0],
-        // [e[0]]: Number(e[1]),
         score: Number(e[1]),
       };
-      // console.log(obj);
       return obj;
     });
     const reqBody = {
@@ -50,7 +48,6 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
       appraiserId: appraiserId,
       scores: scores,
     };
-    // console.log(reqBody);
     try {
       const response = await fetch('/api/feedbackscore', {
         method: 'POST',

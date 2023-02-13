@@ -21,7 +21,6 @@ const ProgressBar = ({ value, type, profileId, skillId, scores }: Props) => {
 
   useEffect(() => {
     const calculateAverage = (arr: any): null | number => {
-      // console.log(arr);
       if (!arr) {
         return null;
       }

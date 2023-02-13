@@ -1,4 +1,4 @@
-type NoAvatarProps = {
+type Props = {
   name: string;
   size: number;
 };
@@ -32,7 +32,7 @@ function getInitials(name: string) {
 //   return arr[randomNumber];
 // }
 
-const NoAvatar = ({ name, size }: NoAvatarProps) => {
+const NoAvatar = ({ name, size }: Props) => {
   const randomGradient = `from-[#f953c6] to-[#b91d73]`;
   const width = `w-${size}`;
   const height = `h-${size}`;

@@ -148,7 +148,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                           className="rounded-full shadow-md"
                         />
                       ) : (
-                        <NoAvatar name={initialName} size={32} />
+                        <NoAvatar name={initialName} size={24} />
                       )}
                     </div>
                     <div className="">
