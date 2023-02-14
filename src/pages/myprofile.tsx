@@ -18,6 +18,7 @@ type MyProfilePageProps = {
 
 export default function MyProfilePage({ profile }: MyProfilePageProps) {
   const { data: session, status } = useSession();
+  const [success, setSuccess] = useState(false);
 
   // profile
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
@@ -91,6 +92,9 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
           'Content-Type': 'application/json',
         },
       });
+      if (response.status === 200) {
+        setSuccess(true);
+      }
       const profileResponse = await response.json();
 
       setCurrentProfile(profileResponse);
@@ -182,8 +186,13 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                       disabled={
                         isSubmitting || Object.keys(errors).length !== 0
                       }
-                      fullWidth
                     />
+                    {success ? (
+                      <span className="animate-fade-out text-purple-500 opacity-0">
+                        {currentProfile ? 'Profile updated' : 'Profile created'}
+                      </span>
+                    ) : null}
+
                     {/* <button
                       type="submit"
                       disabled={

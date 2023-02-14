@@ -28,7 +28,7 @@
 - [ ] Add animations transitions for popups
 - [ ] When opening the feedback screen load the previous user assessments
 - [ ] Make the desing a bit more "enterprisee"
-- [ ] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
+- [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
 
 ## Bugs
 
