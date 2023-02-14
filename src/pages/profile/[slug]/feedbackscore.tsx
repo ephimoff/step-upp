@@ -5,8 +5,10 @@ import { getSession } from 'next-auth/react';
 import Card from '@/components/Card';
 import Scores from '@/components/Scores';
 
+import useSWR from 'swr';
+import { fetcher } from '@/utils/fetcher';
+
 type Props = {
-  // session: any;
   appraiseeProfile: ProfileType;
   appraiserProfile: ProfileType;
 };
@@ -16,6 +18,14 @@ const FeedbackScoresPage = ({ appraiseeProfile, appraiserProfile }: Props) => {
     ? `${appraiseeProfile.name}'s profile on StepUpp`
     : 'No profile was found';
   const skills = appraiseeProfile.skills;
+
+  // const { data, error } = useSWR(
+  //   `/api/feedbackscore?query=${appraiserProfile.id}`,
+  //   fetcher
+  // );
+
+  // console.log(appraiserProfile.id);
+  // console.log(skills);
 
   return (
     <>
@@ -66,13 +76,22 @@ export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
   // console.log(session);
   const slug = context.query.slug.toLowerCase();
-  const appraiseeProfile = await prisma.profile.findUnique({
+  let appraiseeProfile = await prisma.profile.findUnique({
     where: {
       slug: slug,
     },
-    include: { skills: { include: { skill: true } } },
+    include: {
+      skills: {
+        include: {
+          skill: true,
+          feedbackScores: true,
+        },
+      },
+    },
   });
 
+  // a hack to deal with the serialising the date objects
+  appraiseeProfile = JSON.parse(JSON.stringify(appraiseeProfile));
   // console.dir(appraiseeProfile, { depth: null });
 
   let appraiserProfile = null;

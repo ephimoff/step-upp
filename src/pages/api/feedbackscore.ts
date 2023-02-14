@@ -4,45 +4,95 @@ import prisma from '@/utils/prisma';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { appraiseeId, appraiserId, scores } = req.body;
-    // console.log(scores);
+
     let isSuccess = true;
     try {
-      scores.map(async (score: any, index: number) => {
-        // const savedScore = await prisma.profileScores
-        //   .updateMany({
-        //     where: {
-        //       profileId: appraiseeId,
-        //       skillId: score.skillId
-        //     },
-        //     data: {
+      // search for a record with the appraisal
+      const records = await prisma.feedbackScores.findMany({
+        where: {
+          appraiserId: appraiserId,
+          appraiseeProfileId: appraiseeId,
+        },
+      });
+      console.log('new scores', scores);
+      console.log('existing records', records);
+      if (records.length > 0) {
+        // if found update the existing record
+        records.map(async (record, index) => {
+          const newScore = scores.find(
+            (e: any) => e.skillId === record.appraiseeSkillId
+          );
 
-        //     }
-        //   })
-        const savedScore = await prisma.feedbackScores
-          .create({
-            data: {
-              score: score.score,
-              appraisee: {
-                connect: {
-                  profileId_skillId: {
-                    profileId: appraiseeId,
-                    skillId: score.skillId,
+          const updatedScore = await prisma.feedbackScores
+            .update({
+              where: {
+                id: record.id,
+              },
+              data: {
+                score: newScore.score,
+                date: new Date(),
+              },
+            })
+            .catch(async (e) => {
+              console.error(e);
+            });
+          isSuccess = updatedScore ? true : false;
+        });
+
+        console.log(isSuccess);
+        console.log('Updated');
+
+        res.status(200).json(isSuccess);
+      } else {
+        // if not found create a new record
+        scores.map(async (score: any, index: number) => {
+          const savedScore = await prisma.feedbackScores
+            .create({
+              data: {
+                score: score.score,
+                appraisee: {
+                  connect: {
+                    profileId_skillId: {
+                      profileId: appraiseeId,
+                      skillId: score.skillId,
+                    },
+                  },
+                },
+                appraiser: {
+                  connect: {
+                    id: appraiserId,
                   },
                 },
               },
-              appraiser: {
-                connect: {
-                  id: appraiserId,
-                },
-              },
-            },
-          })
-          .catch(async (e) => {
-            console.error(e);
-          });
-        isSuccess = savedScore ? true : false;
-      });
-      res.status(200).json(isSuccess);
+            })
+            .catch(async (e) => {
+              console.error(e);
+            });
+          isSuccess = savedScore ? true : false;
+        });
+        res.status(200).json(isSuccess);
+      }
+    } catch (error) {
+      res.status(500).json({ msg: 'Something went wrong', error });
+    }
+  }
+  if (req.method === 'GET') {
+    const { profileId } = req.query;
+    try {
+      const feedbackScore = await prisma.profileScores
+        .findMany({
+          where: {
+            profileId: profileId as string,
+          },
+          select: {
+            skill: true,
+            feedbackScores: true,
+          },
+        })
+        .catch(async (e) => {
+          console.error(e);
+        });
+      res.status(200).json(feedbackScore);
     } catch (error) {
       res.status(500).json({ msg: 'Something went wrong', error });
     }

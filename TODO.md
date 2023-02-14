@@ -13,12 +13,11 @@
 - [x] Add email login
 - [x] Refresh instantly the view of competencies right adding a new competency
 - [x] Refresh `myprofile` after profile is created
-- [ ] Don't allow the same user add 360 to an existing one. Instead rewrite the score
+- [x] Don't allow the same user add 360/Feedback to an existing one. Instead rewrite the score
 - [ ] Add an expiration token for accessing feeback page
 - [ ] Send an email when requesting feedback
 - [ ] Protect the feedback page and won't allow to access it without a token
 - [ ] Update all users with the company name to limit the scope of users
-- [ ] Make the desing a bit more "enterprisee"
 
 ### Nice to have
 
@@ -27,6 +26,9 @@
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [ ] Add actions and tips or remove them for the first version
 - [ ] Add animations transitions for popups
+- [ ] When opening the feedback screen load the previous user assessments
+- [ ] Make the desing a bit more "enterprisee"
+- [ ] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
 
 ## Bugs
 

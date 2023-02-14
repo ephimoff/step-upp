@@ -8,6 +8,7 @@ type ScoresProps = {
 };
 
 const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
+  // console.log(skills);
   const initialFields = {};
   const extraFields = skills.map((e: any) => {
     return {
