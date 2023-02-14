@@ -124,7 +124,7 @@ export default function DesignPage({ profile }: Props) {
               </div>
             </div>
           </div>
-          <div>
+          <div className="flex items-center justify-center">
             <input
               name="score"
               type="text"
@@ -132,6 +132,9 @@ export default function DesignPage({ profile }: Props) {
               placeholder="10"
             />
             <CustomButton text="Primary" outline />
+            <span>
+              <Check />
+            </span>
           </div>
         </Card>
       </Sidebar>

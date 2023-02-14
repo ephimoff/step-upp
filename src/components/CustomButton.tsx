@@ -44,7 +44,6 @@ const CustomButton = ({
       ${fullWidth ? 'w-full' : null}
       ${outline ? 'btn-outline' : null}
       ${disabled ? 'btn-disabled' : null}
-
       `}
       onClick={onClick}
       disabled={disabled}

@@ -77,7 +77,7 @@ const ProgressBar = ({ value, type, profileId, skillId, scores }: Props) => {
         {({ close }) => (
           <PopoverPanel
             type={type}
-            value={value}
+            value={type === 'self' ? value : score}
             profileId={profileId}
             skillId={skillId}
             setScore={setScore}

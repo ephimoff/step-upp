@@ -16,26 +16,30 @@ const initialValues = {
   competencies: [],
 };
 
-async function createCompetency(values: any) {
-  let url = '/api/competency';
-  let method = 'POST';
-  try {
-    const response = await fetch(url, {
-      method: method,
-      body: JSON.stringify(values.competencies),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const jsonResponse = await response.json();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
 export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
   const { data: session, status } = useSession();
   const [btnClicked, setBtnClicked] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  async function createCompetency(values: any) {
+    let url = '/api/competency';
+    let method = 'POST';
+    try {
+      const response = await fetch(url, {
+        method: method,
+        body: JSON.stringify(values.competencies),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status === 200) {
+        setSuccess(true);
+      }
+      const jsonResponse = await response.json();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <>
@@ -59,7 +63,7 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
                   setSubmitting(true);
                   createCompetency(values);
                   setSubmitting(false);
-                  resetForm();
+                  // resetForm();
                 }}
               >
                 {({ values, isSubmitting, resetForm }) => (
@@ -79,17 +83,23 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
                         </FieldArray>
                       </div>
                       {values.competencies.length > 0 ? (
-                        <div className="mb-6 flex">
+                        <div className="mb-6 flex items-center">
                           <CustomButton
                             type="submit"
                             text="Submit"
                             role="primary"
                           />
-                          <CustomButton
+                          {success ? (
+                            <span className="animate-fade-out text-purple-500 opacity-0">
+                              Submitted successfully
+                            </span>
+                          ) : null}
+
+                          {/* <CustomButton
                             type="reset"
                             text="Cancel"
                             role="noborder"
-                          />
+                          /> */}
                         </div>
                       ) : null}
 

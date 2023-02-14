@@ -1,7 +1,8 @@
 import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
-import { Save, Send } from 'lucide-react';
+import { Save, Send, Check } from 'lucide-react';
+import { useState } from 'react';
 
 type PopoverPanelProps = {
   type: 'self' | 'feedback';
@@ -22,6 +23,7 @@ const PopoverPanel = ({
   close,
   scores,
 }: PopoverPanelProps) => {
+  const [success, setSuccess] = useState(false);
   const updateScore = async (
     profileId: string,
     skillId: string,
@@ -46,7 +48,10 @@ const PopoverPanel = ({
       const jsonResponse = await response.json();
       if (jsonResponse.count > 0) {
         setScore(score);
-        close();
+        setSuccess(true);
+        setTimeout(() => {
+          close();
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
@@ -105,7 +110,7 @@ const PopoverPanel = ({
             }}
           >
             {({ values, errors, isSubmitting }) => (
-              <Form className="flex w-full justify-center">
+              <Form className="flex items-center justify-center">
                 <Field
                   name="score"
                   type="text"
@@ -115,16 +120,20 @@ const PopoverPanel = ({
                 <CustomButton
                   disabled={isSubmitting}
                   text="Update"
-                  size="small"
                   role="secondary"
                   type="submit"
                   icon={<Save size={16} />}
                 />
+                {success ? (
+                  <span className="animate-fade-out text-[#00B4DB] opacity-0">
+                    <Check />
+                  </span>
+                ) : null}
               </Form>
             )}
           </Formik>
         ) : (
-          <div>
+          <div className="w-full">
             {scores ? (
               <div className="text-gray-600 dark:text-gray-400">
                 <p>
@@ -148,12 +157,13 @@ const PopoverPanel = ({
                 </ul>
               </div>
             ) : null}
-
-            <CustomButton
-              text="Request assessment"
-              role="secondary"
-              icon={<Send size={16} />}
-            />
+            <div className="flex w-full justify-center">
+              <CustomButton
+                text="Request assessment"
+                role="secondary"
+                icon={<Send size={16} />}
+              />
+            </div>
           </div>
         )}
       </div>
