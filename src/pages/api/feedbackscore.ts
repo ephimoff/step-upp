@@ -14,8 +14,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           appraiseeProfileId: appraiseeId,
         },
       });
-      console.log('new scores', scores);
-      console.log('existing records', records);
       if (records.length > 0) {
         // if found update the existing record
         records.map(async (record, index) => {
@@ -38,9 +36,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             });
           isSuccess = updatedScore ? true : false;
         });
-
-        console.log(isSuccess);
-        console.log('Updated');
 
         res.status(200).json(isSuccess);
       } else {

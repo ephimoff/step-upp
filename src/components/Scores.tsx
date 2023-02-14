@@ -1,4 +1,5 @@
 import { Formik, Field, Form } from 'formik';
+import { useState } from 'react';
 import CustomButton from './CustomButton';
 
 type ScoresProps = {
@@ -8,7 +9,7 @@ type ScoresProps = {
 };
 
 const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
-  // console.log(skills);
+  const [success, setSuccess] = useState(false);
   const initialFields = {};
   const extraFields = skills.map((e: any) => {
     return {
@@ -58,6 +59,10 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
         },
       });
       const jsonResponse = await response.json();
+
+      if (response.status === 200) {
+        setSuccess(true);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -116,6 +121,11 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
                 text={'Submit score'}
                 type={'submit'}
               />
+              {success ? (
+                <span className="animate-fade-out text-purple-500 opacity-0">
+                  Score submitted
+                </span>
+              ) : null}
             </div>
           </Form>
         )}

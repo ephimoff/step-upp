@@ -15,6 +15,19 @@ module.exports = {
       fontSize: {
         '2xs': '0.65rem',
       },
+      keyframes: {
+        'fade-out': {
+          from: {
+            opacity: '1',
+          },
+          to: {
+            opacity: '0',
+          },
+        },
+      },
+      animation: {
+        'fade-out': 'fade-out 5s ease-out',
+      },
     },
   },
   plugins: [],
