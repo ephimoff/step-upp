@@ -64,7 +64,7 @@ export default function Sidebar({
         } sticky top-0 h-screen text-black duration-300`}
       >
         {/* visible part of the sidebar */}
-        <div className="relative m-4 h-5/6 rounded-xl bg-white pt-8 drop-shadow-2xl transition duration-300 ease-in-out dark:bg-slate-800 dark:bg-gradient-to-tl dark:from-slate-800 dark:to-[#334562]">
+        <div className="relative m-4 h-5/6 min-h-[700px] rounded-xl bg-white pt-8 drop-shadow-2xl transition duration-300 ease-in-out dark:bg-slate-800 dark:bg-gradient-to-tl dark:from-slate-800 dark:to-[#334562]">
           <div className="px-4">
             <div
               onClick={toggleSidebar}

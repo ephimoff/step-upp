@@ -22,6 +22,7 @@
 ### Nice to have
 
 - [x] Rename 360 to Feedback Score or the likes
+- [x] Fix the sidebar shrinking
 - [ ] Allow to change the picture
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [ ] Add actions and tips or remove them for the first version
