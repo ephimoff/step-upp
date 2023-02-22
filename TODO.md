@@ -23,20 +23,27 @@
 
 - [x] Rename 360 to Feedback Score or the likes
 - [x] Fix the sidebar shrinking
+- [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
+- [ ] Update the colours for the secondary buttons to match the logo
 - [ ] Allow to change the picture
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [ ] Add actions and tips or remove them for the first version
 - [ ] Add animations transitions for popups
 - [ ] When opening the feedback screen load the previous user assessments
 - [ ] Make the desing a bit more "enterprisee"
-- [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
 
 ## Bugs
 
 - [x] Fix input labels in different resolutions. They hide behind the field and doesn't wrap
 - [x] Fix sidebar. It opens up again when clicks on a link. Maybe I need to use React Context to preserve the state of the sidebar across the pages
+- [x] Fix the sidebar for small height screens. it hides the menu on the top. Maybe need to add `overflow:hidden`
 - [ ] Store the state of the sidebar locally so it preserves after the refresh
-- [ ] Fix the sidebar for small height screens. it hides the menu on the top. Maybe need to add `overflow:hidden`
 - [ ] Fix an issue with the progress bar when adding a new competency. Somehow it appears cyan
 
 ## Notes
+
+To restrict the access to the page:
+
+1. When an request email sent to a appraiser, create an access token based on the email, generated token and expiration date (a week)
+1. When a person access the page search for their identifier in the `FeedbackAccessToken` and if found allow access if the expiration date is in the range
+1. Come up with a job that removes the expired record once a week

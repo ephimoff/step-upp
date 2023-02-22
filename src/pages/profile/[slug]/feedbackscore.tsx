@@ -92,7 +92,6 @@ export const getServerSideProps = async (context: any) => {
 
   // a hack to deal with the serialising the date objects
   appraiseeProfile = JSON.parse(JSON.stringify(appraiseeProfile));
-  // console.dir(appraiseeProfile, { depth: null });
 
   let appraiserProfile = null;
   if (session) {

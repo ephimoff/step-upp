@@ -125,3 +125,11 @@ model FeedbackScores {
   appraiseeProfileId String
   appraiseeSkillId   String
 }
+
+model FeedbackAccessToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
