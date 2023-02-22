@@ -36,6 +36,9 @@
 .btn-secondary {
   @apply border-2 border-[#00B4DB] bg-[#00B4DB] text-white shadow-sm hover:bg-[#389dc9];
 }
+.btn-secondary.btn-disabled {
+  @apply cursor-auto opacity-40 hover:bg-[#389dc9];
+}
 
 .btn-secondary.btn-outline {
   @apply border-[#00B4DB] bg-transparent text-[#00B4DB]  hover:bg-[#00B4DB] hover:text-white dark:bg-transparent dark:hover:bg-[#00B4DB];

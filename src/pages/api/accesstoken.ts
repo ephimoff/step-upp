@@ -12,14 +12,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'POST') {
     const { email } = req.body;
+    const week = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days from Today
+    const token = uuidv4();
 
     try {
       const savedRecord = await prisma.feedbackAccessToken
         .create({
           data: {
             identifier: email,
-            token: uuidv4(),
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from Today
+            token: token,
+            expires: new Date(week),
           },
         })
         .catch(async (e) => {

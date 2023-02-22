@@ -49,13 +49,21 @@ const CustomButton = ({
       disabled={disabled}
     >
       {icon && !iconAfter ? (
-        <span className="mr-1 transition duration-700 group-hover:animate-bounce">
+        <span
+          className={`mr-1 transition duration-700 ${
+            !disabled && 'group-hover:animate-bounce'
+          }`}
+        >
           {icon}
         </span>
       ) : null}
       <span>{text}</span>
       {icon && iconAfter ? (
-        <span className="ml-1 transition duration-700 group-hover:animate-bounce">
+        <span
+          className={`ml-1 transition duration-700 ${
+            !disabled && 'group-hover:animate-bounce'
+          }`}
+        >
           {icon}
         </span>
       ) : null}

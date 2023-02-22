@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
 import { Save, Send, Check } from 'lucide-react';
 import { useState } from 'react';
+import RequestAssessment from './RequestAssessment';
 
 type PopoverPanelProps = {
   type: 'self' | 'feedback';
@@ -24,6 +25,7 @@ const PopoverPanel = ({
   scores,
 }: PopoverPanelProps) => {
   const [success, setSuccess] = useState(false);
+
   const updateScore = async (
     profileId: string,
     skillId: string,
@@ -157,13 +159,14 @@ const PopoverPanel = ({
                 </ul>
               </div>
             ) : null}
-            <div className="flex w-full justify-center">
+            <RequestAssessment />
+            {/* <div className="flex w-full justify-center">
               <CustomButton
                 text="Request assessment"
                 role="secondary"
                 icon={<Send size={16} />}
               />
-            </div>
+            </div> */}
           </div>
         )}
       </div>
