@@ -3,7 +3,6 @@ import {
   User,
   BookOpenCheck,
   ChevronLeft,
-  ChevronRight,
   Paintbrush,
 } from 'lucide-react';
 import Link from 'next/link';

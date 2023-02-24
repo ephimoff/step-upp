@@ -9,14 +9,19 @@ import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetencies
 import { CompetencyType, ProfileType } from '@/types/types';
 import Spinner from '@/components/Spinner';
 
+import { useSession } from 'next-auth/react';
+
 type Props = {
   competencies: any;
   profile: ProfileType;
+  slugProfile: ProfileType;
 };
 
-const ProfilePage = ({ profile, competencies }: Props) => {
-  const title = profile
-    ? `${profile.name}'s profile on StepUpp`
+const ProfilePage = ({ profile, slugProfile, competencies }: Props) => {
+  const { data: session } = useSession();
+  console.log('session', session);
+  const title = slugProfile
+    ? `${slugProfile.name}'s profile on StepUpp`
     : 'No profile was found';
 
   const [assignedCompetencies, setAssignedCompetencies] = useState<
@@ -27,7 +32,9 @@ const ProfilePage = ({ profile, competencies }: Props) => {
 
   const fetchAssignedCompetencies = async () => {
     try {
-      const res = await fetch(`/api/assigncompetency?profileId=${profile.id}`);
+      const res = await fetch(
+        `/api/assigncompetency?profileId=${slugProfile.id}`
+      );
       const resJson: CompetencyType[] = await res.json();
       // console.dir(resJson, { depth: null });
       if (res.status === 200) {
@@ -49,17 +56,17 @@ const ProfilePage = ({ profile, competencies }: Props) => {
   return (
     <>
       <Sidebar title={title} name={profile.name}>
-        {profile ? (
+        {slugProfile ? (
           <div className="">
             <ProfileCard
-              name={profile.name}
-              title={profile.title}
-              team={profile.team}
-              email={profile.email}
-              userpic={profile.userpic}
+              name={slugProfile.name}
+              title={slugProfile.title}
+              team={slugProfile.team}
+              email={slugProfile.email}
+              userpic={slugProfile.userpic}
             />
             <ProfileCompetenciesLoading
-              profile={profile}
+              profile={slugProfile}
               competencies={competencies}
               fetchAssignedCompetencies={fetchAssignedCompetencies}
             />
@@ -72,7 +79,7 @@ const ProfilePage = ({ profile, competencies }: Props) => {
                   <div key={index}>
                     <CompetencyCard
                       competency={competency}
-                      profileId={profile.id}
+                      profileId={slugProfile.id}
                     />
                   </div>
                 );
@@ -109,17 +116,24 @@ const ProfilePage = ({ profile, competencies }: Props) => {
 export default ProfilePage;
 
 export const getServerSideProps = async (context: any) => {
+  const session = await getSession(context);
   const slug = context.query.slug.toLowerCase();
-  const profile = await prisma.profile.findUnique({
+  const slugProfile = await prisma.profile.findUnique({
     where: {
       slug: slug,
     },
     include: { competencies: true },
   });
 
+  const profile = await prisma.profile.findUnique({
+    where: {
+      email: session!.user!.email as string,
+    },
+  });
+
   let competencies: any = null;
 
-  if (profile) {
+  if (slugProfile) {
     competencies = await prisma.competency.findMany({
       include: { skills: true },
     });
@@ -127,7 +141,7 @@ export const getServerSideProps = async (context: any) => {
     const refreshCompetenciesList = () => {
       competencies.forEach(function (competency: any) {
         if (
-          profile?.competencies.find(
+          slugProfile?.competencies.find(
             (element) => element.competencyId === competency.id
           )
         ) {
@@ -141,8 +155,6 @@ export const getServerSideProps = async (context: any) => {
     refreshCompetenciesList();
   }
 
-  const session = await getSession(context);
-
   if (!session) {
     return {
       redirect: {
@@ -152,6 +164,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, profile, competencies },
+    props: { session, profile, slugProfile, competencies },
   };
 };
