@@ -14,9 +14,17 @@ type Props = {
   profileId: string;
   skillId: string;
   scores?: FeedbackScore[];
+  isSameProfile?: boolean;
 };
 
-const ProgressBar = ({ value, type, profileId, skillId, scores }: Props) => {
+const ProgressBar = ({
+  value,
+  type,
+  profileId,
+  skillId,
+  scores,
+  isSameProfile,
+}: Props) => {
   const [score, setScore] = useState<number | null>(value);
 
   useEffect(() => {
@@ -83,6 +91,7 @@ const ProgressBar = ({ value, type, profileId, skillId, scores }: Props) => {
             setScore={setScore}
             close={close}
             scores={scores}
+            isSameProfile={isSameProfile}
           />
         )}
       </Popover.Panel>

@@ -13,6 +13,7 @@ type PopoverPanelProps = {
   setScore: any;
   close: any;
   scores?: any;
+  isSameProfile?: boolean;
 };
 
 const PopoverPanel = ({
@@ -23,6 +24,7 @@ const PopoverPanel = ({
   setScore,
   close,
   scores,
+  isSameProfile,
 }: PopoverPanelProps) => {
   const [success, setSuccess] = useState(false);
 
@@ -159,7 +161,7 @@ const PopoverPanel = ({
                 </ul>
               </div>
             ) : null}
-            <RequestAssessment />
+            {isSameProfile && <RequestAssessment />}
             {/* <div className="flex w-full justify-center">
               <CustomButton
                 text="Request assessment"

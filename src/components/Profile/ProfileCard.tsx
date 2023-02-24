@@ -1,12 +1,13 @@
 import Card from '../Card';
 import NoAvatar from '../NoAvatar';
 
-type ProfileCardProps = {
+type Props = {
   name: string;
   title: string;
   team: string;
   email: string;
   userpic: string;
+  isSameProfile: boolean;
 };
 
 const ProfileCard = ({
@@ -15,7 +16,8 @@ const ProfileCard = ({
   team,
   email,
   userpic,
-}: ProfileCardProps) => {
+  isSameProfile,
+}: Props) => {
   return (
     <Card>
       <div className="flex">
@@ -37,6 +39,11 @@ const ProfileCard = ({
           <h4 className="font-light text-slate-400 sm:text-xs md:text-base">
             {team ? `${team}, ` : null} {email}
           </h4>
+          {isSameProfile && (
+            <span className="rounded-full bg-slate-400 px-3 py-1 text-xs text-slate-200">
+              Your profile
+            </span>
+          )}
         </div>
       </div>
     </Card>

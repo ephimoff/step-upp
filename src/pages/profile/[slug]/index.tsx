@@ -9,17 +9,21 @@ import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetencies
 import { CompetencyType, ProfileType } from '@/types/types';
 import Spinner from '@/components/Spinner';
 
-import { useSession } from 'next-auth/react';
-
 type Props = {
   competencies: any;
   profile: ProfileType;
   slugProfile: ProfileType;
+  isSameProfile: boolean;
 };
 
-const ProfilePage = ({ profile, slugProfile, competencies }: Props) => {
-  const { data: session } = useSession();
-  console.log('session', session);
+const ProfilePage = ({
+  profile,
+  slugProfile,
+  competencies,
+  isSameProfile,
+}: Props) => {
+  console.log('isSameProfile', isSameProfile);
+
   const title = slugProfile
     ? `${slugProfile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -64,6 +68,7 @@ const ProfilePage = ({ profile, slugProfile, competencies }: Props) => {
               team={slugProfile.team}
               email={slugProfile.email}
               userpic={slugProfile.userpic}
+              isSameProfile={isSameProfile}
             />
             <ProfileCompetenciesLoading
               profile={slugProfile}
@@ -80,6 +85,7 @@ const ProfilePage = ({ profile, slugProfile, competencies }: Props) => {
                     <CompetencyCard
                       competency={competency}
                       profileId={slugProfile.id}
+                      isSameProfile={isSameProfile}
                     />
                   </div>
                 );
@@ -162,8 +168,14 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
+  let isSameProfile = false;
+  if (profile!.id === slugProfile!.id) {
+    isSameProfile = true;
+  } else {
+    isSameProfile = false;
+  }
 
   return {
-    props: { session, profile, slugProfile, competencies },
+    props: { session, profile, slugProfile, competencies, isSameProfile },
   };
 };

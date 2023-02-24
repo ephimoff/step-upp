@@ -8,9 +8,10 @@ import CustomButton from '../CustomButton';
 interface Props {
   competency: CompetencyType;
   profileId: string;
+  isSameProfile: boolean;
 }
 
-const CompetencyCard = ({ competency, profileId }: Props) => {
+const CompetencyCard = ({ competency, profileId, isSameProfile }: Props) => {
   // console.dir(competency, { depth: null });
   return (
     <>
@@ -50,6 +51,7 @@ const CompetencyCard = ({ competency, profileId }: Props) => {
                   skillId={skill.id}
                   type="feedback"
                   scores={skill.scores[0]?.feedbackScores}
+                  isSameProfile={isSameProfile}
                 />
               </div>
             </React.Fragment>
