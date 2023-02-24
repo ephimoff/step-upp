@@ -14,9 +14,11 @@
 - [x] Refresh instantly the view of competencies right adding a new competency
 - [x] Refresh `myprofile` after profile is created
 - [x] Don't allow the same user add 360/Feedback to an existing one. Instead rewrite the score
-- [ ] Add an expiration token for accessing feeback page
-- [ ] Send an email when requesting feedback
-- [ ] Protect the feedback page and won't allow to access it without a token
+- [x] Add a creation of the token when a request sent
+- [x] Protect the feedback page and won't allow to access it without a token
+- [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware
+- [x] Send an email when requesting feedback
+- [ ] Removed expired tokens from the DB
 - [ ] Update all users with the company name to limit the scope of users
 
 ### Nice to have

@@ -3,12 +3,15 @@ import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 type Props = {
   props?: any;
 };
 
 const RequestAssessment = ({ props }: Props) => {
+  const { data: session } = useSession();
+  // console.log(session);
   const [success, setSuccess] = useState(false);
 
   const requestAssessment = async (email: string) => {
@@ -25,7 +28,7 @@ const RequestAssessment = ({ props }: Props) => {
       if (response.status === 200) {
         setSuccess(true);
       }
-      console.log('response', response);
+      // console.log('response', response);
       const jsonResponse = await response.json();
     } catch (error) {
       console.error(error);
@@ -36,6 +39,8 @@ const RequestAssessment = ({ props }: Props) => {
     <Formik
       initialValues={{
         email: '',
+        requestorName: session!.user!.name || '',
+        requestorEmail: session!.user!.email || '',
       }}
       validationSchema={emailSchema}
       onSubmit={(values, { setSubmitting }) => {
@@ -49,10 +54,10 @@ const RequestAssessment = ({ props }: Props) => {
           <Field
             name="email"
             type="text"
-            className={`input ${
-              errors && touched
+            className={`input  ${
+              Object.keys(errors).length !== 0
                 ? 'border-2 border-[#fc8181]'
-                : 'border-gray-400'
+                : ' border-gray-400 '
             }`}
             placeholder="example@email.com"
           />

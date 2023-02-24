@@ -5,8 +5,8 @@ import { getSession } from 'next-auth/react';
 import Card from '@/components/Card';
 import Scores from '@/components/Scores';
 
-import useSWR from 'swr';
-import { fetcher } from '@/utils/fetcher';
+// import useSWR from 'swr';
+// import { fetcher } from '@/utils/fetcher';
 
 type Props = {
   appraiseeProfile: ProfileType;
@@ -74,7 +74,7 @@ export default FeedbackScoresPage;
 
 export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
-  // console.log(session);
+
   const slug = context.query.slug.toLowerCase();
   let appraiseeProfile = await prisma.profile.findUnique({
     where: {
@@ -105,6 +105,34 @@ export const getServerSideProps = async (context: any) => {
     return {
       redirect: {
         destination: '/auth/signin',
+      },
+    };
+  }
+
+  const { token } = context.query;
+  // console.log(token);
+  // console.log(session.user!.email);
+
+  if (token) {
+    const access = await prisma.feedbackAccessToken.findUnique({
+      where: {
+        identifier_token: {
+          identifier: session.user!.email as string,
+          token: token,
+        },
+      },
+    });
+    if (!access) {
+      return {
+        redirect: {
+          destination: '/',
+        },
+      };
+    }
+  } else {
+    return {
+      redirect: {
+        destination: '/',
       },
     };
   }
