@@ -31,6 +31,7 @@ const PopoverPanel = ({
   slug,
 }: PopoverPanelProps) => {
   const [success, setSuccess] = useState(false);
+  // console.log('isSameProfile', isSameProfile);
 
   const updateScore = async (
     profileId: string,
@@ -105,41 +106,45 @@ const PopoverPanel = ({
 
       <div className="flex p-4">
         {type === 'self' ? (
-          <Formik
-            enableReinitialize
-            initialValues={{
-              score: value || '',
-            }}
-            validationSchema={scoreSchema}
-            onSubmit={(values, { setSubmitting }) => {
-              setSubmitting(true);
-              updateScore(profileId, skillId, values.score as number);
-              setSubmitting(false);
-            }}
-          >
-            {({ values, errors, isSubmitting }) => (
-              <Form className="flex items-center justify-center">
-                <Field
-                  name="score"
-                  type="text"
-                  className="input input-short mr-2"
-                  placeholder="10"
-                />
-                <CustomButton
-                  disabled={isSubmitting}
-                  text="Update"
-                  role="secondary"
-                  type="submit"
-                  icon={<Save size={16} />}
-                />
-                {success ? (
-                  <span className="animate-fade-out text-[#00B4DB] opacity-0">
-                    <Check />
-                  </span>
-                ) : null}
-              </Form>
+          <div>
+            {isSameProfile && (
+              <Formik
+                enableReinitialize
+                initialValues={{
+                  score: value || '',
+                }}
+                validationSchema={scoreSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                  setSubmitting(true);
+                  updateScore(profileId, skillId, values.score as number);
+                  setSubmitting(false);
+                }}
+              >
+                {({ values, errors, isSubmitting }) => (
+                  <Form className="flex items-center justify-center">
+                    <Field
+                      name="score"
+                      type="text"
+                      className="input input-short mr-2"
+                      placeholder="10"
+                    />
+                    <CustomButton
+                      disabled={isSubmitting}
+                      text="Update"
+                      role="secondary"
+                      type="submit"
+                      icon={<Save size={16} />}
+                    />
+                    {success ? (
+                      <span className="animate-fade-out text-[#00B4DB] opacity-0">
+                        <Check />
+                      </span>
+                    ) : null}
+                  </Form>
+                )}
+              </Formik>
             )}
-          </Formik>
+          </div>
         ) : (
           <div className="w-full">
             {scores ? (

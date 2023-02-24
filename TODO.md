@@ -20,6 +20,7 @@
 - [x] Send an email when requesting feedback
 - [ ] Removed expired tokens from the DB
 - [ ] Update all users with the company name to limit the scope of users
+- [ ] Think about not allowing to feedback-assess your own profile
 
 ### Nice to have
 

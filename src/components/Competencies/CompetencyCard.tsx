@@ -20,7 +20,6 @@ const CompetencyCard = ({
   requestorName,
   slug,
 }: Props) => {
-  // console.dir(competency, { depth: null });
   return (
     <>
       <Card grid={true}>
@@ -50,6 +49,7 @@ const CompetencyCard = ({
                   profileId={profileId}
                   skillId={skill.id}
                   type="self"
+                  isSameProfile={isSameProfile}
                 />
               </div>
               <div className="col-span-3 lg:col-span-2">
