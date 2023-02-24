@@ -43,9 +43,3 @@
 - [ ] Fix an issue with the progress bar when adding a new competency. Somehow it appears cyan
 
 ## Notes
-
-To restrict the access to the page:
-
-1. When an request email sent to a appraiser, create an access token based on the email, generated token and expiration date (a week)
-1. When a person access the page search for their identifier in the `FeedbackAccessToken` and if found allow access if the expiration date is in the range
-1. Come up with a job that removes the expired record once a week

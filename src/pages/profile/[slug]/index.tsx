@@ -14,6 +14,7 @@ type Props = {
   profile: ProfileType;
   slugProfile: ProfileType;
   isSameProfile: boolean;
+  slug: string;
 };
 
 const ProfilePage = ({
@@ -21,8 +22,9 @@ const ProfilePage = ({
   slugProfile,
   competencies,
   isSameProfile,
+  slug,
 }: Props) => {
-  console.log('isSameProfile', isSameProfile);
+  // console.log('isSameProfile', isSameProfile);
 
   const title = slugProfile
     ? `${slugProfile.name}'s profile on StepUpp`
@@ -86,6 +88,8 @@ const ProfilePage = ({
                       competency={competency}
                       profileId={slugProfile.id}
                       isSameProfile={isSameProfile}
+                      requestorName={profile.name}
+                      slug={slug}
                     />
                   </div>
                 );
@@ -176,6 +180,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, profile, slugProfile, competencies, isSameProfile },
+    props: { session, profile, slugProfile, competencies, isSameProfile, slug },
   };
 };

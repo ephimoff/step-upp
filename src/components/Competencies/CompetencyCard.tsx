@@ -9,9 +9,17 @@ interface Props {
   competency: CompetencyType;
   profileId: string;
   isSameProfile: boolean;
+  requestorName?: string;
+  slug: string;
 }
 
-const CompetencyCard = ({ competency, profileId, isSameProfile }: Props) => {
+const CompetencyCard = ({
+  competency,
+  profileId,
+  isSameProfile,
+  requestorName,
+  slug,
+}: Props) => {
   // console.dir(competency, { depth: null });
   return (
     <>
@@ -52,6 +60,8 @@ const CompetencyCard = ({ competency, profileId, isSameProfile }: Props) => {
                   type="feedback"
                   scores={skill.scores[0]?.feedbackScores}
                   isSameProfile={isSameProfile}
+                  requestorName={requestorName}
+                  slug={slug}
                 />
               </div>
             </React.Fragment>

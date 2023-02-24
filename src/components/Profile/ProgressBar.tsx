@@ -15,6 +15,8 @@ type Props = {
   skillId: string;
   scores?: FeedbackScore[];
   isSameProfile?: boolean;
+  requestorName?: string;
+  slug?: string;
 };
 
 const ProgressBar = ({
@@ -24,6 +26,8 @@ const ProgressBar = ({
   skillId,
   scores,
   isSameProfile,
+  requestorName,
+  slug,
 }: Props) => {
   const [score, setScore] = useState<number | null>(value);
 
@@ -92,6 +96,8 @@ const ProgressBar = ({
             close={close}
             scores={scores}
             isSameProfile={isSameProfile}
+            requestorName={requestorName}
+            slug={slug}
           />
         )}
       </Popover.Panel>

@@ -1,7 +1,7 @@
 import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
-import { Save, Send, Check } from 'lucide-react';
+import { Save, Check } from 'lucide-react';
 import { useState } from 'react';
 import RequestAssessment from './RequestAssessment';
 
@@ -14,6 +14,8 @@ type PopoverPanelProps = {
   close: any;
   scores?: any;
   isSameProfile?: boolean;
+  requestorName?: string;
+  slug?: string;
 };
 
 const PopoverPanel = ({
@@ -25,6 +27,8 @@ const PopoverPanel = ({
   close,
   scores,
   isSameProfile,
+  requestorName,
+  slug,
 }: PopoverPanelProps) => {
   const [success, setSuccess] = useState(false);
 
@@ -161,14 +165,12 @@ const PopoverPanel = ({
                 </ul>
               </div>
             ) : null}
-            {isSameProfile && <RequestAssessment />}
-            {/* <div className="flex w-full justify-center">
-              <CustomButton
-                text="Request assessment"
-                role="secondary"
-                icon={<Send size={16} />}
+            {isSameProfile && (
+              <RequestAssessment
+                requestorName={requestorName as string}
+                slug={slug as string}
               />
-            </div> */}
+            )}
           </div>
         )}
       </div>

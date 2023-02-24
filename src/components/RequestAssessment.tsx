@@ -6,20 +6,29 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 type Props = {
-  props?: any;
+  requestorName: string;
+  slug: string;
 };
 
-const RequestAssessment = ({ props }: Props) => {
+const RequestAssessment = ({ requestorName, slug }: Props) => {
   const { data: session } = useSession();
   // console.log(session);
   const [success, setSuccess] = useState(false);
 
-  const requestAssessment = async (email: string) => {
+  const requestAssessment = async (
+    email: string,
+    requestorName: string,
+    requestorEmail: string,
+    slug: string
+  ) => {
     try {
       const response = await fetch('/api/accesstoken', {
         method: 'POST',
         body: JSON.stringify({
           email: email,
+          requestorName: requestorName,
+          requestorEmail: requestorEmail,
+          slug: slug,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -39,13 +48,19 @@ const RequestAssessment = ({ props }: Props) => {
     <Formik
       initialValues={{
         email: '',
-        requestorName: session!.user!.name || '',
+        requestorName: session!.user!.name || requestorName || '',
         requestorEmail: session!.user!.email || '',
+        slug: slug || '',
       }}
       validationSchema={emailSchema}
       onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
-        requestAssessment(values.email);
+        requestAssessment(
+          values.email,
+          values.requestorName,
+          values.requestorEmail,
+          values.slug
+        );
         setSubmitting(false);
       }}
     >
