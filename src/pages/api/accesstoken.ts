@@ -17,12 +17,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const week = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days from Today
     const token = uuidv4();
     const subject = 'Your colleague is requesting their evaluation';
+    const domain = process.env.NEXTAUTH_URL;
     // const slug = 'anton-efimov';
     // console.log({ email, requestorName, requestorEmail });
     const html = `<h1>Please help your colleague with your feedback</h1>
                   <p>${requestorName} (${requestorEmail}) would like to ask for a few moments of your time to evaluate them in <strong>StepUpp</strong></p>
                   <p>Click on the following link to do that (links expires in 7 days):</p>
-                  <a href='http://localhost:3000/profile/${slug}/feedbackscore?token=${token}'>Press here</a>`;
+                  <a href='${domain}/profile/${slug}/feedbackscore?token=${token}'>Press here</a>`;
 
     try {
       const savedRecord = await prisma.feedbackAccessToken
