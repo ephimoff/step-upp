@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Card from '../Card';
 import NoAvatar from '../NoAvatar';
 
@@ -23,10 +24,12 @@ const ProfileCard = ({
       <div className="flex">
         <div className="mr-5">
           {userpic ? (
-            <img
+            <Image
               src={userpic}
               alt="profile picture"
               className="h-20 w-20 rounded-full"
+              width={20}
+              height={20}
             />
           ) : (
             <NoAvatar name={name} size={20} />

@@ -2,7 +2,7 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
@@ -36,7 +36,7 @@ const ProfilePage = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchAssignedCompetencies = async () => {
+  const fetchAssignedCompetencies = useCallback(async () => {
     try {
       const res = await fetch(
         `/api/assigncompetency?profileId=${slugProfile.id}`
@@ -53,11 +53,11 @@ const ProfilePage = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [slugProfile.id]);
 
   useEffect(() => {
     fetchAssignedCompetencies();
-  }, []);
+  }, [fetchAssignedCompetencies]);
 
   return (
     <>

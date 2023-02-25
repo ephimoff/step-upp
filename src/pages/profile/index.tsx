@@ -17,7 +17,7 @@ export default function MainProfile({ profile }: any) {
                   href="/profile/anton-efimov"
                   className="border-b border-b-orange-500 text-orange-400"
                 >
-                  Anton Efimov's profile (github)
+                  {`Anton Efimov\'s profile (github)`}
                 </Link>
               </li>
               <li>
@@ -25,7 +25,7 @@ export default function MainProfile({ profile }: any) {
                   href="/profile/anton-efimov/feedbackscore?token=abc"
                   className="border-b border-b-orange-500 text-orange-400"
                 >
-                  Anton Efimov's (github) feedback with token
+                  {`Anton Efimov\'s (github) feedback with token`}
                 </Link>
               </li>
               <li>
@@ -33,7 +33,7 @@ export default function MainProfile({ profile }: any) {
                   href="/profile/anton-efimov/feedbackscore?token=abcabc"
                   className="border-b border-b-orange-500 text-orange-400"
                 >
-                  Anton Efimov's (github) feedback with wrong token
+                  {`Anton Efimov\'s (github) feedback with wrong token`}
                 </Link>
               </li>
               <li>
@@ -41,7 +41,7 @@ export default function MainProfile({ profile }: any) {
                   href="/profile/anton-efimov/feedbackscore"
                   className="border-b border-b-orange-500 text-orange-400"
                 >
-                  Anton Efimov's (github) feedback with no token
+                  {`Anton Efimov\'s (github) feedback with no token`}
                 </Link>
               </li>
               <li>
@@ -49,7 +49,7 @@ export default function MainProfile({ profile }: any) {
                   href="/profile/efimov-anton"
                   className="border-b border-b-orange-500 text-orange-400"
                 >
-                  John Doe's profile (magic link)
+                  {`John Doe\'s profile (magic link)`}
                 </Link>
               </li>
             </ul>

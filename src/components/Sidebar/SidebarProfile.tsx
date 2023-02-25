@@ -1,4 +1,5 @@
 import { signOut, useSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { BiExit } from 'react-icons/bi';
 import NoAvatar from '../NoAvatar';
@@ -18,8 +19,10 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
       <div className="flex items-center justify-center ">
         <Link href="/myprofile" className="">
           {session!.user!.image ? (
-            <img
+            <Image
               src={session!.user!.image as string}
+              width={10}
+              height={10}
               alt=""
               className={`${
                 !open ? 'h-10' && 'w-10' : 'h-12' && 'w-12'

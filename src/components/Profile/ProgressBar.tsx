@@ -46,7 +46,7 @@ const ProgressBar = ({
     if (type === 'feedback') {
       setScore(calculateAverage(scores));
     }
-  }, []);
+  }, [scores, type]);
 
   return (
     <Popover className="">

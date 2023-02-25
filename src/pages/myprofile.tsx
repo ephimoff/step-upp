@@ -11,6 +11,7 @@ import { myProfileFields } from '@/data/data';
 import Card from '@/components/Card';
 import { generateSlug } from '@/utils/functions';
 import CustomButton from '@/components/CustomButton';
+import Image from 'next/image';
 
 type MyProfilePageProps = {
   profile: ProfileType;
@@ -62,7 +63,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
       setLinkedin(profile.linkedin as string);
       setGithub(profile.github as string);
     }
-  }, []);
+  }, [profile]);
 
   async function updateProfile(values: any) {
     let url = '/api/profile';
@@ -146,7 +147,9 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                   <Form className="">
                     <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
                       {userpic ? (
-                        <img
+                        <Image
+                          width={24}
+                          height={24}
                           src={userpic}
                           alt=""
                           className="rounded-full shadow-md"
