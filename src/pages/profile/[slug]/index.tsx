@@ -24,6 +24,7 @@ const ProfilePage = ({
   isSameProfile,
   slug,
 }: Props) => {
+  const profileName = profile ? profile.name : '';
   // console.log('isSameProfile', isSameProfile);
 
   const title = slugProfile
@@ -53,7 +54,7 @@ const ProfilePage = ({
     } finally {
       setLoading(false);
     }
-  }, [slugProfile.id]);
+  }, [slugProfile]);
 
   useEffect(() => {
     fetchAssignedCompetencies();
@@ -61,7 +62,7 @@ const ProfilePage = ({
 
   return (
     <>
-      <Sidebar title={title} name={profile.name}>
+      <Sidebar title={title} name={profileName}>
         {slugProfile ? (
           <div className="">
             <ProfileCard
@@ -173,8 +174,10 @@ export const getServerSideProps = async (context: any) => {
     };
   }
   let isSameProfile = false;
-  if (profile!.id === slugProfile!.id) {
-    isSameProfile = true;
+  if (profile && slugProfile) {
+    if (profile!.id === slugProfile!.id) {
+      isSameProfile = true;
+    }
   } else {
     isSameProfile = false;
   }

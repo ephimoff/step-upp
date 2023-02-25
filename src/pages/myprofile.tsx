@@ -148,8 +148,8 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                     <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
                       {userpic ? (
                         <Image
-                          width={24}
-                          height={24}
+                          width={96}
+                          height={96}
                           src={userpic}
                           alt=""
                           className="rounded-full shadow-md"

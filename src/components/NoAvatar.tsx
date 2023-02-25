@@ -15,15 +15,20 @@ const LIST_OF_GRADIENTS = [
 ];
 
 function getInitials(name: string) {
-  const arr = name.split(' ');
   let initials = '';
-  if (arr.length < 1) {
-    return name;
-  } else if (arr.length >= 2) {
-    initials = arr[0].charAt(0).toUpperCase() + arr[1].charAt(0).toUpperCase();
-  } else {
-    initials = arr[0].charAt(0).toUpperCase();
+  if (name) {
+    const arr = name.split(' ');
+
+    if (arr.length < 1) {
+      return name;
+    } else if (arr.length >= 2) {
+      initials =
+        arr[0].charAt(0).toUpperCase() + arr[1].charAt(0).toUpperCase();
+    } else {
+      initials = arr[0].charAt(0).toUpperCase();
+    }
   }
+
   return initials;
 }
 

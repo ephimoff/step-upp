@@ -21,8 +21,8 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
           {session!.user!.image ? (
             <Image
               src={session!.user!.image as string}
-              width={10}
-              height={10}
+              width={40}
+              height={40}
               alt=""
               className={`${
                 !open ? 'h-10' && 'w-10' : 'h-12' && 'w-12'
