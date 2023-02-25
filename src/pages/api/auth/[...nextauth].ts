@@ -51,6 +51,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
     verifyRequest: '/auth/verify',
   },
+  debug: true,
 };
 
 export default NextAuth(authOptions);
