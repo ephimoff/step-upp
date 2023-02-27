@@ -24,6 +24,7 @@
 - [x] Fix the avatar quality
 - [x] Switch all development to `development` branch
 - [x] Switch env vars on Vercel to `development` env
+- [ ] Fix issue with the `<Image>` src as this doesn't work atm
 
 ### Nice to have
 
