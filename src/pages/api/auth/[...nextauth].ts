@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
       // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
     }),
   ],
-  secret: process.env.JWT_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
     maxAge: THIRTY_DAYS,
