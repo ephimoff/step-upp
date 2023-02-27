@@ -22,8 +22,8 @@
 - [ ] Update all users with the company name to limit the scope of users
 - [ ] Think about not allowing to feedback-assess your own profile
 - [x] Fix the avatar quality
-- [ ] Switch all development to `development` branch
-- [ ] Switch env vars on Vercel to `development` env
+- [x] Switch all development to `development` branch
+- [x] Switch env vars on Vercel to `development` env
 
 ### Nice to have
 
