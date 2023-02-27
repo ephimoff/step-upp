@@ -18,13 +18,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
     <div className={`rounded-md  py-2 ${open && 'p-4'}`}>
       <div className="flex items-center justify-center ">
         <Link href="/myprofile" className="">
-          <div className="mb-2 flex justify-center">
-            <NoAvatar
-              name={name ? name : (session!.user!.name as string)}
-              size={!open ? 10 : 12}
-            />
-          </div>
-          {/* {session!.user!.image ? (
+          {session!.user!.image ? (
             <Image
               src={session!.user!.image as string}
               width={40}
@@ -41,7 +35,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
                 size={!open ? 10 : 12}
               />
             </div>
-          )} */}
+          )}
           <span
             className={`${
               !open && 'hidden'

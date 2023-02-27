@@ -146,8 +146,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                 {({ values, errors, touched, isSubmitting }) => (
                   <Form className="">
                     <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
-                      <NoAvatar name={initialName} size={24} />
-                      {/* {userpic ? (
+                      {userpic ? (
                         <Image
                           width={96}
                           height={96}
@@ -157,7 +156,7 @@ export default function MyProfilePage({ profile }: MyProfilePageProps) {
                         />
                       ) : (
                         <NoAvatar name={initialName} size={24} />
-                      )} */}
+                      )}
                     </div>
                     <div className="">
                       {myProfileFields.map((field, index) => {

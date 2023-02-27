@@ -23,18 +23,17 @@ const ProfileCard = ({
     <Card>
       <div className="flex">
         <div className="mr-5">
-          <NoAvatar name={name} size={20} />
-          {/* {userpic ? (
+          {userpic ? (
             <Image
               src={userpic}
               alt="profile picture"
               className="h-20 w-20 rounded-full"
-              width={20}
-              height={20}
+              width={80}
+              height={80}
             />
           ) : (
             <NoAvatar name={name} size={20} />
-          )} */}
+          )}
         </div>
 
         <div className="">
