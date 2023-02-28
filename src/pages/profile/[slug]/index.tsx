@@ -128,6 +128,13 @@ export default ProfilePage;
 
 export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/signin',
+      },
+    };
+  }
   const slug = context.query.slug.toLowerCase();
   const slugProfile = await prisma.profile.findUnique({
     where: {
@@ -166,13 +173,6 @@ export const getServerSideProps = async (context: any) => {
     refreshCompetenciesList();
   }
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/auth/signin',
-      },
-    };
-  }
   let isSameProfile = false;
   if (profile && slugProfile) {
     if (profile!.id === slugProfile!.id) {

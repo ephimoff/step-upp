@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
     GitHubProvider({
       clientId: process.env.GITHUB_ID || '',
       clientSecret: process.env.GITHUB_SECRET || '',
+      checks: ['pkce'],
     }),
     EmailProvider({
       // server: process.env.EMAIL_SERVER,
@@ -68,7 +69,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
     verifyRequest: '/auth/verify',
   },
-  debug: true,
+  debug: process.env.NODE_ENV === 'development' ? true : false,
 };
 
 export default NextAuth(authOptions);
