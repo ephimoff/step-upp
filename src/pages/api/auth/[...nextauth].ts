@@ -8,6 +8,23 @@ import prisma from '@/utils/prisma';
 const THIRTY_DAYS = 30 * 24 * 60 * 60;
 const TWENTY_FOUR_HOURS = 24 * 60 * 60;
 
+// const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
+
+if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET)
+  throw new Error('Failed to initialize Github authentication');
+
+if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET)
+  throw new Error('Failed to initialize Google authentication');
+
+if (
+  !process.env.EMAIL_SERVER_HOST ||
+  !process.env.EMAIL_SERVER_PORT ||
+  !process.env.EMAIL_SERVER_USER ||
+  !process.env.EMAIL_SERVER_PASSWORD ||
+  !process.env.EMAIL_FROM
+)
+  throw new Error('Failed to initialize Magic Link authentication');
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [

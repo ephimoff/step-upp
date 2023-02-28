@@ -9,7 +9,8 @@ import { emailSchema } from '@/schemas/validationSchemas';
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
   OAuthSignin: 'Try singing in with a different account',
-  OAuthCallback: 'Try singing in with a different account',
+  OAuthCallback:
+    'Try singing in with a different account: Most likely an invalid response was returned from the OAuth provider',
   OAuthCreateAccount: 'Try singing in with a different account',
   EmailCreateAccount: 'Try singing in with a different account',
   Callback: 'Try singing in with a different account',
