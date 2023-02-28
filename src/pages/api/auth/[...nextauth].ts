@@ -38,12 +38,12 @@ export const authOptions: NextAuthOptions = {
           response_type: 'code',
         },
       },
-      checks: ['pkce'],
+      checks: ['state'],
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID || '',
       clientSecret: process.env.GITHUB_SECRET || '',
-      checks: ['pkce'],
+      checks: ['state'],
     }),
     EmailProvider({
       // server: process.env.EMAIL_SERVER,
@@ -70,7 +70,8 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
     verifyRequest: '/auth/verify',
   },
-  debug: process.env.NODE_ENV === 'development' ? true : false,
+  // debug: process.env.NODE_ENV === 'development' ? true : false,
+  debug: true,
 };
 
 export default NextAuth(authOptions);
