@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
           response_type: 'code',
         },
       },
+      checks: ['pkce'],
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID || '',

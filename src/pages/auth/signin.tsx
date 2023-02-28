@@ -9,13 +9,12 @@ import { emailSchema } from '@/schemas/validationSchemas';
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
   OAuthSignin: 'Try singing in with a different account',
-  OAuthCallback:
-    'Try singing in with a different account: Most likely an invalid response was returned from the OAuth provider',
+  OAuthCallback: 'An invalid response was returned from the OAuth provider',
   OAuthCreateAccount: 'Try singing in with a different account',
   EmailCreateAccount: 'Try singing in with a different account',
   Callback: 'Try singing in with a different account',
   OAuthAccountNotLinked:
-    'To confirm your identity, sign in with the same account you used originally to log in',
+    'It looks like you already logged with a different signin option. To continue, sign in with the same account you used originally to log in',
   EmailSignin: 'Sending the e-mail with the verification token failed',
   CredentialsSignin:
     'Sign in failed. Check the details you provided are correct',
