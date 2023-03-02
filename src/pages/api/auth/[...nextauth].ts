@@ -38,12 +38,10 @@ export const authOptions: NextAuthOptions = {
           response_type: 'code',
         },
       },
-      checks: ['state'],
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID || '',
       clientSecret: process.env.GITHUB_SECRET || '',
-      checks: ['state'],
     }),
     EmailProvider({
       // server: process.env.EMAIL_SERVER,
