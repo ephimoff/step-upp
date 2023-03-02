@@ -31,6 +31,7 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+
       authorization: {
         params: {
           prompt: 'consent',
@@ -63,6 +64,9 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: THIRTY_DAYS,
     updateAge: TWENTY_FOUR_HOURS,
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
   },
   pages: {
     signIn: '/auth/signin',
