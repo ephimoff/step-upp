@@ -1,8 +1,8 @@
 import { NextResponse, NextRequest, userAgent } from 'next/server';
 
-// export const config = {
-//   matcher: '/',
-// };
+export const config = {
+  matcher: '/',
+};
 
 export default async function middleware(request: NextRequest) {
   const response = NextResponse.next();
