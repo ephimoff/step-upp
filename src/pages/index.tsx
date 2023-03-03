@@ -35,12 +35,15 @@ export const getServerSideProps = async (context: any) => {
   const session = await getSession(context);
 
   if (!session) {
+    console.info('Home page - Session not found. Redirecting to /auth/signin');
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
+  console.info('Home page - Session found: ', !!session);
+  console.log('Home page - Session', session);
 
   const profile = await prisma.profile.findUnique({
     where: {
@@ -49,12 +52,15 @@ export const getServerSideProps = async (context: any) => {
   });
 
   if (!profile) {
+    console.info('Home page - Profile not found. Redirecting to /myprofile');
     return {
       redirect: {
         destination: '/myprofile',
       },
     };
   }
+  console.info('Home page - Profile found: ', !!profile);
+  console.log('Home page - Profile', profile);
 
   return {
     props: { session, profile },
