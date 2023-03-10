@@ -59,21 +59,18 @@ export const authOptions: NextAuthOptions = {
       // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  // secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
-    maxAge: THIRTY_DAYS,
-    updateAge: TWENTY_FOUR_HOURS,
-  },
-  jwt: {
-    secret: process.env.NEXTAUTH_SECRET,
+    // strategy: 'database',
+    // maxAge: THIRTY_DAYS,
+    // updateAge: TWENTY_FOUR_HOURS,
   },
   pages: {
     signIn: '/auth/signin',
     verifyRequest: '/auth/verify',
   },
   // debug: process.env.NODE_ENV === 'development' ? true : false,
-  debug: true,
 };
 
 export default NextAuth(authOptions);
