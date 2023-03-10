@@ -1,6 +1,6 @@
 import Sidebar from '@/components/Sidebar/Sidebar';
 import { getSession } from 'next-auth/react';
-import getServerSession from 'next-auth';
+// import getServerSession from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { siteDescription } from '@/data/data';
 import React from 'react';
@@ -34,8 +34,8 @@ export default function HomePage({ profile }: HomePageProps) {
 }
 
 export async function getServerSideProps(context: any) {
-  // const session = await getSession(context);
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getSession(context);
+  // const session = await getServerSession(context.req, context.res, authOptions);
   console.log('===session:');
   console.dir(session);
 
