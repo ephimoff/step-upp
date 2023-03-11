@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import CustomButton from '@/components/CustomButton';
 import { Form, Formik, Field } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
+import Image from 'next/image';
+import logo from '@/assets/logo.png';
 
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
@@ -44,12 +46,15 @@ const SignIn = () => {
         <div className="flex h-screen items-center justify-center">
           <div className="w-96 rounded-xl bg-sky-900 p-10 shadow-xl">
             <div>
-              <span className="text- flex justify-center font-thin">
+              <span className="flex justify-center font-thin text-white">
                 Welcome to
               </span>
-              <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
+
+              <Image src={logo} className={`mx-auto w-2/3`} alt="StepUpp" />
+
+              {/* <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
                 Step<strong className="font-black">Upp</strong>
-              </h1>
+              </h1> */}
             </div>
             {error && (
               <div className="m-2 mx-0 w-full rounded bg-gradient-to-r from-red-800 to-red-600 p-2 text-center text-sm text-white">

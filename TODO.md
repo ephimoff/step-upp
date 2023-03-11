@@ -16,21 +16,25 @@
 - [x] Don't allow the same user add 360/Feedback to an existing one. Instead rewrite the score
 - [x] Add a creation of the token when a request sent
 - [x] Protect the feedback page and won't allow to access it without a token
-- [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [x] Send an email when requesting feedback
-- [ ] Removed expired tokens from the DB
-- [ ] Update all users with the company name to limit the scope of users
-- [ ] Think about not allowing to feedback-assess your own profile
 - [x] Fix the avatar quality
 - [x] Switch all development to `development` branch
 - [x] Switch env vars on Vercel to `development` env
 - [x] Fix issue with the `<Image>` src as this doesn't work atm
+- [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
+- [ ] Removed expired tokens from the DB
+- [ ] Update all users with the company name to limit the scope of users
+- [ ] Think about not allowing to feedback-assess your own profile
+- [ ] Prepare competency packs
+- [ ] Allow to edit competencies
 
 ### Nice to have
 
 - [x] Rename 360 to Feedback Score or the likes
 - [x] Fix the sidebar shrinking
 - [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
+- [x] Update logo on the sign in screen
+- [ ] Update secondary buttons colours
 - [ ] Update the colours for the secondary buttons to match the logo
 - [ ] Allow to change the picture
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
