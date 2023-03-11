@@ -22,6 +22,9 @@
 - [x] Switch env vars on Vercel to `development` env
 - [x] Fix issue with the `<Image>` src as this doesn't work atm
 - [x] Add `/myprofile` page
+- [x] Show all profiles
+- [x] Add search for profiles
+- [ ] Improve search to be more fuzzy and not to search only by name
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
 - [ ] Update all users with the company name to limit the scope of users
@@ -37,6 +40,7 @@
 - [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
 - [x] Update logo on the sign in screen
 - [x] Update the colours for the secondary buttons to match the logo
+- [ ] When reseting search remove the field from the search input
 - [ ] Update the login buttons to match the styles of the providers (google, github, etc)
 - [ ] Allow to change the picture
 - [ ] Replace `account` with `newUser` endpoint from next-auth

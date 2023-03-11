@@ -1,26 +1,46 @@
 import { useSession, getSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import Link from 'next/link';
+import Search from '@/components/Search';
+import SearchResults from '@/components/SearchResults';
+import Spinner from '@/components/Spinner';
 import prisma from '@/utils/prisma';
+import { useState } from 'react';
 
-export default function MainProfile({ profile }: any) {
-  const { data: session, status } = useSession();
+interface Profile {
+  name: string;
+  id: string;
+  slug: string;
+  team: string;
+  title: string;
+  email: string;
+  userpic: string;
+}
+
+interface Props {
+  profile: any;
+  allProfiles: Profile[];
+}
+
+export default function MainProfile({ profile, allProfiles }: Props) {
+  const [searchResults, setSearchResults] = useState<Profile[]>(allProfiles);
+  const [loading, setLoading] = useState(false);
+
+  const { status } = useSession();
+  const searchProfiles = (results: Profile[]) => {
+    setLoading(true);
+    setSearchResults(results);
+    setLoading(false);
+  };
+  const showAll = () => {
+    setSearchResults(allProfiles);
+  };
   return (
     <>
       <Sidebar name={profile.name}>
         {status === 'authenticated' ? (
           <>
-            <div className="flex items-baseline py-3">
-              <label className="w-2/6 text-sm font-thin sm:text-base">
-                Label
-              </label>
-              <div className="relative w-3/6">
-                <input placeholder="Placeholder" required className="input" />
-                <div className="mt-1 text-sm font-normal text-[#fc8181]">
-                  Error text
-                </div>
-              </div>
-            </div>
+            <Search returnSearchResults={searchProfiles} showAll={showAll} />
+            {loading ? <Spinner /> : <SearchResults profiles={searchResults} />}
           </>
         ) : (
           <p>You are not signed in</p>
@@ -44,6 +64,19 @@ export const getServerSideProps = async (context: any) => {
       email: session!.user!.email as string,
     },
   });
+  const allProfiles = await prisma.profile.findMany({
+    select: {
+      name: true,
+      id: true,
+      slug: true,
+      team: true,
+      title: true,
+      email: true,
+      userpic: true,
+    },
+    orderBy: { name: 'asc' },
+    take: 10,
+  });
 
   if (!profile) {
     return {
@@ -54,6 +87,6 @@ export const getServerSideProps = async (context: any) => {
   }
 
   return {
-    props: { session, profile },
+    props: { session, profile, allProfiles },
   };
 };

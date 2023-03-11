@@ -31,21 +31,48 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'GET') {
-    const { email } = req.query;
-
-    try {
-      const profile = await prisma.profile.findUnique({
-        where: {
-          email: email as string,
-        },
-      });
-      if (profile) {
-        res.status(200).json(profile);
-      } else {
-        res.status(500).json({ msg: 'Profile not found' });
+    const { email, query } = req.query;
+    if (email) {
+      try {
+        const profile = await prisma.profile.findUnique({
+          where: {
+            email: email as string,
+          },
+        });
+        if (profile) {
+          res.status(200).json(profile);
+        } else {
+          res.status(500).json({ msg: 'Profile not found' });
+        }
+      } catch (error) {
+        res.status(500).json({ msg: 'Something went wrong', error });
       }
-    } catch (error) {
-      res.status(500).json({ msg: 'Something went wrong', error });
+    }
+    if (query) {
+      console.log('query:', query);
+      try {
+        const profile = await prisma.profile.findMany({
+          where: {
+            name: query as string,
+          },
+          select: {
+            name: true,
+            id: true,
+            slug: true,
+            team: true,
+            title: true,
+            email: true,
+            userpic: true,
+          },
+        });
+        if (profile) {
+          res.status(200).json(profile);
+        } else {
+          res.status(500).json({ msg: 'Profile not found' });
+        }
+      } catch (error) {
+        res.status(500).json({ msg: 'Something went wrong', error });
+      }
     }
   }
 };

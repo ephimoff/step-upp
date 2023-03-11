@@ -15,6 +15,7 @@ const Logo = ({ open }: Props) => {
         src={logo1}
         className={`w-12 duration-500 dark:hidden ${open && 'rotate-[360deg]'}`}
         alt=""
+        priority
       />
       <Image
         src={logo1Dark}
@@ -22,6 +23,7 @@ const Logo = ({ open }: Props) => {
           open && 'rotate-[360deg]'
         }`}
         alt=""
+        priority
       />
       <Image
         src={logo2}
@@ -29,6 +31,7 @@ const Logo = ({ open }: Props) => {
           !open && 'scale-0'
         }`}
         alt=""
+        priority
       />
     </div>
   );
