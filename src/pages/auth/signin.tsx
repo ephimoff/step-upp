@@ -44,7 +44,7 @@ const SignIn = () => {
       </Head>
       <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500">
         <div className="flex h-screen items-center justify-center">
-          <div className="w-96 rounded-xl bg-sky-900 p-10 shadow-xl">
+          <div className="w-96 rounded-xl bg-slate-700 p-10 shadow-xl">
             <div>
               <span className="flex justify-center font-thin text-white">
                 Welcome to
@@ -103,11 +103,11 @@ const SignIn = () => {
               )}
             </Formik>
             <div className="mb-6 flex items-center justify-between pt-6">
-              <hr className="w-full border-sky-300" />
-              <span className="px-4 font-light tracking-wider text-sky-300">
+              <hr className="w-full border-[#26CD7D]" />
+              <span className="px-4 font-light tracking-wider text-[#26CD7D]">
                 or
               </span>
-              <hr className="w-full border-sky-300" />
+              <hr className="w-full border-[#26CD7D]" />
             </div>
             <div key="google">
               <CustomButton

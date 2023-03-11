@@ -22,7 +22,7 @@
 - [x] Switch env vars on Vercel to `development` env
 - [x] Fix issue with the `<Image>` src as this doesn't work atm
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
-- [ ] Removed expired tokens from the DB
+- [ ] Remove expired tokens from the DB
 - [ ] Update all users with the company name to limit the scope of users
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Prepare competency packs
@@ -34,8 +34,7 @@
 - [x] Fix the sidebar shrinking
 - [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
 - [x] Update logo on the sign in screen
-- [ ] Update secondary buttons colours
-- [ ] Update the colours for the secondary buttons to match the logo
+- [x] Update the colours for the secondary buttons to match the logo
 - [ ] Allow to change the picture
 - [ ] Replace `myprofile` with `newUser` endpoint from next-auth
 - [ ] Add actions and tips or remove them for the first version

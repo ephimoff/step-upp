@@ -2,7 +2,7 @@
 @tailwind components;
 
 .btn {
-  @apply mr-2 inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded px-5 py-1 text-base font-bold leading-snug tracking-wide transition duration-300 ease-in-out active:translate-y-0.5;
+  @apply mr-2 inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded px-5 py-1 text-base font-semibold leading-snug tracking-wide transition duration-300 ease-in-out active:translate-y-0.5;
 }
 
 .btn.btn-sm {
@@ -34,14 +34,14 @@
 }
 
 .btn-secondary {
-  @apply border-2 border-[#00B4DB] bg-[#00B4DB] text-white shadow-sm hover:bg-[#389dc9];
+  @apply border-2 border-[#26CD7D] bg-[#26CD7D] text-white shadow-sm hover:bg-[#1ca965];
 }
 .btn-secondary.btn-disabled {
-  @apply cursor-auto opacity-40 hover:bg-[#389dc9];
+  @apply cursor-auto opacity-40 hover:bg-[#1ca965];
 }
 
 .btn-secondary.btn-outline {
-  @apply border-[#00B4DB] bg-transparent text-[#00B4DB]  hover:bg-[#00B4DB] hover:text-white dark:bg-transparent dark:hover:bg-[#00B4DB];
+  @apply border-[#26CD7D] bg-transparent text-[#26CD7D]  hover:bg-[#1ca965] hover:text-white dark:bg-transparent dark:hover:bg-[#26CD7D];
 }
 
 .input {
