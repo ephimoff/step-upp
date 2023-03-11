@@ -10,49 +10,17 @@ export default function MainProfile({ profile }: any) {
       <Sidebar name={profile.name}>
         {status === 'authenticated' ? (
           <>
-            <p>Welcome {session.user!.name}</p>
-            <ul>
-              <li>
-                <Link
-                  href="/profile/anton-efimov"
-                  className="border-b border-b-orange-500 text-orange-400"
-                >
-                  {`Anton Efimov\'s profile (github)`}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/profile/anton-efimov/feedbackscore?token=abc"
-                  className="border-b border-b-orange-500 text-orange-400"
-                >
-                  {`Anton Efimov\'s (github) feedback with token`}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/profile/anton-efimov/feedbackscore?token=abcabc"
-                  className="border-b border-b-orange-500 text-orange-400"
-                >
-                  {`Anton Efimov\'s (github) feedback with wrong token`}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/profile/anton-efimov/feedbackscore"
-                  className="border-b border-b-orange-500 text-orange-400"
-                >
-                  {`Anton Efimov\'s (github) feedback with no token`}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/profile/efimov-anton"
-                  className="border-b border-b-orange-500 text-orange-400"
-                >
-                  {`John Doe\'s profile (magic link)`}
-                </Link>
-              </li>
-            </ul>
+            <div className="flex items-baseline py-3">
+              <label className="w-2/6 text-sm font-thin sm:text-base">
+                Label
+              </label>
+              <div className="relative w-3/6">
+                <input placeholder="Placeholder" required className="input" />
+                <div className="mt-1 text-sm font-normal text-[#fc8181]">
+                  Error text
+                </div>
+              </div>
+            </div>
           </>
         ) : (
           <p>You are not signed in</p>
@@ -80,7 +48,7 @@ export const getServerSideProps = async (context: any) => {
   if (!profile) {
     return {
       redirect: {
-        destination: '/myprofile',
+        destination: '/account',
       },
     };
   }

@@ -36,8 +36,8 @@ export default function HomePage({ profile }: HomePageProps) {
 export async function getServerSideProps(context: any) {
   const session = await getSession(context);
   // const session = await getServerSession(context.req, context.res, authOptions);
-  console.log('===session:');
-  console.dir(session);
+  // console.log('===session:');
+  // console.dir(session);
 
   if (!session) {
     console.info('Home page - Session not found. Redirecting to /auth/signin');
@@ -56,10 +56,10 @@ export async function getServerSideProps(context: any) {
   });
 
   if (!profile) {
-    console.info('Home page - Profile not found. Redirecting to /myprofile');
+    console.info('Home page - Profile not found. Redirecting to /account');
     return {
       redirect: {
-        destination: '/myprofile',
+        destination: '/account',
       },
     };
   }

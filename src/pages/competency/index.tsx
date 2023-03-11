@@ -139,7 +139,7 @@ export const getServerSideProps = async (context: any) => {
   if (!profile) {
     return {
       redirect: {
-        destination: '/myprofile',
+        destination: '/account',
       },
     };
   }

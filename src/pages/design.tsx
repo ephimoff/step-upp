@@ -2,7 +2,7 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import { getSession } from 'next-auth/react';
 import React from 'react';
 import prisma from '@/utils/prisma';
-import { ProfileType } from '@/types/types';
+import type { ProfileType } from '@/types/types';
 import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
 import { Check } from 'lucide-react';
@@ -162,7 +162,7 @@ export const getServerSideProps = async (context: any) => {
   if (!profile) {
     return {
       redirect: {
-        destination: '/myprofile',
+        destination: '/account',
       },
     };
   }

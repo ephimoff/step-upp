@@ -1,6 +1,7 @@
 import {
   Home,
   User,
+  Users,
   BookOpenCheck,
   ChevronLeft,
   Paintbrush,
@@ -27,12 +28,27 @@ export const sidebarLinks = [
     icon: <Home />,
   },
   {
-    name: 'Profiles',
-    path: '/profile',
+    name: 'My Profile',
+    path: '/myprofile',
     icon: <User />,
   },
-  { name: 'Competencies', path: '/competency', icon: <BookOpenCheck /> },
-  { name: 'Design', path: '/design', icon: <Paintbrush /> },
+];
+export const adminLinks = [
+  {
+    name: 'People',
+    path: '/profile',
+    icon: <Users />,
+  },
+  {
+    name: 'Competencies',
+    path: '/competency',
+    icon: <BookOpenCheck />,
+  },
+  {
+    name: 'Design library',
+    path: '/design',
+    icon: <Paintbrush />,
+  },
 ];
 
 export default function Sidebar({
@@ -42,6 +58,7 @@ export default function Sidebar({
 }: SidebarProps) {
   // required for theme switching
   const [mounted, setMounted] = useState(false);
+  const [admin, setAdmin] = useState(true);
   // const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
 
@@ -82,6 +99,7 @@ export default function Sidebar({
                 <Logo open={open} />
               </Link>
             </div>
+            {/* All non-admin links first */}
             <ul className="pt-6">
               {sidebarLinks.map((link, index) => {
                 return (
@@ -96,6 +114,26 @@ export default function Sidebar({
                 );
               })}
             </ul>
+            {/* All admin links after */}
+            {admin && (
+              <div>
+                <hr className="mx-auto mt-8 w-4/5 border-slate-400" />
+                <ul className="pt-6">
+                  {adminLinks.map((link, index) => {
+                    return (
+                      <li key={index} className="mb-3">
+                        <SidebarLink
+                          path={link.path}
+                          name={link.name}
+                          open={open}
+                          icon={link.icon}
+                        />
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
           <div className="absolute bottom-4 w-full px-4">
             <SidebarProfile mounted={mounted} open={open} name={name} />

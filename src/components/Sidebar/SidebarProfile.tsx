@@ -17,7 +17,7 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
   return (
     <div className={`rounded-md  py-2 ${open && 'p-4'}`}>
       <div className="flex items-center justify-center ">
-        <Link href="/myprofile" className="">
+        <Link href="/account" className="">
           {session!.user!.image ? (
             <Image
               src={session!.user!.image as string}
