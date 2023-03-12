@@ -18,7 +18,6 @@ const Search = ({ returnSearchResults, showAll }: Props) => {
         setSuccess(true);
       }
       const searchResponse = await response.json();
-      // console.log('searchResponse', searchResponse);
 
       returnSearchResults(searchResponse);
       return searchResponse;
@@ -28,46 +27,49 @@ const Search = ({ returnSearchResults, showAll }: Props) => {
   };
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={{
-        searchValue: searchValue,
-      }}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
-        setSubmitting(true);
-        searchUsers(values.searchValue);
-        // returnSearchResults(21);
-        // console.log(result);
-        setSubmitting(false);
-      }}
-    >
-      {({ values, errors, isSubmitting }) => (
-        <Form className="flex">
-          <div className="relative flex flex-1 items-center py-3">
-            <Field
-              name="searchValue"
-              type="text"
-              className="input border border-slate-400 bg-slate-300"
-              placeholder="Search here..."
-            />
-            <button type="submit" className="absolute right-2">
-              <SearchIcon className="text-slate-500" />
-            </button>
-          </div>
+    <div>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          searchValue: searchValue,
+        }}
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          setSubmitting(true);
+          searchUsers(values.searchValue);
+          setSubmitting(false);
+        }}
+      >
+        {({ values, errors, isSubmitting, resetForm }) => (
+          <Form className="flex">
+            <div className="relative flex flex-1 items-center py-3">
+              <Field
+                name="searchValue"
+                type="text"
+                className="input border border-slate-400 bg-slate-300"
+                placeholder="Search here..."
+              />
+              <button type="submit" className="absolute right-2">
+                <SearchIcon className="text-slate-500" />
+              </button>
+            </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              setSearchValue('');
-              showAll();
-            }}
-            className="group ml-2 flex items-center transition duration-700"
-          >
-            <RefreshCw size={16} className="group-hover:animate-spin" />
-          </button>
-        </Form>
-      )}
-    </Formik>
+            <button
+              type="reset"
+              onClick={() => {
+                setSearchValue('');
+                showAll();
+                setSuccess(false);
+                resetForm;
+              }}
+              className="group ml-2 flex items-center transition duration-700"
+            >
+              <RefreshCw size={16} className="group-hover:animate-spin" />
+            </button>
+          </Form>
+        )}
+      </Formik>
+      {success && <p>Search results:</p>}
+    </div>
   );
 };
 export default Search;

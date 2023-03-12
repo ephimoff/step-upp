@@ -40,7 +40,7 @@
 - [x] Add feedback from buttons, i.e. 'Sent', 'Saved' etc.
 - [x] Update logo on the sign in screen
 - [x] Update the colours for the secondary buttons to match the logo
-- [ ] When reseting search remove the field from the search input
+- [x] When reseting search remove the field from the search input
 - [ ] Update the login buttons to match the styles of the providers (google, github, etc)
 - [ ] Allow to change the picture
 - [ ] Replace `account` with `newUser` endpoint from next-auth
@@ -48,6 +48,7 @@
 - [ ] Add animations transitions for popups
 - [ ] When opening the feedback screen load the previous user assessments
 - [ ] Make the desing a bit more "enterprisee"
+- [ ] Update the header of the profile page: font colour and NoAvatar
 
 ## Bugs
 
