@@ -24,7 +24,7 @@
 - [x] Add `/myprofile` page
 - [x] Show all profiles
 - [x] Add search for profiles
-- [ ] Improve search to be more fuzzy and not to search only by name
+- [x] Improve search to be more fuzzy and not to search only by name
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
 - [ ] Update all users with the company name to limit the scope of users

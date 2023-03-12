@@ -53,7 +53,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         const profile = await prisma.profile.findMany({
           where: {
-            name: query as string,
+            // name: query as string,
+            name: {
+              contains: query as string,
+              mode: 'insensitive',
+            },
           },
           select: {
             name: true,
