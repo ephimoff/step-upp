@@ -79,6 +79,8 @@ model Profile {
   competencies ProfileCompetencies[]
   skills       ProfileScores[]
   appraised    FeedbackScores[]
+  company      Company               @relation(fields: [companyId], references: [id])
+  companyId    String
 }
 
 model Competency {
@@ -132,4 +134,10 @@ model FeedbackAccessToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Company {
+  id       String    @id @default(cuid())
+  name     String
+  profiles Profile[]
 }
