@@ -35,3 +35,9 @@ export function generateUniqueSlug(slug: string) {
   });
   return uniqueSlug;
 }
+
+export function suggestName(email: string) {
+  const domain = email.split('@');
+  const name = domain[1].split('.');
+  return name[0].toUpperCase();
+}

@@ -33,3 +33,6 @@ export const scoreSchema = yup.object().shape({
 export const emailSchema = yup.object().shape({
   email: yup.string().email('Please enter a valid email').required('Required'),
 });
+export const companyNameSchema = yup.object().shape({
+  name: yup.string().required('Required'),
+});
