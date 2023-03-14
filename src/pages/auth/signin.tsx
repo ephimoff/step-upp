@@ -7,6 +7,7 @@ import { Form, Formik, Field } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
 import Image from 'next/image';
 import logo from '@/assets/logo.png';
+import type { GetServerSidePropsContext } from 'next';
 
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
@@ -137,7 +138,7 @@ const SignIn = () => {
 };
 export default SignIn;
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 
   if (session) {

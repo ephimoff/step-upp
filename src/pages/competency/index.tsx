@@ -7,6 +7,7 @@ import CustomButton from '@/components/CustomButton';
 import prisma from '@/utils/prisma';
 import { ProfileType } from '@/types/types';
 import { useState } from 'react';
+import type { GetServerSidePropsContext } from 'next';
 
 type CompetenciesPageProps = {
   profile: ProfileType;
@@ -120,7 +121,9 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
   );
 }
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const session = await getSession(context);
   if (!session) {
     return {

@@ -7,6 +7,7 @@ import React from 'react';
 import prisma from '@/utils/prisma';
 import { ProfileType } from '@/types/types';
 import Card from '@/components/Card';
+import type { GetServerSidePropsContext } from 'next';
 
 type HomePageProps = {
   profile: ProfileType;
@@ -33,21 +34,21 @@ export default function HomePage({ profile }: HomePageProps) {
   );
 }
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const PAGE = 'Home';
   const session = await getSession(context);
-  // const session = await getServerSession(context.req, context.res, authOptions);
-  // console.log('===session:');
-  // console.dir(session);
 
   if (!session) {
-    console.info('Home page - Session not found. Redirecting to /auth/signin');
+    console.info(
+      `${PAGE} page - Session not found. Redirecting to /auth/signin`
+    );
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
-  console.info('Home page - Session found: ', session);
+  console.info(`${PAGE} page - Session found: `, session);
 
   const profile = await prisma.profile.findUnique({
     where: {
@@ -56,14 +57,14 @@ export async function getServerSideProps(context: any) {
   });
 
   if (!profile) {
-    console.info('Home page - Profile not found. Redirecting to /account');
+    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
       },
     };
   }
-  console.info('Home page - Profile found: ', profile);
+  console.info(`${PAGE} page - Profile found: `, profile);
 
   return {
     props: { session, profile },

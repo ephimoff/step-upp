@@ -4,6 +4,7 @@ import { ProfileType } from '@/types/types';
 import { getSession } from 'next-auth/react';
 import Card from '@/components/Card';
 import Scores from '@/components/Scores';
+import type { GetServerSidePropsContext } from 'next';
 
 // import useSWR from 'swr';
 // import { fetcher } from '@/utils/fetcher';
@@ -72,10 +73,12 @@ const FeedbackScoresPage = ({ appraiseeProfile, appraiserProfile }: Props) => {
 };
 export default FeedbackScoresPage;
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const session = await getSession(context);
 
-  const slug = context.query.slug.toLowerCase();
+  const slug = context.query.slug!.toString().toLowerCase();
   let appraiseeProfile = await prisma.profile.findUnique({
     where: {
       slug: slug,
@@ -118,7 +121,7 @@ export const getServerSideProps = async (context: any) => {
       where: {
         identifier_token: {
           identifier: session.user!.email as string,
-          token: token,
+          token: token as string,
         },
       },
     });

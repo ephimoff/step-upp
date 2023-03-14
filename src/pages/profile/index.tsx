@@ -5,6 +5,7 @@ import SearchResults from '@/components/SearchResults';
 import Spinner from '@/components/Spinner';
 import prisma from '@/utils/prisma';
 import { useState } from 'react';
+import type { GetServerSidePropsContext } from 'next';
 
 interface Profile {
   name: string;
@@ -50,15 +51,23 @@ export default function MainProfile({ profile, allProfiles }: Props) {
   );
 }
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const PAGE = 'Profile Slug';
   const session = await getSession(context);
   if (!session) {
+    console.info(
+      `${PAGE} page - Session not found. Redirecting to /auth/signin`
+    );
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
+  console.info(`${PAGE} page - Session found: `, session);
+
   const profile = await prisma.profile.findUnique({
     where: {
       email: session!.user!.email as string,
@@ -79,12 +88,14 @@ export const getServerSideProps = async (context: any) => {
   });
 
   if (!profile) {
+    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
       },
     };
   }
+  console.info(`${PAGE} page - Profile found: `, profile);
 
   return {
     props: { session, profile, allProfiles },

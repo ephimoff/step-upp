@@ -8,6 +8,7 @@ import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
 import { CompetencyType, ProfileType } from '@/types/types';
 import Spinner from '@/components/Spinner';
+import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   competencies: any;
@@ -126,7 +127,9 @@ const ProfilePage = ({
 };
 export default ProfilePage;
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const session = await getSession(context);
   if (!session) {
     return {
@@ -135,7 +138,7 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
-  const slug = context.query.slug.toLowerCase();
+  const slug = context.query.slug!.toString().toLowerCase();
   const slugProfile = await prisma.profile.findUnique({
     where: {
       slug: slug,

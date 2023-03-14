@@ -3,6 +3,7 @@ import { CompetencyType, ProfileType } from '@/types/types';
 import prisma from '@/utils/prisma';
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
+import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   competency: CompetencyType;
@@ -35,8 +36,10 @@ const CompetencyPage = ({ competency, profile }: Props) => {
 };
 export default CompetencyPage;
 
-export const getServerSideProps = async (context: any) => {
-  const slug = context.query.slug.toLowerCase();
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const slug = context.query.slug!.toString().toLowerCase();
   const competency = await prisma.competency.findUnique({
     where: {
       id: slug,

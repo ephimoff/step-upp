@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/react';
 import React from 'react';
 import prisma from '@/utils/prisma';
 import type { ProfileType } from '@/types/types';
+import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   profile: ProfileType;
@@ -17,15 +18,15 @@ const MyProfilePage = ({ profile }: Props) => {
 };
 export default MyProfilePage;
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const PAGE = 'MyProfile';
   const session = await getSession(context);
-  // const session = await getServerSession(context.req, context.res, authOptions);
-  // console.log('===session:');
-  // console.dir(session);
 
   if (!session) {
     console.info(
-      'MyProfile page - Session not found. Redirecting to /auth/signin'
+      `${PAGE} page - Session not found. Redirecting to /auth/signin`
     );
     return {
       redirect: {
@@ -33,7 +34,7 @@ export const getServerSideProps = async (context: any) => {
       },
     };
   }
-  console.info('MyProfile page - Session found: ', session);
+  console.info(`${PAGE} page - Session found: `, session);
 
   const profile = await prisma.profile.findUnique({
     where: {
@@ -42,7 +43,7 @@ export const getServerSideProps = async (context: any) => {
   });
 
   if (!profile) {
-    console.info('MyProfile page - Profile not found. Redirecting to /account');
+    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
@@ -50,7 +51,7 @@ export const getServerSideProps = async (context: any) => {
     };
   } else {
     console.info(
-      'MyProfile page - Profile found. Redirecting to /myaccount/:slug'
+      `${PAGE} page - Profile found. Redirecting to /myaccount/:slug`
     );
     return {
       redirect: {

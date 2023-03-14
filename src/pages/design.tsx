@@ -6,6 +6,7 @@ import type { ProfileType } from '@/types/types';
 import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
 import { Check } from 'lucide-react';
+import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   profile: ProfileType;
@@ -142,16 +143,23 @@ export default function DesignPage({ profile }: Props) {
   );
 }
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const PAGE = 'Design';
   const session = await getSession(context);
 
   if (!session) {
+    console.info(
+      `${PAGE} page - Session not found. Redirecting to /auth/signin`
+    );
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
+  console.info(`${PAGE} page - Session found: `, session);
 
   const profile = await prisma.profile.findUnique({
     where: {
@@ -160,12 +168,14 @@ export const getServerSideProps = async (context: any) => {
   });
 
   if (!profile) {
+    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
       },
     };
   }
+  console.info(`${PAGE} page - Profile found: `, profile);
 
   return {
     props: { session, profile },

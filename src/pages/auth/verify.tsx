@@ -2,6 +2,7 @@ import { siteTitle } from '@/data/data';
 import { getSession } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
+import type { GetServerSidePropsContext } from 'next';
 // import { useRouter } from 'next/router';
 
 const Verify = () => {
@@ -43,7 +44,7 @@ const Verify = () => {
 };
 export default Verify;
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
   if (session) {
     return {

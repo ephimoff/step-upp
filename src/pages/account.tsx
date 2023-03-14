@@ -12,6 +12,7 @@ import Card from '@/components/Card';
 import { generateSlug } from '@/utils/functions';
 import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
+import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   profile: ProfileType;
@@ -221,7 +222,9 @@ export default function AccountPage({ profile }: Props) {
   );
 }
 
-export const getServerSideProps = async (context: any) => {
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
   const session = await getSession(context);
 
   if (!session) {
