@@ -34,7 +34,8 @@ export const getServerSideProps = async (
       },
     };
   }
-  console.info(`${PAGE} page - Session found: `, session);
+  console.info(`${PAGE} page - Session found`);
+  console.debug(`${PAGE} page - Session: `, session);
 
   const profile = await prisma.profile.findUnique({
     where: {
@@ -59,7 +60,8 @@ export const getServerSideProps = async (
       },
     };
   }
-  console.info('MyProfile page - Profile found: ', profile);
+  console.info(`${PAGE} page - Profile found`);
+  console.debug(`${PAGE} page - Profile: `, profile);
 
   return {
     props: { session, profile },

@@ -81,14 +81,12 @@ export default CompanyPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
+  const PAGE = 'Company';
   const session = await getSession(context);
-  // const session = await getServerSession(context.req, context.res, authOptions);
-  // console.log('===session:');
-  // console.dir(session);
 
   if (!session) {
     console.info(
-      'Company page - Session not found. Redirecting to /auth/signin'
+      `${PAGE} page - Session not found. Redirecting to /auth/signin`
     );
     return {
       redirect: {
@@ -96,7 +94,8 @@ export const getServerSideProps = async (
       },
     };
   }
-  console.info('Company page - Session found: ', session);
+  console.info(`${PAGE} page - Session found`);
+  console.debug(`${PAGE} page - Session: `, session);
 
   const profile = await prisma.profile.findUnique({
     where: {

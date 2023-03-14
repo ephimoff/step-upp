@@ -95,7 +95,8 @@ export const getServerSideProps = async (
       },
     };
   }
-  console.info(`${PAGE} page - Profile found: `, profile);
+  console.info(`${PAGE} page - Profile found`);
+  console.debug(`${PAGE} page - Profile: `, profile);
 
   return {
     props: { session, profile, allProfiles },

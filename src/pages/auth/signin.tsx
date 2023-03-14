@@ -139,10 +139,12 @@ const SignIn = () => {
 export default SignIn;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const PAGE = 'SignIn';
   const session = await getSession(context);
 
   if (session) {
-    console.info('SignIn page - Session found: ', session);
+    console.info(`${PAGE} page - Session found`);
+    console.debug(`${PAGE} page - Session: `, session);
     return {
       redirect: {
         destination: '/',
@@ -150,7 +152,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
-  console.info('SignIn page - Session not found');
+  console.info(`${PAGE} page - Session not found`);
   // const providers = await getProviders();
   return {
     props: { session },
