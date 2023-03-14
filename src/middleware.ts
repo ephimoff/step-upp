@@ -1,4 +1,5 @@
-import { NextResponse, NextRequest, userAgent } from 'next/server';
+import { NextResponse, userAgent } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export const config = {
   matcher: '/',

@@ -41,6 +41,7 @@
 - [x] Update logo on the sign in screen
 - [x] Update the colours for the secondary buttons to match the logo
 - [x] When reseting search remove the field from the search input
+- [ ] Add a popup message when a profile needs to be created
 - [ ] Update the login buttons to match the styles of the providers (google, github, etc)
 - [ ] Allow to change the picture
 - [ ] Replace `account` with `newUser` endpoint from next-auth

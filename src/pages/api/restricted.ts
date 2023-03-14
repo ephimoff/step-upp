@@ -1,18 +1,18 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { unstable_getServerSession } from 'next-auth/next';
+import { getServerSession } from 'next-auth/next';
 import { authOptions } from './auth/[...nextauth]';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await unstable_getServerSession(req, res, authOptions);
+  const session = await getServerSession(req, res, authOptions);
 
   if (session) {
-    res.send({
+    res.status(401).send({
       content:
         'This is protected content. You can access this content because you are signed in.',
     });
   } else {
-    res.send({
+    res.status(200).send({
       error:
         'You must be signed in to view the protected content on this page.',
     });
