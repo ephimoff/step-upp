@@ -29,11 +29,8 @@ const SidebarProfile = ({ mounted, open, name }: SidebarProfileProps) => {
               } mx-auto mb-2 rounded-full shadow-lg`}
             />
           ) : (
-            <div className="mb-2 flex justify-center">
-              <NoAvatar
-                name={name ? name : (session!.user!.name as string)}
-                size={!open ? 10 : 12}
-              />
+            <div className="mb-2 flex">
+              <NoAvatar size={!open ? 10 : 12} />
             </div>
           )}
           <span

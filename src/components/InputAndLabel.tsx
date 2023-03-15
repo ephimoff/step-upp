@@ -16,6 +16,7 @@ const InputAndLabel = ({
   placeholder,
   required,
   initialName,
+  type,
   ...props
 }: InputAndLabelProps) => {
   const [field, meta, helpers] = useField(props);
@@ -32,11 +33,15 @@ const InputAndLabel = ({
         <input
           placeholder={placeholder}
           required={required}
+          disabled={type === 'email'}
           {...field}
           className={`input ${
             meta.touched && meta.error
               ? 'border-2 border-[#fc8181]'
               : 'border-gray-400'
+          } ${
+            type === 'email' &&
+            'border-dotted border-gray-300 bg-gray-100 text-gray-500 dark:border-gray-400 dark:bg-gray-800 dark:text-gray-400'
           }`}
         />
         {field.name === 'slug' ? (

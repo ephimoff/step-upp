@@ -10,13 +10,9 @@ export const profileSchema = yup.object().shape({
       'Unique slug',
       'Slug is already in use. Change it or generate a new one',
       async (value, slug) => {
-        const { status } = await fetch('/api/validate-slug', {
-          method: 'POST',
-          body: JSON.stringify({ slug: value, email: slug.parent.email }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const { status } = await fetch(
+          `/api/slug?slug=${slug}&email=${slug.parent.email}`
+        );
         return status === 200 ? true : false;
       }
     ),

@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/utils/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
-    const { slug, email } = req.body;
+  if (req.method === 'GET') {
+    const { slug, email } = req.query;
     try {
       const profile = await prisma.profile.findUnique({
         where: {
