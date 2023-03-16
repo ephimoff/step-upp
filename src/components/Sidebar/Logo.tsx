@@ -13,16 +13,20 @@ const Logo = ({ open }: Props) => {
     <div className="flex items-center gap-x-4">
       <Image
         src={logo1}
-        className={`w-12 duration-500 dark:hidden ${open && 'rotate-[360deg]'}`}
-        alt=""
+        width={48}
+        height={48}
+        className={`duration-500 dark:hidden ${open && 'rotate-[360deg]'}`}
+        alt="Logo"
         priority
       />
       <Image
         src={logo1Dark}
-        className={`hidden w-12 duration-500 dark:block ${
+        className={`hidden duration-500 dark:block ${
           open && 'rotate-[360deg]'
         }`}
-        alt=""
+        width={48}
+        height={48}
+        alt="Logo"
         priority
       />
       <Image
@@ -30,7 +34,8 @@ const Logo = ({ open }: Props) => {
         className={`w-36 shrink-0 origin-left duration-300 ${
           !open && 'scale-0'
         }`}
-        alt=""
+        width={144}
+        alt="StepUpp"
         priority
       />
     </div>
