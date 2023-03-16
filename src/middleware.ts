@@ -2,6 +2,7 @@ import { NextResponse, userAgent } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export const config = {
+  // matcher: '/api/:path*',
   matcher: '/',
 };
 

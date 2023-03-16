@@ -5,6 +5,7 @@ import {
   BookOpenCheck,
   ChevronLeft,
   Paintbrush,
+  Network,
 } from 'lucide-react';
 import Link from 'next/link';
 import SidebarLink from '../SidebarLink';
@@ -34,6 +35,11 @@ export const sidebarLinks = [
   },
 ];
 export const adminLinks = [
+  {
+    name: 'Workspace',
+    path: '/workspace',
+    icon: <Network />,
+  },
   {
     name: 'People',
     path: '/profile',
@@ -95,7 +101,7 @@ export default function Sidebar({
               />
             </div>
             <div>
-              <Link href="/">
+              <Link href="/" as="image">
                 <Logo open={open} />
               </Link>
             </div>

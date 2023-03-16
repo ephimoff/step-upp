@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Formik } from 'formik';
-import { Check } from 'lucide-react';
+import { Check, X as Close } from 'lucide-react';
 import { profileSchema } from '@/schemas/validationSchemas';
 import { accountFields } from '@/data/data';
 import { generateSlug, generateUniqueSlug } from '@/utils/functions';
@@ -16,15 +16,26 @@ import NoAvatar from '@/components/NoAvatar';
 import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Props = {
   profile: ProfileType;
   isNewProfile: boolean;
+  isNewWorkspace: boolean;
+  isNewMembership: boolean;
 };
 
-export default function AccountPage({ profile, isNewProfile }: Props) {
+export default function AccountPage({
+  profile,
+  isNewProfile,
+  isNewWorkspace,
+  isNewMembership,
+}: Props) {
   const { data: session, status } = useSession();
   const [success, setSuccess] = useState(false);
+  const [newProfileShow, setNewProfileShow] = useState(true);
+  const [newWorkspaceShow, setNewWorkspaceShow] = useState(true);
+  const [newMembershipShow, setNewMembershipShow] = useState(true);
 
   // profile
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
@@ -116,12 +127,50 @@ export default function AccountPage({ profile, isNewProfile }: Props) {
         {status === 'authenticated' ? (
           <>
             <Card>
-              {isNewProfile && (
+              {(isNewProfile || isNewWorkspace || isNewMembership) && (
                 <div className="text-center">
-                  <span className="flex rounded-lg bg-purple-500 py-2 px-4 text-white">
-                    <Check className="mr-4" /> Your new profile is created. You
-                    can update it below
-                  </span>
+                  {isNewProfile && newProfileShow && (
+                    <span className="duration-600 relative mb-2 flex items-center rounded-lg bg-purple-500 py-2 px-4 text-white">
+                      <Check className="mr-4 text-purple-300" /> Your new
+                      profile is created. You can update it below
+                      <button
+                        className="absolute right-3"
+                        onClick={() => setNewProfileShow(false)}
+                      >
+                        <Close size={16} />
+                      </button>
+                    </span>
+                  )}
+                  {isNewWorkspace && newWorkspaceShow && (
+                    <span className="duration-600 relative mb-2 flex rounded-lg bg-purple-500 py-2 px-4 text-white">
+                      <Check className="mr-4 text-purple-300" /> A new workspace
+                      was created:
+                      <Link
+                        href="/workspace"
+                        className="mx-2 font-medium text-green-500 underline"
+                      >
+                        My workspace
+                      </Link>
+                      <button
+                        className="absolute right-3"
+                        onClick={() => setNewWorkspaceShow(false)}
+                      >
+                        <Close size={16} />
+                      </button>
+                    </span>
+                  )}
+                  {isNewMembership && newMembershipShow && (
+                    <span className="duration-600 relative mb-2 flex rounded-lg bg-purple-500 py-2 px-4 text-white">
+                      <Check className="mr-4 text-purple-300" /> You are now a
+                      member of a workspace
+                      <button
+                        className="absolute right-3"
+                        onClick={() => setNewMembershipShow(false)}
+                      >
+                        <Close size={16} />
+                      </button>
+                    </span>
+                  )}
                 </div>
               )}
               <Formik
@@ -212,9 +261,12 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
+  const PAGE = 'Account';
   // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   let isNewProfile = false;
+  let isNewWorkspace = false;
+  let isNewMembership = false;
 
   if (!session) {
     return {
@@ -232,6 +284,7 @@ export const getServerSideProps = async ({
     const initialName = session!.user!.name
       ? session!.user!.name
       : session!.user!.email!.split('@')[0];
+    const domain = session!.user!.email!.split('@')[1];
     const initialSlug = generateSlug(initialName);
     let isSlugAvailable = false;
     const slugProfile = await prisma.profile.findUnique({
@@ -239,6 +292,44 @@ export const getServerSideProps = async ({
         slug: initialSlug as string,
       },
     });
+    const workspaceAccess = await prisma.workspaceAccess.findMany({
+      where: {
+        domain: domain,
+      },
+    });
+    console.log('workspaceAccess', workspaceAccess);
+    if (workspaceAccess.length === 0) {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: session!.user!.email as string,
+        },
+      });
+      console.info(`[INFO] ${PAGE} page: User was found`);
+      console.info(
+        `[INFO] ${PAGE} page: No workspace was found. Creating a new one`
+      );
+      const workspace = await prisma.workspace.create({
+        data: {
+          name: 'My Workspace',
+          plan: { connect: { name: 'Free' } },
+        },
+      });
+      if (workspace) {
+        isNewWorkspace = true;
+      }
+      console.info(`[INFO] ${PAGE} page: Workspace has been created`);
+      const membership = await prisma.membership.create({
+        data: {
+          user: { connect: { email: session!.user!.email as string } },
+          workspace: { connect: { id: workspace.id } },
+          role: 'ADMIN',
+        },
+      });
+      if (membership) {
+        isNewMembership = true;
+      }
+      console.info(`[INFO] ${PAGE} page: Membership record has been created`);
+    }
     if (!slugProfile || slugProfile.email === session!.user!.email) {
       isSlugAvailable = true;
     } else {
@@ -268,6 +359,6 @@ export const getServerSideProps = async ({
   }
 
   return {
-    props: { session, profile, isNewProfile },
+    props: { session, profile, isNewProfile, isNewWorkspace, isNewMembership },
   };
 };

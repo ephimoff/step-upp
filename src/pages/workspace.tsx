@@ -2,45 +2,31 @@ import type { ProfileType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { siteDescription } from '@/data/data';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
-// import { getSession } from 'next-auth/react';
-// import React from 'react';
 
-type HomePageProps = {
+type Props = {
   profile: ProfileType;
 };
 
-export default function HomePage({ profile }: HomePageProps) {
+const WorkspacePage = ({ profile }: Props) => {
   return (
     <>
       <Sidebar name={profile.name}>
-        <div>
-          <h1 className="mb-4 text-2xl">Welcome to StepUpp</h1>
-          <p>{siteDescription}</p>
-        </div>
-        <Card>
-          <h2 className="mb-2 text-xl">Quick actions</h2>
-          <ul>
-            <li>one</li>
-            <li>two</li>
-            <li>three</li>
-          </ul>
-        </Card>
+        <Card>Workspace</Card>
       </Sidebar>
     </>
   );
-}
+};
+export default WorkspacePage;
 
 export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
-  const PAGE = 'Home';
+  const PAGE = 'Workspace';
 
   if (!session) {
     console.info(

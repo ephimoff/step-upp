@@ -32,21 +32,21 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String
   expires      DateTime
+  userId       String
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
-  role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
+  membership    Membership[]
 }
 
 model VerificationToken {
@@ -55,11 +55,6 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-enum Role {
-  USER
-  ADMIN
 }
 
 model Profile {
@@ -79,8 +74,6 @@ model Profile {
   competencies ProfileCompetencies[]
   skills       ProfileScores[]
   appraised    FeedbackScores[]
-  company      Company               @relation(fields: [companyId], references: [id])
-  companyId    String
 }
 
 model Competency {
@@ -100,17 +93,17 @@ model Skill {
 
 model ProfileCompetencies {
   id           String      @id @default(cuid())
-  profile      Profile?    @relation(fields: [profileId], references: [id])
   profileId    String?
-  competency   Competency? @relation(fields: [competencyId], references: [id])
+  profile      Profile?    @relation(fields: [profileId], references: [id])
   competencyId String?
+  competency   Competency? @relation(fields: [competencyId], references: [id])
 }
 
 model ProfileScores {
-  profile        Profile?         @relation(fields: [profileId], references: [id])
   profileId      String
-  skill          Skill?           @relation(fields: [skillId], references: [id])
+  profile        Profile?         @relation(fields: [profileId], references: [id])
   skillId        String
+  skill          Skill?           @relation(fields: [skillId], references: [id])
   score          Int?
   feedbackScores FeedbackScores[]
 
@@ -121,11 +114,11 @@ model FeedbackScores {
   id                 String        @id @default(cuid())
   score              Int
   date               DateTime      @default(now())
-  appraiser          Profile       @relation(fields: [appraiserId], references: [id])
   appraiserId        String
-  appraisee          ProfileScores @relation(fields: [appraiseeProfileId, appraiseeSkillId], references: [profileId, skillId])
-  appraiseeProfileId String
+  appraiser          Profile       @relation(fields: [appraiserId], references: [id])
   appraiseeSkillId   String
+  appraiseeProfileId String
+  appraisee          ProfileScores @relation(fields: [appraiseeProfileId, appraiseeSkillId], references: [profileId, skillId])
 }
 
 model FeedbackAccessToken {
@@ -136,8 +129,48 @@ model FeedbackAccessToken {
   @@unique([identifier, token])
 }
 
-model Company {
-  id       String    @id @default(cuid())
-  name     String
-  profiles Profile[]
+model Workspace {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  access      WorkspaceAccess[]
+  members     Membership[]
+  planId      String
+  plan        Plan              @relation(fields: [planId], references: [id])
+}
+
+// When anyone with an email address from these domains joins the app, 
+// they will automatically join this workspace. It is recommended 
+// to avoid removing domains from this list since otherwise new users 
+// from these domains will be added to a separate new free workspace.
+model WorkspaceAccess {
+  id          String    @id @default(cuid())
+  domain      String?
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+}
+
+model Plan {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  description String?
+  price       Float
+  currency    String
+  frequency   String
+  workspace   Workspace[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Membership {
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  role        Role      @default(USER)
+
+  @@id([userId, workspaceId])
 }
