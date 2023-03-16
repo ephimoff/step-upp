@@ -4,17 +4,24 @@ import prisma from '@/utils/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
+    console.info(`[INFO] POST /api/profile`);
     const profileData = req.body;
+    console.dir(`[INFO] POST /api/profile. [profileData]: ${profileData}`);
     try {
-      const savedProfile = await prisma.profile.create({
-        data: profileData,
-      });
+      const savedProfile = await prisma.profile
+        .create({
+          data: profileData,
+        })
+        .catch(async (e) => {
+          console.error(`[ERROR] POST /api/profile: ${e}`);
+        });
       res.status(200).json(savedProfile);
     } catch (error) {
       res.status(500).json({ msg: 'Something went wrong', error });
     }
   }
   if (req.method === 'PUT') {
+    console.info(`[INFO] PUT /api/profile`);
     const { email } = req.query;
     const profile = req.body;
     // update profile
@@ -49,11 +56,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
     if (query) {
-      console.log('query:', query);
       try {
         const profile = await prisma.profile.findMany({
           where: {
-            // name: query as string,
             name: {
               contains: query as string,
               mode: 'insensitive',

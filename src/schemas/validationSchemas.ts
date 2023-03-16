@@ -10,8 +10,10 @@ export const profileSchema = yup.object().shape({
       'Unique slug',
       'Slug is already in use. Change it or generate a new one',
       async (value, slug) => {
+        // console.log('value', value);
+        // console.log('slug', slug);
         const { status } = await fetch(
-          `/api/slug?slug=${slug}&email=${slug.parent.email}`
+          `/api/slug?slug=${value}&email=${slug.parent.email}`
         );
         return status === 200 ? true : false;
       }
