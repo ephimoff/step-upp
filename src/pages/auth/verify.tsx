@@ -1,13 +1,11 @@
+import type { GetServerSidePropsContext } from 'next';
 import { siteTitle } from '@/data/data';
-import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]';
 import Head from 'next/head';
 import Link from 'next/link';
-import type { GetServerSidePropsContext } from 'next';
-// import { useRouter } from 'next/router';
 
 const Verify = () => {
-  // const router = useRouter();
-
   return (
     <>
       <Head>
@@ -44,8 +42,14 @@ const Verify = () => {
 };
 export default Verify;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const session = await getSession(context);
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  const PAGE = 'Verify';
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
+
   if (session) {
     return {
       redirect: {
@@ -54,8 +58,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   }
-  // const providers = await getProviders();
   return {
     props: { session },
   };
-}
+};

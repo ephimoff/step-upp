@@ -1,11 +1,13 @@
-import { useSession, getSession } from 'next-auth/react';
+import type { GetServerSidePropsContext } from 'next';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Search from '@/components/Search';
 import SearchResults from '@/components/SearchResults';
 import Spinner from '@/components/Spinner';
 import prisma from '@/utils/prisma';
-import { useState } from 'react';
-import type { GetServerSidePropsContext } from 'next';
 
 interface Profile {
   name: string;
@@ -51,11 +53,13 @@ export default function MainProfile({ profile, allProfiles }: Props) {
   );
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Profile Slug';
-  const session = await getSession(context);
   if (!session) {
     console.info(
       `${PAGE} page - Session not found. Redirecting to /auth/signin`

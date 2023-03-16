@@ -1,13 +1,13 @@
-import Sidebar from '@/components/Sidebar/Sidebar';
-import { getSession } from 'next-auth/react';
-// import getServerSession from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
+import type { ProfileType } from '@/types/types';
+import type { GetServerSidePropsContext } from 'next';
+// import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { siteDescription } from '@/data/data';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import React from 'react';
 import prisma from '@/utils/prisma';
-import { ProfileType } from '@/types/types';
 import Card from '@/components/Card';
-import type { GetServerSidePropsContext } from 'next';
 
 type HomePageProps = {
   profile: ProfileType;
@@ -34,9 +34,13 @@ export default function HomePage({ profile }: HomePageProps) {
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Home';
-  const session = await getSession(context);
 
   if (!session) {
     console.info(
@@ -71,4 +75,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: { session, profile },
   };
-}
+};

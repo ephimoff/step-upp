@@ -1,14 +1,16 @@
+import type { GetServerSidePropsContext } from 'next';
+import type { CompetencyType, ProfileType } from '@/types/types';
+import { useCallback, useEffect, useState } from 'react';
+// import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/utils/prisma';
-import { getSession } from 'next-auth/react';
-import React, { useCallback, useEffect, useState } from 'react';
 import CompetencyCard from '@/components/Competencies/CompetencyCard';
 import Link from 'next/link';
 import ProfileCompetenciesLoading from '@/components/Profile/ProfileCompetenciesLoading';
-import { CompetencyType, ProfileType } from '@/types/types';
 import Spinner from '@/components/Spinner';
-import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   competencies: any;
@@ -130,7 +132,9 @@ export default ProfilePage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const session = await getSession(context);
+  const { req, res } = context;
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return {
       redirect: {

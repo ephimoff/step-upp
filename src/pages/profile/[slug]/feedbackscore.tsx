@@ -1,10 +1,12 @@
+import type { GetServerSidePropsContext } from 'next';
+import { ProfileType } from '@/types/types';
+// import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import prisma from '@/utils/prisma';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import { ProfileType } from '@/types/types';
-import { getSession } from 'next-auth/react';
 import Card from '@/components/Card';
 import Scores from '@/components/Scores';
-import type { GetServerSidePropsContext } from 'next';
 
 // import useSWR from 'swr';
 // import { fetcher } from '@/utils/fetcher';
@@ -76,7 +78,9 @@ export default FeedbackScoresPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const session = await getSession(context);
+  const { req, res } = context;
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
 
   const slug = context.query.slug!.toString().toLowerCase();
   let appraiseeProfile = await prisma.profile.findUnique({

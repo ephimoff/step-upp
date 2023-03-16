@@ -1,12 +1,14 @@
+import type { GetServerSidePropsContext } from 'next';
+import type { ProfileType } from '@/types/types';
+// import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { Check } from 'lucide-react';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import { getSession } from 'next-auth/react';
 import React from 'react';
 import prisma from '@/utils/prisma';
-import type { ProfileType } from '@/types/types';
 import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
-import { Check } from 'lucide-react';
-import type { GetServerSidePropsContext } from 'next';
 
 type Props = {
   profile: ProfileType;
@@ -143,11 +145,13 @@ export default function DesignPage({ profile }: Props) {
   );
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Design';
-  const session = await getSession(context);
 
   if (!session) {
     console.info(

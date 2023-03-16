@@ -1,6 +1,8 @@
 import type { Profile as ProfileType } from '@prisma/client';
 import type { GetServerSidePropsContext } from 'next';
-import { useSession, getSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 import { useState, useEffect, useCallback } from 'react';
 import { Form, Formik } from 'formik';
 import { Check } from 'lucide-react';
@@ -22,7 +24,6 @@ type Props = {
 
 export default function AccountPage({ profile, isNewProfile }: Props) {
   const { data: session, status } = useSession();
-  // const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   // profile
@@ -69,8 +70,8 @@ export default function AccountPage({ profile, isNewProfile }: Props) {
         user: { connect: { email: queryEmail } },
       };
       try {
-        console.log('inside Update Profile function');
-        console.log('newProfile', newProfile);
+        // console.log('inside Update Profile function');
+        // console.log('newProfile', newProfile);
         const response = await fetch(url, {
           method: 'PUT',
           body: JSON.stringify(newProfile),
@@ -81,13 +82,9 @@ export default function AccountPage({ profile, isNewProfile }: Props) {
         if (response.status === 200) {
           setSuccess(true);
         }
-        // console.log('response', response);
-        // const profileText = await response.text();
-        // console.log('profileText', profileText);
         const profileResponse = await response.json();
 
         setCurrentProfile(profileResponse);
-        // return profileResponse;
       } catch (error) {
         console.error(
           `[ERROR] Caught an error processing a response from ${url}. Error: ${error}`
@@ -98,32 +95,7 @@ export default function AccountPage({ profile, isNewProfile }: Props) {
   );
 
   useEffect(() => {
-    // const createUniqueSlugAndSaveProfile = async (slug: string) => {
-    //   // check if slug already exists
-    //   const { status } = await fetch(
-    //     `/api/slug?slug=${slug}&email=${session!.user!.email}`
-    //   );
-    //   console.log('slug', slug);
-    //   console.log('email', session!.user!.email);
-    //   console.log('status', status);
-    //   const initialValues = {
-    //     name: initialName,
-    //     email: session!.user!.email,
-    //     userpic: session!.user!.image,
-    //     title: '',
-    //     team: '',
-    //     slug: status === 200 ? slug : generateUniqueSlug(slug),
-    //     phone: '',
-    //     twitter: '',
-    //     linkedin: '',
-    //     github: '',
-    //   };
-    //   console.debug('[DEBUG] Attempt to create a profile: ', initialValues);
-    //   updateProfile(initialValues);
-    // };
-
     if (profile) {
-      // update existing profile
       setCurrentProfile(profile);
       setName(profile.name);
       setEmail(profile.email);
@@ -136,12 +108,6 @@ export default function AccountPage({ profile, isNewProfile }: Props) {
       setLinkedin(profile.linkedin as string);
       setGithub(profile.github as string);
     }
-    // else {
-    //   // auto-create a new profile
-    //   setLoading(true);
-    //   createUniqueSlugAndSaveProfile(initialSlug);
-    //   setLoading(false);
-    // }
   }, [initialName, profile, session, initialSlug, updateProfile]);
 
   return (
@@ -242,10 +208,12 @@ export default function AccountPage({ profile, isNewProfile }: Props) {
   );
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   let isNewProfile = false;
 
   if (!session) {
@@ -297,9 +265,6 @@ export const getServerSideProps = async (
         console.error(`[ERROR] /account Saving new profile failed: ${e}`);
       });
     isNewProfile = true;
-    // console.log('newProfile', newProfile);
-
-    // const savedNewProfile = await newProfile.json()
   }
 
   return {

@@ -1,13 +1,15 @@
+import type { GetServerSidePropsContext } from 'next';
 import { siteTitle } from '@/data/data';
-import { signIn, getSession } from 'next-auth/react';
-import Head from 'next/head';
+import { signIn } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]';
 import { useRouter } from 'next/router';
-import CustomButton from '@/components/CustomButton';
 import { Form, Formik, Field } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
+import Head from 'next/head';
+import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
 import logo from '@/assets/logo.png';
-import type { GetServerSidePropsContext } from 'next';
 
 const errors: { [key: string]: any } = {
   Signin: 'Try singing in with a different account',
@@ -138,9 +140,13 @@ const SignIn = () => {
 };
 export default SignIn;
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
   const PAGE = 'SignIn';
-  const session = await getSession(context);
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
 
   if (session) {
     console.info(`${PAGE} page - Session found`);
@@ -157,4 +163,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: { session },
   };
-}
+};

@@ -1,13 +1,15 @@
-import { useSession, getSession } from 'next-auth/react';
-import Sidebar from '@/components/Sidebar/Sidebar';
+import type { ProfileType } from '@/types/types';
+import type { GetServerSidePropsContext } from 'next';
+import { useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { useState } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
+import Sidebar from '@/components/Sidebar/Sidebar';
 import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
 import prisma from '@/utils/prisma';
-import { ProfileType } from '@/types/types';
-import { useState } from 'react';
-import type { GetServerSidePropsContext } from 'next';
 
 type CompetenciesPageProps = {
   profile: ProfileType;
@@ -19,7 +21,7 @@ const initialValues = {
 
 export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
   const { data: session, status } = useSession();
-  const [btnClicked, setBtnClicked] = useState('');
+  // const [btnClicked, setBtnClicked] = useState('');
   const [success, setSuccess] = useState(false);
 
   async function createCompetency(values: any) {
@@ -95,12 +97,6 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
                               Submitted successfully
                             </span>
                           ) : null}
-
-                          {/* <CustomButton
-                            type="reset"
-                            text="Cancel"
-                            role="noborder"
-                          /> */}
                         </div>
                       ) : null}
 
@@ -121,10 +117,12 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
   );
 }
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const session = await getSession(context);
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return {
       redirect: {

@@ -1,9 +1,11 @@
-import Sidebar from '@/components/Sidebar/Sidebar';
-import { CompetencyType, ProfileType } from '@/types/types';
-import prisma from '@/utils/prisma';
-import { getSession } from 'next-auth/react';
-import Link from 'next/link';
 import type { GetServerSidePropsContext } from 'next';
+import { CompetencyType, ProfileType } from '@/types/types';
+// import { getSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import prisma from '@/utils/prisma';
+import Link from 'next/link';
 
 type Props = {
   competency: CompetencyType;
@@ -39,14 +41,15 @@ export default CompetencyPage;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
+  const { req, res } = context;
+  // const session = await getSession(context);
+  const session = await getServerSession(req, res, authOptions);
   const slug = context.query.slug!.toString().toLowerCase();
   const competency = await prisma.competency.findUnique({
     where: {
       id: slug,
     },
   });
-
-  const session = await getSession(context);
 
   if (!session) {
     return {
