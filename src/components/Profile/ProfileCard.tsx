@@ -32,7 +32,7 @@ const ProfileCard = ({
               height={80}
             />
           ) : (
-            <NoAvatar name={name} size={20} />
+            <NoAvatar size={20} />
           )}
         </div>
 
