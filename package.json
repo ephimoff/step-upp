@@ -45,6 +45,7 @@
     "autoprefixer": "^10.4.13",
     "formik": "^2.2.9",
     "postcss": "^8.4.19",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.8.1",
     "prettier-plugin-tailwindcss": "^0.2.0",
     "prisma": "^4.9.0",
