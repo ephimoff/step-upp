@@ -174,3 +174,7 @@ model Membership {
 
   @@id([userId, workspaceId])
 }
+
+model PublicDomain {
+  domain String @id
+}

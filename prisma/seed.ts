@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
+import { domains as domainsList } from './domainsData';
 
 async function main() {
   const free = await prisma.plan.upsert({
@@ -42,6 +43,18 @@ async function main() {
     },
   });
   console.log({ free, startup, enterprise });
+  domainsList.map(async (domain) => {
+    const domains = await prisma.publicDomain.upsert({
+      where: {
+        domain: domain,
+      },
+      update: {},
+      create: {
+        domain: domain,
+      },
+    });
+    console.log({ domains });
+  });
 }
 main()
   .then(async () => {
