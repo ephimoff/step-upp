@@ -17,9 +17,11 @@ import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
 import Link from 'next/link';
+import { MembershipType } from '@/types/types';
 
 type Props = {
   profile: ProfileType;
+  membership: MembershipType[];
   isNewProfile: boolean;
   isNewWorkspace: boolean;
   isNewMembership: boolean;
@@ -27,6 +29,7 @@ type Props = {
 
 export default function AccountPage({
   profile,
+  membership,
   isNewProfile,
   isNewWorkspace,
   isNewMembership,
@@ -37,6 +40,7 @@ export default function AccountPage({
   const [newWorkspaceShow, setNewWorkspaceShow] = useState(true);
   const [newMembershipShow, setNewMembershipShow] = useState(true);
 
+  const role = membership[0].role;
   // profile
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
     null
@@ -123,7 +127,7 @@ export default function AccountPage({
 
   return (
     <>
-      <Sidebar name={initialName}>
+      <Sidebar name={initialName} role={role}>
         {status === 'authenticated' ? (
           <>
             <Card>
@@ -279,6 +283,13 @@ export const getServerSideProps = async ({
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
   if (!profile) {
     const initialName = session!.user!.name
@@ -297,7 +308,7 @@ export const getServerSideProps = async ({
         domain: domain,
       },
     });
-    console.log('workspaceAccess', workspaceAccess);
+    // console.log('workspaceAccess', workspaceAccess);
     if (workspaceAccess.length === 0) {
       const user = await prisma.user.findUnique({
         where: {
@@ -357,8 +368,16 @@ export const getServerSideProps = async ({
       });
     isNewProfile = true;
   }
+  const membership = profile!.user.membership;
 
   return {
-    props: { session, profile, isNewProfile, isNewWorkspace, isNewMembership },
+    props: {
+      session,
+      profile,
+      membership,
+      isNewProfile,
+      isNewWorkspace,
+      isNewMembership,
+    },
   };
 };

@@ -5,7 +5,6 @@ import Skills from './Skills';
 import Card from '../Card';
 import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
-import { BiTrash } from 'react-icons/bi';
 import { Plus, Trash } from 'lucide-react';
 
 const Competencies = ({ competenciesArrayHelpers }: any) => {

@@ -1,4 +1,4 @@
-import type { ProfileType } from '@/types/types';
+import type { ProfileType, MembershipType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -9,14 +9,16 @@ import Card from '@/components/Card';
 // import { getSession } from 'next-auth/react';
 // import React from 'react';
 
-type HomePageProps = {
+type Props = {
   profile: ProfileType;
+  membership: MembershipType[];
 };
 
-export default function HomePage({ profile }: HomePageProps) {
+export default function HomePage({ profile, membership }: Props) {
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar name={profile.name}>
+      <Sidebar name={profile.name} role={role}>
         <div>
           <h1 className="mb-4 text-2xl">Welcome to StepUpp</h1>
           <p>{siteDescription}</p>
@@ -59,6 +61,13 @@ export const getServerSideProps = async ({
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
 
   if (!profile) {
@@ -69,10 +78,11 @@ export const getServerSideProps = async ({
       },
     };
   }
+  const membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
 
   return {
-    props: { session, profile },
+    props: { session, profile, membership },
   };
 };

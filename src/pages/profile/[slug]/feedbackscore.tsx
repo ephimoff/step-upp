@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
-import { ProfileType } from '@/types/types';
+import type { MembershipType, ProfileType } from '@/types/types';
 // import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -14,9 +14,14 @@ import Scores from '@/components/Scores';
 type Props = {
   appraiseeProfile: ProfileType;
   appraiserProfile: ProfileType;
+  membership: MembershipType[];
 };
 
-const FeedbackScoresPage = ({ appraiseeProfile, appraiserProfile }: Props) => {
+const FeedbackScoresPage = ({
+  appraiseeProfile,
+  appraiserProfile,
+  membership,
+}: Props) => {
   const title = appraiseeProfile
     ? `${appraiseeProfile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -29,10 +34,10 @@ const FeedbackScoresPage = ({ appraiseeProfile, appraiserProfile }: Props) => {
 
   // console.log(appraiserProfile.id);
   // console.log(skills);
-
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar title={title} name={appraiseeProfile.name}>
+      <Sidebar title={title} name={appraiseeProfile.name} role={role}>
         <div>
           <h2>{appraiseeProfile.name}</h2>
           <Card>
@@ -106,6 +111,13 @@ export const getServerSideProps = async (
       where: {
         email: session.user!.email as string,
       },
+      include: {
+        user: {
+          include: {
+            membership: true,
+          },
+        },
+      },
     });
   }
   if (!session) {
@@ -143,8 +155,9 @@ export const getServerSideProps = async (
       },
     };
   }
+  const membership = appraiserProfile!.user.membership;
 
   return {
-    props: { session, appraiseeProfile, appraiserProfile },
+    props: { session, appraiseeProfile, appraiserProfile, membership },
   };
 };

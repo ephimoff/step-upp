@@ -22,8 +22,8 @@ const FormikForm = ({ fields }: Props) => {
     };
   });
   const temp = Object.assign(initialFields, ...extraFields);
-  console.log('extraFields', extraFields);
-  console.log('temp', temp);
+  // console.log('extraFields', extraFields);
+  // console.log('temp', temp);
   const submitForm = async (values: any) => {
     setSuccess(true);
   };
@@ -55,21 +55,23 @@ const FormikForm = ({ fields }: Props) => {
                 );
               })}
             </div>
-            <CustomButton
-              disabled={isSubmitting}
-              text="Update"
-              role="secondary"
-              type="submit"
-              icon={<Send size={16} />}
-            />
-            {success ? (
-              <span className="animate-fade-out text-[#00B4DB] opacity-0">
-                <Check />
-              </span>
-            ) : null}
-            <pre className="text-xs font-thin text-black dark:text-white">
+            <div className="flex items-center">
+              <CustomButton
+                disabled={isSubmitting}
+                text="Update"
+                role="secondary"
+                type="submit"
+                icon={<Send size={16} />}
+              />
+              {success ? (
+                <span className="animate-fade-out text-[#00B4DB] opacity-0">
+                  <Check />
+                </span>
+              ) : null}
+              {/* <pre className="text-xs font-thin text-black dark:text-white">
               {JSON.stringify(values, null, 2)}
-            </pre>
+            </pre> */}
+            </div>
           </Form>
         )}
       </Formik>

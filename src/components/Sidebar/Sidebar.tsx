@@ -19,6 +19,7 @@ import SidebarProfile from './SidebarProfile';
 type SidebarProps = {
   children: React.ReactNode;
   name: string;
+  role: 'ADMIN' | 'USER';
   title?: string;
 };
 
@@ -60,11 +61,12 @@ export const adminLinks = [
 export default function Sidebar({
   children,
   name,
+  role,
   title = siteTitle,
 }: SidebarProps) {
   // required for theme switching
   const [mounted, setMounted] = useState(false);
-  const [admin, setAdmin] = useState(true);
+  const [admin, setAdmin] = useState(role === 'ADMIN');
   // const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
 

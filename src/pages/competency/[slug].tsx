@@ -1,5 +1,9 @@
 import type { GetServerSidePropsContext } from 'next';
-import { CompetencyType, ProfileType } from '@/types/types';
+import type {
+  CompetencyType,
+  MembershipType,
+  ProfileType,
+} from '@/types/types';
 // import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -10,15 +14,18 @@ import Link from 'next/link';
 type Props = {
   competency: CompetencyType;
   profile: ProfileType;
+  membership: MembershipType[];
 };
 
-const CompetencyPage = ({ competency, profile }: Props) => {
+const CompetencyPage = ({ competency, profile, membership }: Props) => {
   const title = competency
     ? `${competency.name}'s profile on StepUpp`
     : 'No competency was found';
+
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar title={title} name={profile.name}>
+      <Sidebar title={title} name={profile.name} role={role}>
         {competency ? (
           <div>yes</div>
         ) : (
@@ -63,6 +70,13 @@ export const getServerSideProps = async (
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
 
   if (!profile) {
@@ -72,8 +86,9 @@ export const getServerSideProps = async (
       },
     };
   }
+  const membership = profile.user.membership;
 
   return {
-    props: { session, competency, profile },
+    props: { session, competency, profile, membership },
   };
 };

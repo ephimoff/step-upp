@@ -1,4 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
+import type { MembershipType } from '@/types/types';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
@@ -21,10 +22,15 @@ interface Profile {
 
 interface Props {
   profile: any;
+  membership: MembershipType[];
   allProfiles: Profile[];
 }
 
-export default function MainProfile({ profile, allProfiles }: Props) {
+export default function MainProfile({
+  profile,
+  membership,
+  allProfiles,
+}: Props) {
   const [searchResults, setSearchResults] = useState<Profile[]>(allProfiles);
   const [loading, setLoading] = useState(false);
 
@@ -37,9 +43,11 @@ export default function MainProfile({ profile, allProfiles }: Props) {
   const showAll = () => {
     setSearchResults(allProfiles);
   };
+
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar name={profile.name}>
+      <Sidebar name={profile.name} role={role}>
         {status === 'authenticated' ? (
           <>
             <Search returnSearchResults={searchProfiles} showAll={showAll} />
@@ -76,6 +84,13 @@ export const getServerSideProps = async ({
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
   const allProfiles = await prisma.profile.findMany({
     select: {
@@ -99,10 +114,11 @@ export const getServerSideProps = async ({
       },
     };
   }
+  const membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
 
   return {
-    props: { session, profile, allProfiles },
+    props: { session, profile, membership, allProfiles },
   };
 };

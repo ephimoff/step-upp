@@ -1,5 +1,9 @@
 import type { GetServerSidePropsContext } from 'next';
-import type { CompetencyType, ProfileType } from '@/types/types';
+import type {
+  CompetencyType,
+  MembershipType,
+  ProfileType,
+} from '@/types/types';
 import { useCallback, useEffect, useState } from 'react';
 // import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
@@ -15,6 +19,7 @@ import Spinner from '@/components/Spinner';
 type Props = {
   competencies: any;
   profile: ProfileType;
+  membership: MembershipType[];
   slugProfile: ProfileType;
   isSameProfile: boolean;
   slug: string;
@@ -22,6 +27,7 @@ type Props = {
 
 const ProfilePage = ({
   profile,
+  membership,
   slugProfile,
   competencies,
   isSameProfile,
@@ -63,17 +69,18 @@ const ProfilePage = ({
     fetchAssignedCompetencies();
   }, [fetchAssignedCompetencies]);
 
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar title={title} name={profileName}>
+      <Sidebar title={title} name={profileName} role={role}>
         {slugProfile ? (
           <div className="">
             <ProfileCard
               name={slugProfile.name}
-              title={slugProfile.title}
-              team={slugProfile.team}
+              title={slugProfile.title as string}
+              team={slugProfile.team as string}
               email={slugProfile.email}
-              userpic={slugProfile.userpic}
+              userpic={slugProfile.userpic as string}
               isSameProfile={isSameProfile}
             />
             <ProfileCompetenciesLoading
@@ -154,6 +161,13 @@ export const getServerSideProps = async (
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
 
   let competencies: any = null;
@@ -188,8 +202,16 @@ export const getServerSideProps = async (
   } else {
     isSameProfile = false;
   }
-
+  const membership = profile!.user.membership;
   return {
-    props: { session, profile, slugProfile, competencies, isSameProfile, slug },
+    props: {
+      session,
+      profile,
+      membership,
+      slugProfile,
+      competencies,
+      isSameProfile,
+      slug,
+    },
   };
 };

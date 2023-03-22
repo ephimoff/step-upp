@@ -1,5 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
-import type { ProfileType } from '@/types/types';
+import type { MembershipType, ProfileType } from '@/types/types';
 // import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
@@ -12,12 +12,14 @@ import CustomButton from '@/components/CustomButton';
 
 type Props = {
   profile: ProfileType;
+  membership: MembershipType[];
 };
 
-export default function DesignPage({ profile }: Props) {
+export default function DesignPage({ profile, membership }: Props) {
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar name={profile.name}>
+      <Sidebar name={profile.name} role={role}>
         <div>
           <h1 className="mb-4 text-2xl">Header H1</h1>
         </div>
@@ -170,6 +172,13 @@ export const getServerSideProps = async ({
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
 
   if (!profile) {
@@ -180,10 +189,11 @@ export const getServerSideProps = async ({
       },
     };
   }
+  const membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
 
   return {
-    props: { session, profile },
+    props: { session, profile, membership },
   };
 };

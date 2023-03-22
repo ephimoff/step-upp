@@ -1,6 +1,22 @@
-export type SkillType = {
-  id?: string;
-  name: string;
+import { Optional } from 'utility-types';
+
+import type {
+  Membership,
+  Workspace,
+  WorkspaceAccess,
+  Plan,
+  User,
+  Skill,
+  FeedbackScores,
+  Profile,
+  ProfileScores,
+  ProfileCompetencies,
+  Competency,
+} from '@prisma/client';
+
+export type SkillType = Optional<Skill, 'id' | 'competencyId'> & {
+  // id?: string;
+  // name: string;
   score?: number | null;
   feedbackScores?: number | null;
   actions?: number | null;
@@ -24,35 +40,43 @@ export type ProfileSkillType = {
   skillId: string;
 };
 
-export type CompetencyType = {
-  id?: string;
-  name: string;
+export type CompetencyType = Optional<Competency, 'id'> & {
+  // id?: string;
+  // name: string;
   skills?: SkillType[];
 };
 
-export type ProfileType = {
-  id: string;
-  name: string;
-  slug: string;
-  email: string;
-  userpic: string;
-  title: string;
-  team: string;
-  phone: string;
-  twitter: string;
-  linkedin: string;
-  github: string;
-  userId?: string;
+export type ProfileType = Profile & {
+  // id: string;
+  // name: string;
+  // slug: string;
+  // email: string;
+  // userpic: string;
+  // title: string;
+  // team: string;
+  // phone: string;
+  // twitter: string;
+  // linkedin: string;
+  // github: string;
+  // userId?: string;
   competencies?: CompetencyType[];
   skills?: ProfileSkillType[];
 };
 
-export type UserType = {
-  id: string;
-  name: string;
-  email: string;
-  emailVerified: string | null;
-  image: string;
-  role: string;
+export type UserType = User & {
+  // id: string;
+  // name: string;
+  // email: string;
+  // emailVerified: string | null;
+  // image: string;
+  // role: string;
   profile: ProfileType;
+};
+
+export type WorkspaceType = Workspace & {
+  plan: Plan;
+};
+
+export type MembershipType = Membership & {
+  workspace: WorkspaceType;
 };

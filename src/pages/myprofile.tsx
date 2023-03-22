@@ -1,4 +1,4 @@
-import type { ProfileType } from '@/types/types';
+import type { MembershipType, ProfileType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
 // import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
@@ -9,12 +9,16 @@ import prisma from '@/utils/prisma';
 
 type Props = {
   profile: ProfileType;
+  membership: MembershipType[];
 };
 
-const MyProfilePage = ({ profile }: Props) => {
+const MyProfilePage = ({ profile, membership }: Props) => {
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar name={profile.name}>{profile.slug}</Sidebar>
+      <Sidebar name={profile.name} role={role}>
+        {profile.slug}
+      </Sidebar>
     </>
   );
 };
@@ -45,6 +49,13 @@ export const getServerSideProps = async ({
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
 
   if (!profile) {
@@ -58,16 +69,18 @@ export const getServerSideProps = async ({
     console.info(
       `${PAGE} page - Profile found. Redirecting to /myaccount/:slug`
     );
+
     return {
       redirect: {
         destination: `/profile/${profile.slug}`,
       },
     };
   }
+  const membership = profile!.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
 
   return {
-    props: { session, profile },
+    props: { session, profile, membership },
   };
 };

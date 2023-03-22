@@ -1,4 +1,4 @@
-import type { ProfileType } from '@/types/types';
+import type { MembershipType, ProfileType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
@@ -11,15 +11,16 @@ import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
 import prisma from '@/utils/prisma';
 
-type CompetenciesPageProps = {
+type Props = {
   profile: ProfileType;
+  membership: MembershipType[];
 };
 
 const initialValues = {
   competencies: [],
 };
 
-export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
+export default function CompetenciesPage({ profile, membership }: Props) {
   const { data: session, status } = useSession();
   // const [btnClicked, setBtnClicked] = useState('');
   const [success, setSuccess] = useState(false);
@@ -43,10 +44,10 @@ export default function CompetenciesPage({ profile }: CompetenciesPageProps) {
       console.error(error);
     }
   }
-
+  const role = membership[0].role;
   return (
     <>
-      <Sidebar name={profile.name}>
+      <Sidebar name={profile.name} role={role}>
         {status === 'authenticated' ? (
           <div className="">
             <h1 className="text-2xl">Competencies management</h1>
@@ -135,6 +136,13 @@ export const getServerSideProps = async ({
     where: {
       email: session!.user!.email as string,
     },
+    include: {
+      user: {
+        include: {
+          membership: true,
+        },
+      },
+    },
   });
 
   if (!profile) {
@@ -144,8 +152,8 @@ export const getServerSideProps = async ({
       },
     };
   }
-
+  const membership = profile.user.membership;
   return {
-    props: { session, profile },
+    props: { session, profile, membership },
   };
 };
