@@ -1,4 +1,5 @@
 import type { Profile as ProfileType } from '@prisma/client';
+import type { MembershipType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
@@ -17,7 +18,6 @@ import Card from '@/components/Card';
 import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
 import Link from 'next/link';
-import { MembershipType } from '@/types/types';
 
 type Props = {
   profile: ProfileType;
@@ -298,11 +298,13 @@ export const getServerSideProps = async ({
     const domain = session!.user!.email!.split('@')[1];
     const initialSlug = generateSlug(initialName);
     let isSlugAvailable = false;
+
     const slugProfile = await prisma.profile.findUnique({
       where: {
         slug: initialSlug as string,
       },
     });
+
     const workspaceAccess = await prisma.workspaceAccess.findMany({
       where: {
         domain: domain,
@@ -315,20 +317,24 @@ export const getServerSideProps = async ({
           email: session!.user!.email as string,
         },
       });
+
       console.info(`[INFO] ${PAGE} page: User was found`);
       console.info(
         `[INFO] ${PAGE} page: No workspace was found. Creating a new one`
       );
+
       const workspace = await prisma.workspace.create({
         data: {
           name: 'My Workspace',
           plan: { connect: { name: 'Free' } },
         },
       });
+
       if (workspace) {
         isNewWorkspace = true;
       }
       console.info(`[INFO] ${PAGE} page: Workspace has been created`);
+
       const membership = await prisma.membership.create({
         data: {
           user: { connect: { email: session!.user!.email as string } },
@@ -341,6 +347,7 @@ export const getServerSideProps = async ({
       }
       console.info(`[INFO] ${PAGE} page: Membership record has been created`);
     }
+
     if (!slugProfile || slugProfile.email === session!.user!.email) {
       isSlugAvailable = true;
     } else {

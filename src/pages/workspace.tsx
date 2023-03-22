@@ -6,6 +6,7 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
 import FormikForm from '@/components/FormikForm';
+import WorkspacePlan from '@/components/Workspace/WorkspacePlan';
 
 type Props = {
   profile: any;
@@ -39,17 +40,12 @@ const WorkspacePage = ({ profile, membership }: Props) => {
       <Sidebar name={profile.name} role={role}>
         <Card>
           <h1 className="text-xl">Workspace</h1>
-          <h2 className="mt-6 text-lg">About</h2>
-          <FormikForm fields={fields} />
-          <h2 className="mt-6 text-lg">Plan</h2>
-          <div>
-            <span className="mr-4 rounded-lg bg-purple-600 px-4">
-              {plan.name}
-            </span>
-            <button className="text-sm font-thin text-gray-500 hover:underline dark:text-gray-300">
-              Upgrade
-            </button>
+          <div className="mt-10 mb-4">
+            <h2 className="text-lg">About</h2>
+            <FormikForm fields={fields} />
           </div>
+
+          <WorkspacePlan id={plan.id} name={plan.name} />
 
           <pre className="text-xs font-thin text-black dark:text-white">
             {JSON.stringify(profile, null, 2)}

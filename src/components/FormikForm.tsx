@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik';
-import { Send, Check } from 'lucide-react';
+import { Save, Check } from 'lucide-react';
 import { useState } from 'react';
 import CustomButton from './CustomButton';
 import InputAndLabel from './InputAndLabel';
@@ -61,7 +61,7 @@ const FormikForm = ({ fields }: Props) => {
                 text="Update"
                 role="secondary"
                 type="submit"
-                icon={<Send size={16} />}
+                icon={<Save size={16} />}
               />
               {success ? (
                 <span className="animate-fade-out text-[#00B4DB] opacity-0">
