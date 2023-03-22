@@ -271,6 +271,7 @@ export const getServerSideProps = async ({
   let isNewProfile = false;
   let isNewWorkspace = false;
   let isNewMembership = false;
+  let isPublicDomain = false;
 
   if (!session) {
     return {
@@ -312,16 +313,7 @@ export const getServerSideProps = async ({
         domain: domain,
       },
     });
-    const publicDomain = await prisma.publicDomain.findUnique({
-      where: {
-        domain: domain,
-      },
-    });
-    if (publicDomain) {
-      console.info(
-        `[INFO] ${PAGE} page: An email domain is found in the list of public email domains`
-      );
-    }
+
     // console.log('workspaceAccess', workspaceAccess);
     if (workspaceAccess.length === 0) {
       const user = await prisma.user.findUnique({
@@ -359,6 +351,26 @@ export const getServerSideProps = async ({
       }
       console.info(`[INFO] ${PAGE} page: Membership record has been created`);
       membership.push(singleMembership);
+
+      const publicDomain = await prisma.publicDomain.findUnique({
+        where: {
+          domain: domain,
+        },
+      });
+      if (publicDomain) {
+        isPublicDomain = true;
+        console.info(
+          `[INFO] ${PAGE} page: The domain of the email is found in the list of public email domains`
+        );
+      }
+      const newWorkspaceAccess = await prisma.workspaceAccess.create({
+        data: {
+          workspace: { connect: { id: workspace.id } },
+        },
+      });
+      console.info(
+        `[INFO] ${PAGE} page: WorkspaceAccess record has been created`
+      );
     }
 
     if (!slugProfile || slugProfile.email === session!.user!.email) {

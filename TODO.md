@@ -33,6 +33,10 @@
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Prepare competency packs
 - [ ] Allow to edit competencies
+- [x] Show workspace info
+- [ ] Allow to edit workspace info
+- [x] Add users to a workspace on signup
+- [ ] Add users to the existing the workspace on signup based on their domain
 
 ### Nice to have
 
@@ -42,11 +46,10 @@
 - [x] Update logo on the sign in screen
 - [x] Update the colours for the secondary buttons to match the logo
 - [x] When reseting search remove the field from the search input
-- [ ] Add a popup message when a profile needs to be created
+- [x] Add a popup message when a profile needs to be created
+- [x] Add actions and tips or remove them for the first version
 - [ ] Update the login buttons to match the styles of the providers (google, github, etc)
 - [ ] Allow to change the picture
-- [ ] Replace `account` with `newUser` endpoint from next-auth
-- [ ] Add actions and tips or remove them for the first version
 - [ ] Add animations transitions for popups
 - [ ] When opening the feedback screen load the previous user assessments
 - [ ] Make the desing a bit more "enterprisee"

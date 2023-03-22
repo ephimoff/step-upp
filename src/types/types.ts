@@ -8,6 +8,7 @@ import type {
   Skill,
   Profile,
   Competency,
+  WorkspaceAccess,
 } from '@prisma/client';
 
 export type SkillType = Optional<Skill, 'id' | 'competencyId'> & {
