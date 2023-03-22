@@ -279,6 +279,7 @@ export const getServerSideProps = async ({
       },
     };
   }
+  let membership = [];
   const profile = await prisma.profile.findUnique({
     where: {
       email: session!.user!.email as string,
@@ -291,6 +292,7 @@ export const getServerSideProps = async ({
       },
     },
   });
+
   if (!profile) {
     const initialName = session!.user!.name
       ? session!.user!.name
@@ -310,6 +312,16 @@ export const getServerSideProps = async ({
         domain: domain,
       },
     });
+    const publicDomain = await prisma.publicDomain.findUnique({
+      where: {
+        domain: domain,
+      },
+    });
+    if (publicDomain) {
+      console.info(
+        `[INFO] ${PAGE} page: An email domain is found in the list of public email domains`
+      );
+    }
     // console.log('workspaceAccess', workspaceAccess);
     if (workspaceAccess.length === 0) {
       const user = await prisma.user.findUnique({
@@ -335,17 +347,18 @@ export const getServerSideProps = async ({
       }
       console.info(`[INFO] ${PAGE} page: Workspace has been created`);
 
-      const membership = await prisma.membership.create({
+      const singleMembership = await prisma.membership.create({
         data: {
           user: { connect: { email: session!.user!.email as string } },
           workspace: { connect: { id: workspace.id } },
           role: 'ADMIN',
         },
       });
-      if (membership) {
+      if (singleMembership) {
         isNewMembership = true;
       }
       console.info(`[INFO] ${PAGE} page: Membership record has been created`);
+      membership.push(singleMembership);
     }
 
     if (!slugProfile || slugProfile.email === session!.user!.email) {
@@ -374,8 +387,9 @@ export const getServerSideProps = async ({
         console.error(`[ERROR] /account Saving new profile failed: ${e}`);
       });
     isNewProfile = true;
+  } else {
+    membership = profile!.user.membership;
   }
-  const membership = profile!.user.membership;
 
   return {
     props: {

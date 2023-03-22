@@ -14,7 +14,7 @@ type Props = {
 };
 
 const WorkspacePage = ({ profile, membership }: Props) => {
-  console.log('membership', membership);
+  // console.log('membership', membership);
   const workspace = {
     name: membership[0].workspace.name,
     description: membership[0].workspace.description,
@@ -101,7 +101,7 @@ export const getServerSideProps = async ({
   const membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
-  console.log('membership', membership);
+  // console.log('membership', membership);
 
   return {
     props: { session, profile, membership },
