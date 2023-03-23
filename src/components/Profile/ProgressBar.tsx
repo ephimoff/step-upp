@@ -1,6 +1,6 @@
 import { Popover } from '@headlessui/react';
 import { useEffect, useState } from 'react';
-import PopoverPanel from '../PopoverPanel';
+import SkillPopoverPanel from '../SkillPopoverPanel';
 
 interface FeedbackScore {
   appraiser: any;
@@ -87,7 +87,7 @@ const ProgressBar = ({
       <Popover.Overlay className="absolute inset-0 rounded-xl bg-black opacity-30" />
       <Popover.Panel className="absolute left-1/2 top-1/2 z-10 w-3/4 max-w-sm -translate-x-1/2 -translate-y-1/2 sm:w-screen">
         {({ close }) => (
-          <PopoverPanel
+          <SkillPopoverPanel
             type={type}
             value={type === 'self' ? value : score}
             profileId={profileId}

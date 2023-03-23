@@ -5,7 +5,7 @@ import { Save, Check } from 'lucide-react';
 import { useState } from 'react';
 import RequestAssessment from './RequestAssessment';
 
-type PopoverPanelProps = {
+type Props = {
   type: 'self' | 'feedback';
   value: number | null;
   profileId: string;
@@ -18,7 +18,7 @@ type PopoverPanelProps = {
   slug?: string;
 };
 
-const PopoverPanel = ({
+const SkillPopoverPanel = ({
   type,
   value,
   profileId,
@@ -29,7 +29,7 @@ const PopoverPanel = ({
   isSameProfile,
   requestorName,
   slug,
-}: PopoverPanelProps) => {
+}: Props) => {
   const [success, setSuccess] = useState(false);
   // console.log('isSameProfile', isSameProfile);
 
@@ -182,4 +182,4 @@ const PopoverPanel = ({
     </div>
   );
 };
-export default PopoverPanel;
+export default SkillPopoverPanel;
