@@ -14,9 +14,10 @@ interface FieldI {
 
 type Props = {
   fields: FieldI[];
+  onSubmit: any;
 };
 
-const FormikForm = ({ fields }: Props) => {
+const FormikForm = ({ fields, onSubmit }: Props) => {
   const [success, setSuccess] = useState(false);
 
   const initialValues = Object.fromEntries(
@@ -29,7 +30,10 @@ const FormikForm = ({ fields }: Props) => {
   const validationSchema = yup.object().shape(SchemaObject);
 
   const submitForm = async (values: any) => {
-    setSuccess(true);
+    const response = await onSubmit(values);
+    if (response.status === 200) {
+      setSuccess(true);
+    }
   };
   return (
     <>
@@ -61,7 +65,7 @@ const FormikForm = ({ fields }: Props) => {
             </div>
             <div className="flex items-center">
               <CustomButton
-                disabled={isSubmitting}
+                disabled={isSubmitting || Object.keys(errors).length !== 0}
                 text="Update"
                 role="secondary"
                 type="submit"

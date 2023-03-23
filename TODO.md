@@ -34,7 +34,7 @@
 - [ ] Prepare competency packs
 - [ ] Allow to edit competencies
 - [x] Show workspace info
-- [ ] Allow to edit workspace info
+- [x] Allow to edit workspace info
 - [x] Add users to a workspace on signup
 - [ ] Add users to the existing the workspace on signup based on their domain
 
@@ -54,6 +54,8 @@
 - [ ] When opening the feedback screen load the previous user assessments
 - [ ] Make the desing a bit more "enterprisee"
 - [ ] Update the header of the profile page: font colour and NoAvatar
+- [ ] Refactor all formik forms with the new Formik component
+- [ ] Submitting form second time without reloading form doesn't trigger the success check. Need to figure how to fix it
 
 ## Bugs
 

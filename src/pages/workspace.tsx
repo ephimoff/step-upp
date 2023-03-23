@@ -16,29 +16,6 @@ type Props = {
   access: WorkspaceAccess[];
 };
 
-const updateWorkspace = async (
-  workspaceId: string,
-  workspaceName?: string,
-  workspaceDescription?: string
-) => {
-  try {
-    const response = await fetch('/api/workspace', {
-      method: 'PUT',
-      body: JSON.stringify({
-        id: workspaceId,
-        name: workspaceName,
-        description: workspaceDescription,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const jsonResponse = await response.json();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const removeDomain = async (id: string) => {
   try {
     const response = await fetch('/api/workspaceaccess', {
@@ -57,8 +34,8 @@ const removeDomain = async (id: string) => {
 };
 
 const WorkspacePage = ({ profile, membership, access }: Props) => {
-  // console.log('membership', membership);
   const workspace = {
+    id: membership[0].workspace.id,
     name: membership[0].workspace.name,
     description: membership[0].workspace.description,
   };
@@ -82,6 +59,26 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
       type: string(),
     },
   ];
+
+  const updateWorkspace = async (values: any) => {
+    try {
+      const response = await fetch('/api/workspace', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: workspace.id,
+          name: values.workspace,
+          description: values.description,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      // const jsonResponse = await response.json();
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <>
       <Sidebar name={profile.name} role={role}>
@@ -89,7 +86,7 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
           <h1 className="text-xl">Workspace</h1>
           <div className="mt-10 mb-4">
             <h2 className="text-lg">About</h2>
-            <FormikForm fields={aboutFields} />
+            <FormikForm fields={aboutFields} onSubmit={updateWorkspace} />
           </div>
 
           <div className="mt-10 mb-4">
