@@ -4,12 +4,14 @@ import type { WorkspaceAccess } from '@prisma/client';
 import { Trash, AtSign, Plus } from 'lucide-react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { string } from 'yup';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
 import FormikForm from '@/components/FormikForm';
-import { string } from 'yup';
-import { useRouter } from 'next/router';
+import Modal from '@/components/Modal';
 
 type Props = {
   profile: any;
@@ -19,6 +21,17 @@ type Props = {
 
 const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
   const router = useRouter();
+
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   const refreshData = () => {
     router.replace(router.asPath);
   };
@@ -120,9 +133,9 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
               new free workspace.
             </p>
             <div className="my-8 text-sm">
-              {domains.map((domain, index) => {
-                if (domain.domain) {
-                  if (domain.isActive) {
+              {domains.map(({ domain, id, isActive }, index) => {
+                if (domain) {
+                  if (isActive) {
                     return (
                       <div
                         key={index}
@@ -130,13 +143,10 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                       >
                         <div className="flex items-center">
                           <AtSign className="mr-2 text-gray-300" />
-                          <span>{domain.domain}</span>
+                          <span>{domain}</span>
                         </div>
 
-                        <button
-                          type="button"
-                          onClick={() => removeDomain(domain.id)}
-                        >
+                        <button type="button" onClick={() => removeDomain(id)}>
                           <Trash size={16} className="text-red-700" />
                         </button>
                       </div>
@@ -146,9 +156,48 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
               })}
             </div>
             <div className="">
-              <button className="flex items-center font-semibold text-purple-600">
+              <button
+                className="flex items-center font-semibold text-purple-600"
+                onClick={openModal}
+              >
                 <Plus size={16} strokeWidth={4} /> Add domain
               </button>
+              <Modal closeModal={closeModal} isOpen={isOpen}>
+                <div>
+                  <p className="mb-4 text-sm">
+                    This list contains the domains based on user emails.
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    To add another domain, promote someone from that domain to
+                    be an Admin in your workspace and ask them to visit this
+                    page.
+                  </p>
+                  <div className="my-8">
+                    {domains.map(({ domain, id, isActive }, index) => {
+                      if (!isActive) {
+                        return (
+                          <div
+                            key={index}
+                            className="itens-center flex justify-between "
+                          >
+                            <div className="flex items-center">
+                              <AtSign className="mr-2 text-gray-300" />
+                              <span>{domain}</span>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => removeDomain(id)}
+                            >
+                              <Trash size={16} className="text-red-700" />
+                            </button>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </div>
+              </Modal>
             </div>
           </div>
 
