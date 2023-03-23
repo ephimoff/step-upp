@@ -28,8 +28,10 @@
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
 - [ ] Update all users with the company name to limit the scope of users
+- [x] Allow to delete Domains
 - [x] Add Admin check for the sidebar
 - [ ] Add other permissions
+- [ ] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Prepare competency packs
 - [ ] Allow to edit competencies
@@ -56,6 +58,7 @@
 - [ ] Update the header of the profile page: font colour and NoAvatar
 - [ ] Refactor all formik forms with the new Formik component
 - [ ] Submitting form second time without reloading form doesn't trigger the success check. Need to figure how to fix it
+- [ ] Update the display of the logo when the sidebar get thiner
 
 ## Bugs
 
