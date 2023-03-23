@@ -9,6 +9,7 @@ import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
 import FormikForm from '@/components/FormikForm';
 import { string } from 'yup';
+import { useRouter } from 'next/router';
 
 type Props = {
   profile: any;
@@ -16,24 +17,11 @@ type Props = {
   access: WorkspaceAccess[];
 };
 
-const removeDomain = async (id: string) => {
-  try {
-    const response = await fetch('/api/workspaceaccess', {
-      method: 'PUT',
-      body: JSON.stringify({
-        id: id,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const jsonResponse = await response.json();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const WorkspacePage = ({ profile, membership, access }: Props) => {
+  const router = useRouter();
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
   const workspace = {
     id: membership[0].workspace.id,
     name: membership[0].workspace.name,
@@ -75,6 +63,26 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
       });
       // const jsonResponse = await response.json();
       return response;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const removeDomain = async (id: string) => {
+    try {
+      const response = await fetch('/api/workspaceaccess', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: id,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.status < 300) {
+        refreshData();
+      }
+      const jsonResponse = await response.json();
     } catch (error) {
       console.error(error);
     }
@@ -123,7 +131,10 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
                         <span>{domain.domain}</span>
                       </div>
 
-                      <button>
+                      <button
+                        type="button"
+                        onClick={() => removeDomain(domain.id)}
+                      >
                         <Trash size={16} className="text-red-700" />
                       </button>
                     </div>
@@ -138,9 +149,9 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
             </div>
           </div>
 
-          <pre className="text-xs font-thin text-black dark:text-white">
+          {/* <pre className="text-xs font-thin text-black dark:text-white">
             {JSON.stringify(profile, null, 2)}
-          </pre>
+          </pre> */}
         </Card>
       </Sidebar>
     </>
