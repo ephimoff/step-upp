@@ -146,6 +146,7 @@ model Workspace {
 model WorkspaceAccess {
   id          String    @id @default(cuid())
   domain      String?
+  isActive    Boolean   @default(true)
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 }

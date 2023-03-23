@@ -17,7 +17,7 @@ type Props = {
   access: WorkspaceAccess[];
 };
 
-const WorkspacePage = ({ profile, membership, access }: Props) => {
+const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
   const router = useRouter();
   const refreshData = () => {
     router.replace(router.asPath);
@@ -74,6 +74,7 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
         method: 'PUT',
         body: JSON.stringify({
           id: id,
+          isActive: false,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -119,26 +120,28 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
               new free workspace.
             </p>
             <div className="my-8 text-sm">
-              {access.map((domain, index) => {
+              {domains.map((domain, index) => {
                 if (domain.domain) {
-                  return (
-                    <div
-                      key={index}
-                      className="itens-center flex justify-between "
-                    >
-                      <div className="flex items-center">
-                        <AtSign className="mr-2 text-gray-300" />
-                        <span>{domain.domain}</span>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => removeDomain(domain.id)}
+                  if (domain.isActive) {
+                    return (
+                      <div
+                        key={index}
+                        className="itens-center flex justify-between "
                       >
-                        <Trash size={16} className="text-red-700" />
-                      </button>
-                    </div>
-                  );
+                        <div className="flex items-center">
+                          <AtSign className="mr-2 text-gray-300" />
+                          <span>{domain.domain}</span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => removeDomain(domain.id)}
+                        >
+                          <Trash size={16} className="text-red-700" />
+                        </button>
+                      </div>
+                    );
+                  }
                 }
               })}
             </div>

@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
   }
   if (req.method === 'PUT') {
-    const { id } = req.body;
+    const { id, isActive } = req.body;
     try {
       const savedRecord = await prisma.workspaceAccess
         .update({
@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             id: id,
           },
           data: {
-            domain: '',
+            isActive: isActive,
           },
         })
         .catch(async (e) => {
