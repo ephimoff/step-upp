@@ -8,11 +8,52 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
 import FormikForm from '@/components/FormikForm';
+import { string } from 'yup';
 
 type Props = {
   profile: any;
   membership: MembershipType[];
   access: WorkspaceAccess[];
+};
+
+const updateWorkspace = async (
+  workspaceId: string,
+  workspaceName?: string,
+  workspaceDescription?: string
+) => {
+  try {
+    const response = await fetch('/api/workspace', {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: workspaceId,
+        name: workspaceName,
+        description: workspaceDescription,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const jsonResponse = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const removeDomain = async (id: string) => {
+  try {
+    const response = await fetch('/api/workspaceaccess', {
+      method: 'PUT',
+      body: JSON.stringify({
+        id: id,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const jsonResponse = await response.json();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const WorkspacePage = ({ profile, membership, access }: Props) => {
@@ -29,12 +70,16 @@ const WorkspacePage = ({ profile, membership, access }: Props) => {
 
   const aboutFields = [
     {
+      name: 'workspace',
       label: 'Workspace',
       value: workspace.name,
+      type: string().required('Workspace name is required'),
     },
     {
+      name: 'description',
       label: 'Description',
       value: workspace.description || '',
+      type: string(),
     },
   ];
   return (

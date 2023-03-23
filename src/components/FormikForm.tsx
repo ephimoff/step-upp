@@ -1,12 +1,15 @@
-import { Field, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import { Save, Check } from 'lucide-react';
 import { useState } from 'react';
+import * as yup from 'yup';
 import CustomButton from './CustomButton';
 import InputAndLabel from './InputAndLabel';
 
 interface FieldI {
+  name: string;
   label: string;
   value: string;
+  type: any;
 }
 
 type Props = {
@@ -15,15 +18,16 @@ type Props = {
 
 const FormikForm = ({ fields }: Props) => {
   const [success, setSuccess] = useState(false);
-  const initialFields = {};
-  const extraFields = fields.map((field: any, index: number) => {
-    return {
-      [index]: field.value,
-    };
-  });
-  const temp = Object.assign(initialFields, ...extraFields);
-  // console.log('extraFields', extraFields);
-  // console.log('temp', temp);
+
+  const initialValues = Object.fromEntries(
+    fields.map((field) => [field.name, field.value])
+  );
+
+  const SchemaObject = Object.fromEntries(
+    fields.map((field) => [field.name, field.type])
+  );
+  const validationSchema = yup.object().shape(SchemaObject);
+
   const submitForm = async (values: any) => {
     setSuccess(true);
   };
@@ -31,24 +35,24 @@ const FormikForm = ({ fields }: Props) => {
     <>
       <Formik
         enableReinitialize
-        initialValues={Object.assign(initialFields, ...extraFields)}
-        // validationSchema={scoreSchema}
+        initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
           submitForm(values);
           setSubmitting(false);
         }}
       >
-        {({ values, errors, isSubmitting }) => (
+        {({ values, errors, touched, isSubmitting }) => (
           <Form>
             <div>
-              {fields.map((field, index) => {
+              {fields.map(({ label, name }, index) => {
                 return (
                   <div key={index}>
                     <InputAndLabel
-                      label={field.label}
-                      placeholder={field.label}
-                      name={Object.keys(values)[index]}
+                      label={label}
+                      placeholder={label}
+                      name={name}
                       type="input"
                     />
                   </div>
@@ -68,9 +72,14 @@ const FormikForm = ({ fields }: Props) => {
                   <Check />
                 </span>
               ) : null}
-              {/* <pre className="text-xs font-thin text-black dark:text-white">
-              {JSON.stringify(values, null, 2)}
-            </pre> */}
+            </div>
+            <div>
+              <pre className="text-xs font-thin text-red-500 dark:text-white">
+                {JSON.stringify(errors, null, 2)}
+              </pre>
+              <pre className="text-xs font-thin text-black dark:text-white">
+                {JSON.stringify(values, null, 2)}
+              </pre>
             </div>
           </Form>
         )}
