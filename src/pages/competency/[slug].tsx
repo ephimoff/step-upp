@@ -66,7 +66,7 @@ export const getServerSideProps = async (
     };
   }
 
-  const profile = await prisma.profile.findUnique({
+  let profile = await prisma.profile.findUnique({
     where: {
       email: session!.user!.email as string,
     },
@@ -88,6 +88,8 @@ export const getServerSideProps = async (
   }
   const membership = profile.user.membership;
 
+  // a hack to deal with the serialising the date objects
+  profile = JSON.parse(JSON.stringify(profile));
   return {
     props: { session, competency, profile, membership },
   };

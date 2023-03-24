@@ -41,6 +41,7 @@ export default function AccountPage({
   const [newMembershipShow, setNewMembershipShow] = useState(true);
 
   const role = membership[0].role;
+
   // profile
   const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
     null
@@ -281,7 +282,7 @@ export const getServerSideProps = async ({
     };
   }
   let membership = [];
-  const profile = await prisma.profile.findUnique({
+  let profile = await prisma.profile.findUnique({
     where: {
       email: session!.user!.email as string,
     },
@@ -294,6 +295,7 @@ export const getServerSideProps = async ({
     },
   });
 
+  // Creating a new profile and onboarding a user to the workspace
   if (!profile) {
     const initialName = session!.user!.name
       ? session!.user!.name
@@ -308,21 +310,25 @@ export const getServerSideProps = async ({
       },
     });
 
+    // check if there is a workspace with the same domain
     const workspaceAccess = await prisma.workspaceAccess.findMany({
       where: {
         domain: domain,
       },
+      include: {
+        workspace: true,
+      },
     });
-
     // console.log('workspaceAccess', workspaceAccess);
-    if (workspaceAccess.length === 0) {
-      const user = await prisma.user.findUnique({
-        where: {
-          email: session!.user!.email as string,
-        },
-      });
 
-      console.info(`[INFO] ${PAGE} page: User was found`);
+    if (workspaceAccess.length === 0) {
+      // const user = await prisma.user.findUnique({
+      //   where: {
+      //     email: session!.user!.email as string,
+      //   },
+      // });
+
+      // console.info(`[INFO] ${PAGE} page: User was found`);
       console.info(
         `[INFO] ${PAGE} page: No workspace was found. Creating a new one`
       );
@@ -371,8 +377,24 @@ export const getServerSideProps = async ({
       console.info(
         `[INFO] ${PAGE} page: WorkspaceAccess record has been created`
       );
+    } else {
+      console.info(`[INFO] ${PAGE} page: Workspace was found`);
+      const workspace = workspaceAccess[0].workspace;
+      const singleMembership = await prisma.membership.create({
+        data: {
+          user: { connect: { email: session!.user!.email as string } },
+          workspace: { connect: { id: workspace.id } },
+          role: 'USER',
+        },
+      });
+      if (singleMembership) {
+        isNewMembership = true;
+      }
+      console.info(`[INFO] ${PAGE} page: Membership record has been created`);
+      membership.push(singleMembership);
     }
-
+    // console.log('====');
+    // console.log('membership', membership);
     if (!slugProfile || slugProfile.email === session!.user!.email) {
       isSlugAvailable = true;
     } else {
@@ -402,7 +424,9 @@ export const getServerSideProps = async ({
   } else {
     membership = profile!.user.membership;
   }
-
+  // console.log('profile.user', profile!.user);
+  // a hack to deal with the serialising the date objects
+  profile = JSON.parse(JSON.stringify(profile));
   return {
     props: {
       session,

@@ -168,12 +168,8 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
               <Modal closeModal={closeModal} isOpen={isOpen}>
                 <div>
                   <p className="mb-4 text-sm">
-                    This list contains the domains based on user emails.
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    To add another domain, promote someone from that domain to
-                    be an Admin in your workspace and ask them to visit this
-                    page.
+                    You can only add work domains of users who signed up and are
+                    part of your workspace.
                   </p>
                   <div className="my-8">
                     {domains.map(({ domain, id, isActive }, index) => {
@@ -199,6 +195,11 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                       }
                     })}
                   </div>
+                  <p className="text-xs text-gray-500">
+                    To add another domain, promote someone from that domain to
+                    be an Admin in your workspace and ask them to visit this
+                    page.
+                  </p>
                 </div>
               </Modal>
             </div>
@@ -234,7 +235,7 @@ export const getServerSideProps = async ({
   console.info(`${PAGE} page - Session found`);
   console.debug(`${PAGE} page - Session: `, session);
 
-  const profile = await prisma.profile.findUnique({
+  let profile = await prisma.profile.findUnique({
     where: {
       email: session!.user!.email as string,
     },
@@ -262,7 +263,8 @@ export const getServerSideProps = async ({
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
   // console.log('membership', membership);
-
+  // a hack to deal with the serialising the date objects
+  profile = JSON.parse(JSON.stringify(profile));
   return {
     props: { session, profile, membership, access },
   };
