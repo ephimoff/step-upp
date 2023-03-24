@@ -6,7 +6,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     console.info(`[INFO] POST /api/profile`);
     const profileData = req.body;
-    console.dir(`[INFO] POST /api/profile. [profileData]: ${profileData}`);
+    console.info(`[INFO] POST /api/profile. [profileData]: ${profileData}`);
     try {
       const savedProfile = await prisma.profile
         .create({
@@ -38,7 +38,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'GET') {
-    const { email, query } = req.query;
+    const { email, query, workspaceId } = req.query;
+
     if (email) {
       try {
         const profile = await prisma.profile.findUnique({
@@ -55,15 +56,34 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ msg: 'Something went wrong', error });
       }
     }
-    if (query) {
+    if (query && workspaceId) {
       try {
-        const profile = await prisma.profile.findMany({
+        // const profile = await prisma.profile.findMany({
+        //   where: {
+        //     name: {
+        //       contains: query as string,
+        //       mode: 'insensitive',
+        //     },
+        //   },
+        //   select: {
+        //     name: true,
+        //     id: true,
+        //     slug: true,
+        //     team: true,
+        //     title: true,
+        //     email: true,
+        //     userpic: true,
+        //   },
+        // });
+        let searchResults = await prisma.profile.findMany({
           where: {
-            name: {
-              contains: query as string,
-              mode: 'insensitive',
+            user: {
+              membership: { some: { workspaceId: workspaceId as string } },
             },
           },
+          // include: {
+          //   user: { include: { membership: true } },
+          // },
           select: {
             name: true,
             id: true,
@@ -73,9 +93,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             email: true,
             userpic: true,
           },
+          orderBy: { name: 'asc' },
+          take: 10,
         });
-        if (profile) {
-          res.status(200).json(profile);
+        if (searchResults) {
+          res.status(200).json(searchResults);
         } else {
           res.status(500).json({ msg: 'Profile not found' });
         }

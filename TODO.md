@@ -25,20 +25,21 @@
 - [x] Show all profiles
 - [x] Add search for profiles
 - [x] Improve search to be more fuzzy and not to search only by name
-- [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
-- [ ] Remove expired tokens from the DB
-- [ ] Update all users with the company name to limit the scope of users
+- [x] Show workspace info
+- [x] Allow to edit workspace info
+- [x] Add users to a workspace on signup
+- [x] Add users to the existing the workspace on signup based on their domain
 - [x] Allow to delete Domains
 - [x] Add Admin check for the sidebar
+- [x] Update all users with the company name to limit the scope of users
+- [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
+- [ ] Remove expired tokens from the DB
 - [ ] Add other permissions
 - [ ] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Prepare competency packs
 - [ ] Allow to edit competencies
-- [x] Show workspace info
-- [x] Allow to edit workspace info
-- [x] Add users to a workspace on signup
-- [ ] Add users to the existing the workspace on signup based on their domain
+- [ ] Consider encoding the query parameters for the search. It now contains `workspaceId` which is potentially a sensetive info. Alternatively, replace `GET` with `POST` for search
 
 ### Nice to have
 

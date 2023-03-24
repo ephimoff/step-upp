@@ -43,14 +43,18 @@ export default function MainProfile({
   const showAll = () => {
     setSearchResults(allProfiles);
   };
-
+  // console.log('membership', membership[0].workspaceId);
   const role = membership[0].role;
   return (
     <>
       <Sidebar name={profile.name} role={role}>
         {status === 'authenticated' ? (
           <>
-            <Search returnSearchResults={searchProfiles} showAll={showAll} />
+            <Search
+              returnSearchResults={searchProfiles}
+              showAll={showAll}
+              workspaceId={membership[0].workspaceId}
+            />
             {loading ? <Spinner /> : <SearchResults profiles={searchResults} />}
           </>
         ) : (
@@ -92,7 +96,26 @@ export const getServerSideProps = async ({
       },
     },
   });
-  const allProfiles = await prisma.profile.findMany({
+  if (!profile) {
+    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
+    return {
+      redirect: {
+        destination: '/account',
+      },
+    };
+  }
+  // console.log('profile', profile.user.membership);
+  const workspaceId = profile.user.membership[0].workspaceId;
+  // console.log('workspaceId', workspaceId);
+  let allProfiles = await prisma.profile.findMany({
+    where: {
+      user: {
+        membership: { some: { workspaceId: workspaceId } },
+      },
+    },
+    // include: {
+    //   user: { include: { membership: true } },
+    // },
     select: {
       name: true,
       id: true,
@@ -105,20 +128,15 @@ export const getServerSideProps = async ({
     orderBy: { name: 'asc' },
     take: 10,
   });
-
-  if (!profile) {
-    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
-    return {
-      redirect: {
-        destination: '/account',
-      },
-    };
-  }
+  // console.log('===');
+  // console.dir(allProfiles, { depth: null });
+  // console.log('===');
   const membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  allProfiles = JSON.parse(JSON.stringify(allProfiles));
   return {
     props: { session, profile, membership, allProfiles },
   };

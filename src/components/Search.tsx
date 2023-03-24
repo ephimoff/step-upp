@@ -5,15 +5,18 @@ import { useState } from 'react';
 type Props = {
   returnSearchResults: any;
   showAll: any;
+  workspaceId: string;
 };
 
-const Search = ({ returnSearchResults, showAll }: Props) => {
+const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const [success, setSuccess] = useState(false);
 
-  const searchUsers = async (value: string) => {
+  const searchUsers = async (value: string, workspaceId: string) => {
     try {
-      const response = await fetch(`/api/profile?query=${value}`);
+      const response = await fetch(
+        `/api/profile?query=${value}&workspaceId=${workspaceId}`
+      );
       if (response.status === 200) {
         setSuccess(true);
       }
@@ -35,7 +38,7 @@ const Search = ({ returnSearchResults, showAll }: Props) => {
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          searchUsers(values.searchValue);
+          searchUsers(values.searchValue, workspaceId);
           setSubmitting(false);
         }}
       >
