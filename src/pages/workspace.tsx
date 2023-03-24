@@ -1,7 +1,7 @@
 import type { GetServerSidePropsContext } from 'next';
 import type { MembershipType } from '@/types/types';
 import type { WorkspaceAccess } from '@prisma/client';
-import { Trash, AtSign, Plus } from 'lucide-react';
+import { Trash, AtSign, Plus, Check } from 'lucide-react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { string } from 'yup';
@@ -81,13 +81,13 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
     }
   };
 
-  const removeDomain = async (id: string) => {
+  const updateDomain = async (id: string, isActive: boolean) => {
     try {
       const response = await fetch('/api/workspaceaccess', {
         method: 'PUT',
         body: JSON.stringify({
           id: id,
-          isActive: false,
+          isActive: isActive,
         }),
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +146,10 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                           <span>{domain}</span>
                         </div>
 
-                        <button type="button" onClick={() => removeDomain(id)}>
+                        <button
+                          type="button"
+                          onClick={() => updateDomain(id, false)}
+                        >
                           <Trash size={16} className="text-red-700" />
                         </button>
                       </div>
@@ -186,10 +189,10 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                             </div>
 
                             <button
-                              type="button"
-                              onClick={() => removeDomain(id)}
+                              className="flex items-center font-semibold text-purple-600"
+                              onClick={() => updateDomain(id, true)}
                             >
-                              <Trash size={16} className="text-red-700" />
+                              <Plus size={16} strokeWidth={4} /> Add
                             </button>
                           </div>
                         );
