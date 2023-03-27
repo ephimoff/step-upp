@@ -149,8 +149,8 @@ export const getServerSideProps = async ({
   const session = await getServerSession(req, res, authOptions);
 
   if (session) {
-    console.info(`${PAGE} page - Session found`);
-    console.debug(`${PAGE} page - Session: `, session);
+    console.info(`[INFO] ${PAGE} page - Session found`);
+    console.debug(`[DEBUG] ${PAGE} page - Session: `, session);
     return {
       redirect: {
         destination: '/',
@@ -158,7 +158,7 @@ export const getServerSideProps = async ({
       },
     };
   }
-  console.info(`${PAGE} page - Session not found`);
+  console.info(`[INFO] ${PAGE} page - Session not found`);
   // const providers = await getProviders();
   return {
     props: { session },

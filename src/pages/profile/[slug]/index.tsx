@@ -5,7 +5,6 @@ import type {
   ProfileType,
 } from '@/types/types';
 import { useCallback, useEffect, useState } from 'react';
-// import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import Sidebar from '@/components/Sidebar/Sidebar';
@@ -33,9 +32,6 @@ const ProfilePage = ({
   isSameProfile,
   slug,
 }: Props) => {
-  const profileName = profile ? profile.name : '';
-  // console.log('isSameProfile', isSameProfile);
-
   const title = slugProfile
     ? `${slugProfile.name}'s profile on StepUpp`
     : 'No profile was found';
@@ -52,7 +48,6 @@ const ProfilePage = ({
         `/api/assigncompetency?profileId=${slugProfile.id}`
       );
       const resJson: CompetencyType[] = await res.json();
-      // console.dir(resJson, { depth: null });
       if (res.status === 200) {
         setAssignedCompetencies(resJson);
       } else {
@@ -66,13 +61,15 @@ const ProfilePage = ({
   }, [slugProfile]);
 
   useEffect(() => {
-    fetchAssignedCompetencies();
-  }, [fetchAssignedCompetencies]);
+    if (slugProfile) {
+      fetchAssignedCompetencies();
+    }
+  }, [fetchAssignedCompetencies, slugProfile]);
 
   const role = membership[0].role;
   return (
     <>
-      <Sidebar title={title} name={profileName} role={role}>
+      <Sidebar title={title} name={profile ? profile.name : ''} role={role}>
         {slugProfile ? (
           <div className="">
             <ProfileCard
@@ -140,8 +137,8 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const { req, res } = context;
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
+  const PAGE = 'Profile';
   if (!session) {
     return {
       redirect: {
@@ -149,13 +146,9 @@ export const getServerSideProps = async (
       },
     };
   }
-  const slug = context.query.slug!.toString().toLowerCase();
-  const slugProfile = await prisma.profile.findUnique({
-    where: {
-      slug: slug,
-    },
-    include: { competencies: true },
-  });
+
+  console.info(`${PAGE} page - Session found`);
+  console.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -169,10 +162,41 @@ export const getServerSideProps = async (
       },
     },
   });
+  let membership: any;
+  if (profile) {
+    membership = profile.user.membership;
+    console.info(`${PAGE} page - Profile found`);
+    console.debug(`${PAGE} page - Profile: `, profile);
+    console.debug(`${PAGE} page - Membership: `, membership);
+  }
 
   let competencies: any = null;
 
-  if (slugProfile) {
+  const slug = context.query.slug!.toString().toLowerCase();
+
+  let slugProfile = await prisma.profile.findUnique({
+    where: {
+      slug: slug,
+    },
+    include: { competencies: true, user: { include: { membership: true } } },
+  });
+
+  if (
+    slugProfile &&
+    membership[0].workspaceId === slugProfile.user.membership[0].workspaceId
+  ) {
+    // console.log('membership[0].workspaceId', membership[0].workspaceId);
+    // console.log(
+    //   'slugProfile.user.membership[0].workspaceId',
+    //   slugProfile.user.membership[0].workspaceId
+    // );
+    // console.log(
+    //   'membership[0].workspaceId === slugProfile.user.membership[0].workspaceId',
+    //   membership[0].workspaceId === slugProfile.user.membership[0].workspaceId
+    // );
+
+    console.info(`${PAGE} page - Slug Profile found`);
+    console.debug(`${PAGE} page - Slug Profile: `, slugProfile);
     competencies = await prisma.competency.findMany({
       include: { skills: true },
     });
@@ -192,6 +216,15 @@ export const getServerSideProps = async (
     };
 
     refreshCompetenciesList();
+
+    if (competencies.length > 0) {
+      console.info(`${PAGE} page - Profile Competencies found`);
+      console.debug(`${PAGE} page - Profile Competencies: `, competencies);
+    }
+  } else {
+    slugProfile = null;
+    console.info(`${PAGE} page - Slug Profile not found`);
+    console.debug(`${PAGE} page - Slug was used: `, slug);
   }
 
   let isSameProfile = false;
@@ -202,10 +235,13 @@ export const getServerSideProps = async (
   } else {
     isSameProfile = false;
   }
-  const membership = profile!.user.membership;
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  slugProfile = JSON.parse(JSON.stringify(slugProfile));
+  membership = JSON.parse(JSON.stringify(membership));
+  competencies = JSON.parse(JSON.stringify(competencies));
+
   return {
     props: {
       session,

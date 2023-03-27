@@ -131,11 +131,12 @@ export const getServerSideProps = async ({
   // console.log('===');
   // console.dir(allProfiles, { depth: null });
   // console.log('===');
-  const membership = profile.user.membership;
+  let membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  membership = JSON.parse(JSON.stringify(membership));
   allProfiles = JSON.parse(JSON.stringify(allProfiles));
   return {
     props: { session, profile, membership, allProfiles },

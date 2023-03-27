@@ -189,12 +189,13 @@ export const getServerSideProps = async ({
       },
     };
   }
-  const membership = profile.user.membership;
+  let membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  membership = JSON.parse(JSON.stringify(membership));
   return {
     props: { session, profile, membership },
   };

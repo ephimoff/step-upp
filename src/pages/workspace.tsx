@@ -81,12 +81,12 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
     }
   };
 
-  const updateDomain = async (id: string, isActive: boolean) => {
+  const updateDomain = async (domain: string, isActive: boolean) => {
     try {
       const response = await fetch('/api/workspaceaccess', {
         method: 'PUT',
         body: JSON.stringify({
-          id: id,
+          domain: domain,
           isActive: isActive,
         }),
         headers: {
@@ -133,9 +133,9 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
               new free workspace.
             </p>
             <div className="my-8 text-sm">
-              {domains.map(({ domain, id, isActive }, index) => {
+              {domains.map(({ domain, isActive, isPublic }, index) => {
                 if (domain) {
-                  if (isActive) {
+                  if (isActive && !isPublic) {
                     return (
                       <div
                         key={index}
@@ -148,7 +148,7 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
 
                         <button
                           type="button"
-                          onClick={() => updateDomain(id, false)}
+                          onClick={() => updateDomain(domain, false)}
                         >
                           <Trash size={16} className="text-red-700" />
                         </button>
@@ -172,8 +172,8 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                     part of your workspace.
                   </p>
                   <div className="my-8">
-                    {domains.map(({ domain, id, isActive }, index) => {
-                      if (!isActive) {
+                    {domains.map(({ domain, isActive, isPublic }, index) => {
+                      if (!isActive && isPublic) {
                         return (
                           <div
                             key={index}
@@ -186,7 +186,7 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
 
                             <button
                               className="flex items-center font-semibold text-purple-600"
-                              onClick={() => updateDomain(id, true)}
+                              onClick={() => updateDomain(domain, true)}
                             >
                               <Plus size={16} strokeWidth={4} /> Add
                             </button>
@@ -258,13 +258,15 @@ export const getServerSideProps = async ({
       },
     };
   }
-  const membership = profile.user.membership;
-  const access = membership[0].workspace.access;
+  let membership = profile.user.membership;
+  let access = membership[0].workspace.access;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
   // console.log('membership', membership);
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  membership = JSON.parse(JSON.stringify(membership));
+  access = JSON.parse(JSON.stringify(access));
   return {
     props: { session, profile, membership, access },
   };

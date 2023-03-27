@@ -40,13 +40,14 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
+  // console.log('req.headers.host', req.headers.host);
   // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Home';
 
   if (!session) {
     console.info(
-      `${PAGE} page - Session not found. Redirecting to /auth/signin`
+      `[INFO] ${PAGE} page - Session not found. Redirecting to /auth/signin`
     );
     return {
       redirect: {
@@ -54,8 +55,8 @@ export const getServerSideProps = async ({
       },
     };
   }
-  console.info(`${PAGE} page - Session found`);
-  console.debug(`${PAGE} page - Session: `, session);
+  console.info(`[INFO] ${PAGE} page - Session found`);
+  console.debug(`[DEBUG] ${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -71,19 +72,22 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
-    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
+    console.info(
+      `[INFO] ${PAGE} page - Profile not found. Redirecting to /account`
+    );
     return {
       redirect: {
         destination: '/account',
       },
     };
   }
-  const membership = profile.user.membership;
-  console.info(`${PAGE} page - Profile found`);
-  console.debug(`${PAGE} page - Profile: `, profile);
+  let membership = profile.user.membership;
+  console.info(`[INFO] ${PAGE} page - Profile found`);
+  console.debug(`[DEBUG] ${PAGE} page - Profile: `, profile);
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  membership = JSON.parse(JSON.stringify(membership));
   return {
     props: { session, profile, membership },
   };

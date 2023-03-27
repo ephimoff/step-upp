@@ -19,7 +19,7 @@ import SidebarProfile from './SidebarProfile';
 type SidebarProps = {
   children: React.ReactNode;
   name: string;
-  role: 'ADMIN' | 'USER';
+  role: 'MEMBER' | 'OWNER';
   title?: string;
 };
 
@@ -66,7 +66,7 @@ export default function Sidebar({
 }: SidebarProps) {
   // required for theme switching
   const [mounted, setMounted] = useState(false);
-  const [admin, setAdmin] = useState(role === 'ADMIN');
+  const [admin, setAdmin] = useState(role === 'OWNER');
   // const { data: session, status } = useSession();
   const { open, setOpen } = useUser();
 
@@ -85,7 +85,7 @@ export default function Sidebar({
       <div
         className={`${
           open ? 'w-72' : 'w-28'
-        } sticky top-0 h-screen text-black duration-300`}
+        } sticky top-0 h-screen  text-black duration-300`}
       >
         {/* visible part of the sidebar */}
         <div className="relative m-4 h-5/6 min-h-[700px] rounded-xl bg-white pt-8 drop-shadow-2xl transition duration-300 ease-in-out dark:bg-slate-800 dark:bg-gradient-to-tl dark:from-slate-800 dark:to-[#334562]">
@@ -149,7 +149,9 @@ export default function Sidebar({
         </div>
       </div>
       <div className="flex-1">
-        <div className="mx-auto mt-4 sm:w-full md:w-3/5">{children}</div>
+        <div className="mx-auto mt-4 sm:w-full sm:pr-4 md:w-4/5 xl:w-3/5">
+          {children}
+        </div>
       </div>
     </div>
   );

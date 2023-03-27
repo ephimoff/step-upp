@@ -60,6 +60,7 @@
 - [ ] Refactor all formik forms with the new Formik component
 - [ ] Submitting form second time without reloading form doesn't trigger the success check. Need to figure how to fix it
 - [ ] Update the display of the logo when the sidebar get thiner
+- [ ] Align the styling of elements: cards and headers
 
 ## Bugs
 

@@ -10,6 +10,8 @@ import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
 import CustomButton from '@/components/CustomButton';
 import prisma from '@/utils/prisma';
+import CompetencyPacks from '@/components/Competencies/CompetencyPacks';
+import Card from '@/components/Card';
 
 type Props = {
   profile: ProfileType;
@@ -51,13 +53,17 @@ export default function CompetenciesPage({ profile, membership }: Props) {
         {status === 'authenticated' ? (
           <div className="">
             <h1 className="text-2xl">Competencies management</h1>
-            <p>
-              Each Competency has a name and one ore more Skills attach to it.
-            </p>
-            <p>
-              Here you can create Competencies and Skills in bulk. After
-              creation, all of these will be available to use with profiles.
-            </p>
+            <Card>
+              <p>
+                Each Competency has a name and one ore more Skills attach to it.
+              </p>
+              <p>
+                Here you can create Competencies and Skills in bulk. After
+                creation, all of these will be available to use with profiles.
+              </p>
+              <CompetencyPacks />
+            </Card>
+
             <CompetenciesList />
             <div>
               <Formik
@@ -152,10 +158,11 @@ export const getServerSideProps = async ({
       },
     };
   }
-  const membership = profile.user.membership;
+  let membership = profile.user.membership;
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  membership = JSON.parse(JSON.stringify(membership));
   return {
     props: { session, profile, membership },
   };

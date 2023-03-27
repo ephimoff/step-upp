@@ -1,6 +1,7 @@
 import type { Profile as ProfileType } from '@prisma/client';
 import type { MembershipType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
+import { v4 as uuidv4 } from 'uuid';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
@@ -267,21 +268,42 @@ export const getServerSideProps = async ({
   res,
 }: GetServerSidePropsContext) => {
   const PAGE = 'Account';
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
-  let isNewProfile = false;
-  let isNewWorkspace = false;
-  let isNewMembership = false;
-  let isPublicDomain = false;
-
+  // redirect to the login page early
   if (!session) {
+    console.info(
+      `[INFO] ${PAGE} page - Session not found. Redirecting to /auth/signin`
+    );
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
+
+  const domain = session!.user!.email!.split('@')[1];
+  const initialName = session!.user!.name
+    ? session!.user!.name
+    : session!.user!.email!.split('@')[0];
+  const initialSlug = generateSlug(initialName);
+  let isSlugAvailable = false;
+  let isNewProfile = false;
+  let isNewWorkspace = false;
+  let isNewMembership = false;
+  let isPublicDomain = false;
   let membership = [];
+
+  // check if there is a workspace with the same domain
+  const workspaceAccess = await prisma.workspaceAccess.findUnique({
+    where: {
+      domain: domain,
+    },
+    include: {
+      workspace: true,
+    },
+  });
+
+  // search for the profile
   let profile = await prisma.profile.findUnique({
     where: {
       email: session!.user!.email as string,
@@ -295,43 +317,44 @@ export const getServerSideProps = async ({
     },
   });
 
-  // Creating a new profile and onboarding a user to the workspace
-  if (!profile) {
-    const initialName = session!.user!.name
-      ? session!.user!.name
-      : session!.user!.email!.split('@')[0];
-    const domain = session!.user!.email!.split('@')[1];
-    const initialSlug = generateSlug(initialName);
-    let isSlugAvailable = false;
-
+  if (profile) {
+    membership = profile!.user.membership;
+    console.info(`[INFO] ${PAGE} page: Profile was found`);
+    console.debug(`[DEBUG] ${PAGE} page: Profile's membership is:`, membership);
+  } else {
+    console.info(`[INFO] ${PAGE} page: Profile was not found`);
+    // Creating a new profile and onboarding a user to the workspace
     const slugProfile = await prisma.profile.findUnique({
       where: {
         slug: initialSlug as string,
       },
     });
 
-    // check if there is a workspace with the same domain
-    const workspaceAccess = await prisma.workspaceAccess.findMany({
-      where: {
-        domain: domain,
-      },
-      include: {
-        workspace: true,
-      },
-    });
-    // console.log('workspaceAccess', workspaceAccess);
-
-    if (workspaceAccess.length === 0) {
+    if (workspaceAccess) {
+      console.info(`[INFO] ${PAGE} page: Workspace was found`);
+      console.debug(`[DEBUG] ${PAGE} page: Workspace data:`, workspaceAccess);
+      const workspace = workspaceAccess.workspace;
+      const singleMembership = await prisma.membership.create({
+        data: {
+          user: { connect: { email: session!.user!.email as string } },
+          workspace: { connect: { id: workspace.id } },
+          role: 'MEMBER',
+        },
+      });
+      if (singleMembership) {
+        isNewMembership = true;
+      }
+      console.info(`[INFO] ${PAGE} page: Membership record has been created`);
+      membership.push(singleMembership);
+    } else {
+      console.info(
+        `[INFO] ${PAGE} page: No workspace was found. Creating a new one`
+      );
       // const user = await prisma.user.findUnique({
       //   where: {
       //     email: session!.user!.email as string,
       //   },
       // });
-
-      // console.info(`[INFO] ${PAGE} page: User was found`);
-      console.info(
-        `[INFO] ${PAGE} page: No workspace was found. Creating a new one`
-      );
 
       const workspace = await prisma.workspace.create({
         data: {
@@ -344,18 +367,20 @@ export const getServerSideProps = async ({
         isNewWorkspace = true;
       }
       console.info(`[INFO] ${PAGE} page: Workspace has been created`);
+      console.debug(`[DEBUG] ${PAGE} page: Workspace data:`, workspace);
 
       const singleMembership = await prisma.membership.create({
         data: {
           user: { connect: { email: session!.user!.email as string } },
           workspace: { connect: { id: workspace.id } },
-          role: 'ADMIN',
+          role: 'OWNER',
         },
       });
       if (singleMembership) {
         isNewMembership = true;
       }
       console.info(`[INFO] ${PAGE} page: Membership record has been created`);
+      console.debug(`[DEBUG] ${PAGE} page: Membership data:`, singleMembership);
       membership.push(singleMembership);
 
       const publicDomain = await prisma.publicDomain.findUnique({
@@ -364,37 +389,27 @@ export const getServerSideProps = async ({
         },
       });
       if (publicDomain) {
-        isPublicDomain = true;
         console.info(
-          `[INFO] ${PAGE} page: The domain of the email is found in the list of public email domains`
+          `[INFO] ${PAGE} page: The email domain was found in the list of public email domains`
         );
+        isPublicDomain = true;
       }
+
       const newWorkspaceAccess = await prisma.workspaceAccess.create({
         data: {
+          domain: isPublicDomain ? uuidv4() : domain, // if public domain generate a unique uuid string
+          isPublic: true,
           workspace: { connect: { id: workspace.id } },
         },
       });
       console.info(
         `[INFO] ${PAGE} page: WorkspaceAccess record has been created`
       );
-    } else {
-      console.info(`[INFO] ${PAGE} page: Workspace was found`);
-      const workspace = workspaceAccess[0].workspace;
-      const singleMembership = await prisma.membership.create({
-        data: {
-          user: { connect: { email: session!.user!.email as string } },
-          workspace: { connect: { id: workspace.id } },
-          role: 'USER',
-        },
-      });
-      if (singleMembership) {
-        isNewMembership = true;
-      }
-      console.info(`[INFO] ${PAGE} page: Membership record has been created`);
-      membership.push(singleMembership);
+      console.debug(
+        `[DEBUG] ${PAGE} page: WorkspaceAccess data:`,
+        newWorkspaceAccess
+      );
     }
-    // console.log('====');
-    // console.log('membership', membership);
     if (!slugProfile || slugProfile.email === session!.user!.email) {
       isSlugAvailable = true;
     } else {
@@ -421,12 +436,14 @@ export const getServerSideProps = async ({
         console.error(`[ERROR] /account Saving new profile failed: ${e}`);
       });
     isNewProfile = true;
-  } else {
-    membership = profile!.user.membership;
+    console.info(`[INFO] ${PAGE} page: New profile has been created`);
+    console.debug(`[DEBUG] ${PAGE} page: Profile:`, newProfile);
   }
   // console.log('profile.user', profile!.user);
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
+  membership = JSON.parse(JSON.stringify(membership));
+
   return {
     props: {
       session,
