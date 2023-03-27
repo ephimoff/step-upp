@@ -11,7 +11,10 @@ import type {
   WorkspaceAccess,
 } from '@prisma/client';
 
-export type SkillType = Optional<Skill, 'id' | 'competencyId'> & {
+export type SkillType = Optional<
+  Skill,
+  'id' | 'competencyId' | 'createdAt' | 'updatedAt'
+> & {
   score?: number | null;
   feedbackScores?: number | null;
   actions?: number | null;
@@ -35,7 +38,10 @@ export type ProfileSkillType = {
   skillId: string;
 };
 
-export type CompetencyType = Optional<Competency, 'id'> & {
+export type CompetencyType = Optional<
+  Competency,
+  'id' | 'createdAt' | 'updatedAt'
+> & {
   skills?: SkillType[];
 };
 
