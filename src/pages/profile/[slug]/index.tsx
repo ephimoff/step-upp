@@ -185,19 +185,12 @@ export const getServerSideProps = async (
     slugProfile &&
     membership[0].workspaceId === slugProfile.user.membership[0].workspaceId
   ) {
-    // console.log('membership[0].workspaceId', membership[0].workspaceId);
-    // console.log(
-    //   'slugProfile.user.membership[0].workspaceId',
-    //   slugProfile.user.membership[0].workspaceId
-    // );
-    // console.log(
-    //   'membership[0].workspaceId === slugProfile.user.membership[0].workspaceId',
-    //   membership[0].workspaceId === slugProfile.user.membership[0].workspaceId
-    // );
-
     console.info(`${PAGE} page - Slug Profile found`);
     console.debug(`${PAGE} page - Slug Profile: `, slugProfile);
     competencies = await prisma.competency.findMany({
+      where: {
+        workspaceId: membership[0].workspaceId,
+      },
       include: { skills: true },
     });
 

@@ -1,10 +1,15 @@
-import type { MembershipType, ProfileType } from '@/types/types';
+import type {
+  MembershipType,
+  ProfileType,
+  CompetencyType,
+} from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { useState } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
+import { useRouter } from 'next/router';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
@@ -16,16 +21,25 @@ import Card from '@/components/Card';
 type Props = {
   profile: ProfileType;
   membership: MembershipType[];
+  competencies: CompetencyType[];
 };
 
 const initialValues = {
   competencies: [],
 };
 
-export default function CompetenciesPage({ profile, membership }: Props) {
+export default function CompetenciesPage({
+  profile,
+  membership,
+  competencies,
+}: Props) {
+  const router = useRouter();
   const { data: session, status } = useSession();
-  // const [btnClicked, setBtnClicked] = useState('');
   const [success, setSuccess] = useState(false);
+
+  const refreshData = () => {
+    router.replace(router.asPath);
+  };
 
   async function createCompetency(values: any) {
     let url = '/api/competency';
@@ -33,13 +47,17 @@ export default function CompetenciesPage({ profile, membership }: Props) {
     try {
       const response = await fetch(url, {
         method: method,
-        body: JSON.stringify(values.competencies),
+        body: JSON.stringify({
+          competencyData: values.competencies,
+          workspaceId: membership[0].workspaceId,
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
-      if (response.status === 200) {
+      if (response.status < 300) {
         setSuccess(true);
+        refreshData();
       }
       const jsonResponse = await response.json();
     } catch (error) {
@@ -64,7 +82,7 @@ export default function CompetenciesPage({ profile, membership }: Props) {
               <CompetencyPacks />
             </Card>
 
-            <CompetenciesList />
+            <CompetenciesList competencies={competencies} />
             <div>
               <Formik
                 initialValues={initialValues}
@@ -128,9 +146,12 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
-  // const session = await getSession(context);
+  const PAGE = 'Competencies';
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
+    console.info(
+      `[INFO] ${PAGE} page - Session not found. Redirecting to Sing in page`
+    );
     return {
       redirect: {
         destination: '/auth/signin',
@@ -152,18 +173,40 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
+    console.info(
+      `[INFO] ${PAGE} page - Profile not found. Redirecting to Account page`
+    );
+
     return {
       redirect: {
         destination: '/account',
       },
     };
   }
+  console.info(`[INFO] ${PAGE} page - Profile found`);
+  console.debug(`[DEBUG] ${PAGE} page - Profile: `, profile);
+
   let membership = profile.user.membership;
+
+  let competencies = await prisma.competency.findMany({
+    where: {
+      workspaceId: membership[0].workspaceId,
+    },
+    include: {
+      skills: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));
+  competencies = JSON.parse(JSON.stringify(competencies));
+
   return {
-    props: { session, profile, membership },
+    props: { session, profile, membership, competencies },
   };
 };

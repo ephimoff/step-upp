@@ -104,18 +104,16 @@ export const getServerSideProps = async ({
       },
     };
   }
-  // console.log('profile', profile.user.membership);
+
   const workspaceId = profile.user.membership[0].workspaceId;
-  // console.log('workspaceId', workspaceId);
+
   let allProfiles = await prisma.profile.findMany({
     where: {
       user: {
         membership: { some: { workspaceId: workspaceId } },
       },
     },
-    // include: {
-    //   user: { include: { membership: true } },
-    // },
+
     select: {
       name: true,
       id: true,
@@ -128,12 +126,11 @@ export const getServerSideProps = async ({
     orderBy: { name: 'asc' },
     take: 10,
   });
-  // console.log('===');
-  // console.dir(allProfiles, { depth: null });
-  // console.log('===');
+
   let membership = profile.user.membership;
   console.info(`${PAGE} page - Profile found`);
   console.debug(`${PAGE} page - Profile: `, profile);
+
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));

@@ -92,10 +92,12 @@ model Profile {
 }
 
 model Competency {
-  id       String                @id @default(cuid())
-  name     String
-  skills   Skill[]
-  profiles ProfileCompetencies[]
+  id          String                @id @default(cuid())
+  name        String
+  skills      Skill[]
+  profiles    ProfileCompetencies[]
+  workspaceId String
+  workspace   Workspace             @relation(fields: [workspaceId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -170,6 +172,7 @@ model Workspace {
   members     Membership[]
   planId      String
   plan        Plan              @relation(fields: [planId], references: [id])
+  competency  Competency[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

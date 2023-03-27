@@ -1,4 +1,5 @@
 import { CompetencyType, ProfileType, SkillType } from '@/types/types';
+import Link from 'next/link';
 import { useState } from 'react';
 import CustomButton from '../CustomButton';
 import Dropdown from '../Dropdown';
@@ -26,6 +27,8 @@ const ProfileCompetenciesLoading = ({
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState(empty[0]);
   const [error, setError] = useState('');
+
+  console.log('competencies', competencies);
 
   function handleSelected(value: any) {
     setSelected(value);
@@ -94,20 +97,35 @@ const ProfileCompetenciesLoading = ({
         <Spinner />
       ) : (
         <>
-          <div className="mr-2">
-            <Dropdown
-              options={competencies}
-              selected={selected}
-              setSelected={handleSelected}
-            />
-          </div>
-          <div>
-            <CustomButton
-              text="Assign"
-              onClick={() => assignCompetency(selected.id, profile.id)}
-            />
-          </div>
-          <div className="text-sm text-red-600">{error ? error : null}</div>
+          {competencies.length > 0 ? (
+            <>
+              <div className="mr-2">
+                <Dropdown
+                  options={competencies}
+                  selected={selected}
+                  setSelected={handleSelected}
+                />
+              </div>
+              <div>
+                <CustomButton
+                  text="Assign"
+                  onClick={() => assignCompetency(selected.id, profile.id)}
+                />
+              </div>
+              <div className="text-sm text-red-600">{error ? error : null}</div>
+            </>
+          ) : (
+            <p>
+              No available competencies to assign. To create competencies go to{' '}
+              <Link
+                href="/competency"
+                className="font-semibold text-purple-600 underline"
+              >
+                Competencies
+              </Link>{' '}
+              page
+            </p>
+          )}
         </>
       )}
     </div>

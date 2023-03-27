@@ -1,33 +1,11 @@
-import Card from '../Card';
 import { SkillType, CompetencyType } from '@/types/types';
-import { useFetch } from '@/hooks/useFetch';
-import Spinner from '../Spinner';
+import Card from '../Card';
 
-const CompetenciesList = () => {
-  const {
-    response: competencies,
-    error,
-    loading,
-  }: { response: CompetencyType[]; error: any; loading: boolean } = useFetch(
-    `/api/competency`
-  );
+type Props = {
+  competencies: CompetencyType[];
+};
 
-  if (loading) {
-    return (
-      <Card>
-        <Spinner />
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card>
-        <div className="text-red-500">Error: {error}</div>
-      </Card>
-    );
-  }
-
+const CompetenciesList = ({ competencies }: Props) => {
   return (
     <Card>
       {competencies && competencies.length > 0 ? (

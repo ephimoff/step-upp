@@ -1,11 +1,11 @@
 import { FieldArray, useFormikContext } from 'formik';
+import { Plus, Trash } from 'lucide-react';
 import { useState } from 'react';
+import { CompetencyType } from '@/types/types';
 import InputAndLabel from '../InputAndLabel';
 import Skills from './Skills';
 import Card from '../Card';
-import { CompetencyType } from '@/types/types';
 import CustomButton from '../CustomButton';
-import { Plus, Trash } from 'lucide-react';
 
 const Competencies = ({ competenciesArrayHelpers }: any) => {
   const [name, setName] = useState('');
@@ -15,6 +15,7 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
     const competency: CompetencyType = {
       name: '',
       skills: [],
+      workspaceId: '',
     };
     competency.name = name;
     competency.skills = [{ name: '' }, { name: '' }, { name: '' }];
@@ -71,13 +72,6 @@ const Competencies = ({ competenciesArrayHelpers }: any) => {
               iconAfter
             />
           </div>
-          {/* <button
-            type="button"
-            className="mx-auto flex items-center text-sm font-bold text-red-400 hover:text-red-500 dark:text-red-800 dark:hover:text-red-500"
-            onClick={() => handleRemoveCompetency(index)}
-          >
-            <span>Remove</span> <MdDelete size={16} />
-          </button> */}
         </Card>
       ))}
     </>

@@ -32,6 +32,7 @@
 - [x] Allow to delete Domains
 - [x] Add Admin check for the sidebar
 - [x] Update all users with the company name to limit the scope of users
+- [x] Multi-tenancy: Restrict content by workspace
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
 - [ ] Add other permissions

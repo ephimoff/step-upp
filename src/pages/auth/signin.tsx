@@ -145,7 +145,6 @@ export const getServerSideProps = async ({
   res,
 }: GetServerSidePropsContext) => {
   const PAGE = 'SignIn';
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
 
   if (session) {

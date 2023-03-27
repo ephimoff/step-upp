@@ -25,12 +25,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'POST') {
-    const competencyData = req.body;
+    const { competencyData, workspaceId } = req.body;
+    console.log('competencyData', competencyData);
+    // const workspaceId = 'foobar';
     let isSuccess = true;
     try {
       competencyData.map(async (competency: CompetencyType, index: number) => {
         const savedCompetency = await prisma.competency.create({
           data: {
+            workspace: { connect: { id: workspaceId } },
             name: competency.name,
             skills: {
               create: competency.skills,
