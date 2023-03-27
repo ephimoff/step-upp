@@ -22,6 +22,6 @@ export default async function middleware(request: NextRequest) {
     geo: request.geo,
   };
 
-  console.log(logData);
+  // console.log(logData);
   return response;
 }
