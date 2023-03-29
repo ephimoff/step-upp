@@ -28,8 +28,6 @@ const ProfileCompetenciesLoading = ({
   const [selected, setSelected] = useState(empty[0]);
   const [error, setError] = useState('');
 
-  console.log('competencies', competencies);
-
   function handleSelected(value: any) {
     setSelected(value);
   }

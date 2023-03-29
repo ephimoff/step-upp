@@ -6,8 +6,7 @@ import { siteDescription } from '@/data/data';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
-// import { getSession } from 'next-auth/react';
-// import React from 'react';
+import { log } from 'next-axiom';
 
 type Props = {
   profile: ProfileType;
@@ -44,19 +43,21 @@ export const getServerSideProps = async ({
   // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Home';
+  log.info('info');
+  // log.debug('debug', session);
+  // log.error('error');
 
   if (!session) {
-    console.info(
-      `[INFO] ${PAGE} page - Session not found. Redirecting to /auth/signin`
-    );
+    log.info(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
-  console.info(`[INFO] ${PAGE} page - Session found`);
-  console.debug(`[DEBUG] ${PAGE} page - Session: `, session);
+  log.info(`${PAGE} page - Session found`);
+  // console.info(`[INFO] ${PAGE} page - Session found`);
+  log.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -72,9 +73,7 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
-    console.info(
-      `[INFO] ${PAGE} page - Profile not found. Redirecting to /account`
-    );
+    log.info(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
@@ -82,8 +81,8 @@ export const getServerSideProps = async ({
     };
   }
   let membership = profile.user.membership;
-  console.info(`[INFO] ${PAGE} page - Profile found`);
-  console.debug(`[DEBUG] ${PAGE} page - Profile: `, profile);
+  log.info(`${PAGE} page - Profile found`);
+  log.debug(`${PAGE} page - Profile: `, profile);
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
