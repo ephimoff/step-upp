@@ -173,6 +173,7 @@ model Workspace {
   planId      String
   plan        Plan              @relation(fields: [planId], references: [id])
   competency  Competency[]
+  packs       Packs[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -232,10 +233,46 @@ model PublicDomain {
   updatedAt DateTime @updatedAt
 }
 
-model Pack {
-  id        String  @id @default(cuid())
-  isEnabled Boolean @default(false)
+model Packs {
+  id          String    @id @default(cuid())
+  packName    String    @unique
+  isEnabled   Boolean   @default(false)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// model Pack {
+//   id           String             @id @default(cuid())
+//   name         String
+//   description  String
+//   isEnabled    Boolean            @default(false)
+//   competencies PackCompetencies[]
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model PackCompetencies {
+//   id          String       @id @default(cuid())
+//   name        String
+//   description String
+//   skills      PackSkills[]
+//   packId      String
+//   pack        Pack         @relation(fields: [packId], references: [id])
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
+
+// model PackSkills {
+//   id           String           @id @default(cuid())
+//   name         String
+//   competencyId String
+//   competency   PackCompetencies @relation(fields: [competencyId], references: [id])
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
