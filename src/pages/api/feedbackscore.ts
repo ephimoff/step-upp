@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { log } from 'next-axiom';
 import prisma from '@/utils/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -33,7 +34,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               },
             })
             .catch(async (e) => {
-              console.error(e);
+              log.error(
+                `API POST /api/feedbackscore. Error updating the record:`,
+                e
+              );
             });
           isSuccess = updatedScore ? true : false;
         });
@@ -62,7 +66,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               },
             })
             .catch(async (e) => {
-              console.error(e);
+              log.error(
+                `API POST /api/feedbackscore. Error creating the record:`,
+                e
+              );
             });
           isSuccess = savedScore ? true : false;
         });
@@ -86,7 +93,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
         .catch(async (e) => {
-          console.error(e);
+          log.error(`API GET /api/feedbackscore. Error finding the record:`, e);
         });
       res.status(200).json(feedbackScore);
     } catch (error) {

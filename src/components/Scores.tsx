@@ -1,5 +1,6 @@
 import { Formik, Field, Form } from 'formik';
 import { useState } from 'react';
+import { log } from 'next-axiom';
 import CustomButton from './CustomButton';
 
 type ScoresProps = {
@@ -50,21 +51,30 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
       appraiserId: appraiserId,
       scores: scores,
     };
+    const functionName = 'submitScore';
+    const url = '/api/feedbackscore';
+    const method = 'POST';
     try {
-      const response = await fetch('/api/feedbackscore', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify(reqBody),
         headers: {
           'Content-Type': 'application/json',
         },
       });
       const jsonResponse = await response.json();
-
-      if (response.status === 200) {
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
+      if (response.status < 300) {
+        log.debug(
+          `${functionName} function - ${method} ${url} response: `,
+          response
+        );
         setSuccess(true);
       }
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
 
@@ -77,7 +87,6 @@ const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
           submitScore(values, appraiseeId, appraiserId);
           setSubmitting(false);
           resetForm();
-          // console.log('done');
         }}
       >
         {({ values, errors, touched, isSubmitting }) => (

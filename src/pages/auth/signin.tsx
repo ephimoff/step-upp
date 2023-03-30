@@ -6,6 +6,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import { useRouter } from 'next/router';
 import { Form, Formik, Field } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
+import { log } from 'next-axiom';
 import Head from 'next/head';
 import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
@@ -148,8 +149,8 @@ export const getServerSideProps = async ({
   const session = await getServerSession(req, res, authOptions);
 
   if (session) {
-    console.info(`[INFO] ${PAGE} page - Session found`);
-    console.debug(`[DEBUG] ${PAGE} page - Session: `, session);
+    log.info(`${PAGE} page - Session found`);
+    log.debug(`${PAGE} page - Session: `, session);
     return {
       redirect: {
         destination: '/',
@@ -157,8 +158,8 @@ export const getServerSideProps = async ({
       },
     };
   }
-  console.info(`[INFO] ${PAGE} page - Session not found`);
-  // const providers = await getProviders();
+  log.info(`${PAGE} page - Session not found`);
+
   return {
     props: { session },
   };

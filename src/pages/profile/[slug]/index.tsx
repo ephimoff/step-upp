@@ -7,6 +7,7 @@ import type {
 import { useCallback, useEffect, useState } from 'react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import ProfileCard from '@/components/Profile/ProfileCard';
 import prisma from '@/utils/prisma';
@@ -140,6 +141,7 @@ export const getServerSideProps = async (
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Profile';
   if (!session) {
+    log.warn(`${PAGE} page - Session not found. Redirecting to Sign In page`);
     return {
       redirect: {
         destination: '/auth/signin',
@@ -147,8 +149,8 @@ export const getServerSideProps = async (
     };
   }
 
-  console.info(`${PAGE} page - Session found`);
-  console.debug(`${PAGE} page - Session: `, session);
+  log.info(`${PAGE} page - Session found`);
+  log.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -165,9 +167,9 @@ export const getServerSideProps = async (
   let membership: any;
   if (profile) {
     membership = profile.user.membership;
-    console.info(`${PAGE} page - Profile found`);
-    console.debug(`${PAGE} page - Profile: `, profile);
-    console.debug(`${PAGE} page - Membership: `, membership);
+    log.info(`${PAGE} page - Profile found`);
+    log.debug(`${PAGE} page - Profile: `, profile);
+    log.debug(`${PAGE} page - Membership: `, membership);
   }
 
   let competencies: any = null;
@@ -185,8 +187,8 @@ export const getServerSideProps = async (
     slugProfile &&
     membership[0].workspaceId === slugProfile.user.membership[0].workspaceId
   ) {
-    console.info(`${PAGE} page - Slug Profile found`);
-    console.debug(`${PAGE} page - Slug Profile: `, slugProfile);
+    log.info(`${PAGE} page - Slug Profile found`);
+    log.debug(`${PAGE} page - Slug Profile: `, slugProfile);
     competencies = await prisma.competency.findMany({
       where: {
         workspaceId: membership[0].workspaceId,
@@ -211,13 +213,13 @@ export const getServerSideProps = async (
     refreshCompetenciesList();
 
     if (competencies.length > 0) {
-      console.info(`${PAGE} page - Profile Competencies found`);
-      console.debug(`${PAGE} page - Profile Competencies: `, competencies);
+      log.info(`${PAGE} page - Profile Competencies found`);
+      log.debug(`${PAGE} page - Profile Competencies: `, competencies);
     }
   } else {
     slugProfile = null;
-    console.info(`${PAGE} page - Slug Profile not found`);
-    console.debug(`${PAGE} page - Slug was used: `, slug);
+    log.warn(`${PAGE} page - Slug Profile not found`);
+    log.debug(`${PAGE} page - Slug was used: ${slug}`);
   }
 
   let isSameProfile = false;

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
 import { domains as domainsList } from './domainsData';
+import { log } from 'next-axiom';
+const prisma = new PrismaClient();
 
 async function main() {
   const free = await prisma.plan.upsert({
@@ -61,7 +62,7 @@ main()
     await prisma.$disconnect();
   })
   .catch(async (e) => {
-    console.error(e);
+    log.error(e);
     await prisma.$disconnect();
     process.exit(1);
   });

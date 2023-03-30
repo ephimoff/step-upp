@@ -1,5 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { log } from 'next-axiom';
 import prisma from '@/utils/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -18,7 +19,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
         .catch(async (e) => {
-          console.error(e);
+          log.error(
+            `API POST /api/assigncompetency. Error creating Profile Competency:`,
+            e
+          );
         });
       res.status(200).json(savedRecord);
     } catch (error) {
@@ -27,7 +31,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'GET') {
     const { profileId } = req.query;
-    // console.log('api', req.body);
     try {
       const assignedCompetencies = await prisma.profileCompetencies
         .findMany({
@@ -65,7 +68,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           },
         })
         .catch(async (e) => {
-          console.error(e);
+          log.error(
+            `API GET /api/assigncompetency. Error finding Profile Competency:`,
+            e
+          );
         });
       res.status(200).json(assignedCompetencies);
     } catch (error) {

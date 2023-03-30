@@ -3,10 +3,10 @@ import type { GetServerSidePropsContext } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { siteDescription } from '@/data/data';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
-import { log } from 'next-axiom';
 
 type Props = {
   profile: ProfileType;
@@ -43,12 +43,9 @@ export const getServerSideProps = async ({
   // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Home';
-  log.info('info');
-  // log.debug('debug', session);
-  // log.error('error');
 
   if (!session) {
-    log.info(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
+    log.warn(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
       redirect: {
         destination: '/auth/signin',
@@ -56,7 +53,6 @@ export const getServerSideProps = async ({
     };
   }
   log.info(`${PAGE} page - Session found`);
-  // console.info(`[INFO] ${PAGE} page - Session found`);
   log.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
@@ -73,7 +69,7 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
-    log.info(`${PAGE} page - Profile not found. Redirecting to /account`);
+    log.warn(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',

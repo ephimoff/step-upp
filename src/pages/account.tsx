@@ -11,6 +11,7 @@ import { Check, X as Close } from 'lucide-react';
 import { profileSchema } from '@/schemas/validationSchemas';
 import { accountFields } from '@/data/data';
 import { generateSlug, generateUniqueSlug } from '@/utils/functions';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import InputAndLabel from '@/components/InputAndLabel';
 import prisma from '@/utils/prisma';
@@ -72,6 +73,8 @@ export default function AccountPage({
 
   const updateProfile = useCallback(
     async (values: any) => {
+      const functionName = 'updateProfile';
+      const method = 'PUT';
       const url = `/api/profile?email=${queryEmail}`;
       const newProfile = {
         name: values.name,
@@ -87,15 +90,16 @@ export default function AccountPage({
         user: { connect: { email: queryEmail } },
       };
       try {
-        // console.log('inside Update Profile function');
-        // console.log('newProfile', newProfile);
         const response = await fetch(url, {
-          method: 'PUT',
+          method: method,
           body: JSON.stringify(newProfile),
           headers: {
             'Content-Type': 'application/json',
           },
         });
+        log.info(
+          `${functionName} function -  ${method} ${url} response: ${response.status}`
+        );
         if (response.status === 200) {
           setSuccess(true);
         }
@@ -103,8 +107,8 @@ export default function AccountPage({
 
         setCurrentProfile(profileResponse);
       } catch (error) {
-        console.error(
-          `[ERROR] Caught an error processing a response from ${url}. Error: ${error}`
+        log.error(
+          `${functionName} function - ${method} ${url} error: ${error}`
         );
       }
     },
@@ -271,9 +275,7 @@ export const getServerSideProps = async ({
   const session = await getServerSession(req, res, authOptions);
   // redirect to the login page early
   if (!session) {
-    console.info(
-      `[INFO] ${PAGE} page - Session not found. Redirecting to /auth/signin`
-    );
+    log.warn(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
       redirect: {
         destination: '/auth/signin',
@@ -319,10 +321,10 @@ export const getServerSideProps = async ({
 
   if (profile) {
     membership = profile!.user.membership;
-    console.info(`[INFO] ${PAGE} page: Profile was found`);
-    console.debug(`[DEBUG] ${PAGE} page: Profile's membership is:`, membership);
+    log.info(`${PAGE} page: Profile was found`);
+    log.debug(`${PAGE} page: Profile's membership is:`, membership);
   } else {
-    console.info(`[INFO] ${PAGE} page: Profile was not found`);
+    log.warn(`${PAGE} page: Profile not found`);
     // Creating a new profile and onboarding a user to the workspace
     const slugProfile = await prisma.profile.findUnique({
       where: {
@@ -331,8 +333,8 @@ export const getServerSideProps = async ({
     });
 
     if (workspaceAccess) {
-      console.info(`[INFO] ${PAGE} page: Workspace was found`);
-      console.debug(`[DEBUG] ${PAGE} page: Workspace data:`, workspaceAccess);
+      log.info(`${PAGE} page: Workspace was found`);
+      log.debug(`${PAGE} page: Workspace data:`, workspaceAccess);
       const workspace = workspaceAccess.workspace;
       const singleMembership = await prisma.membership.create({
         data: {
@@ -344,12 +346,10 @@ export const getServerSideProps = async ({
       if (singleMembership) {
         isNewMembership = true;
       }
-      console.info(`[INFO] ${PAGE} page: Membership record has been created`);
+      log.info(`${PAGE} page: Membership record has been created`);
       membership.push(singleMembership);
     } else {
-      console.info(
-        `[INFO] ${PAGE} page: No workspace was found. Creating a new one`
-      );
+      log.warn(`${PAGE} page: Workspace not found. Creating a new one`);
       // const user = await prisma.user.findUnique({
       //   where: {
       //     email: session!.user!.email as string,
@@ -366,8 +366,8 @@ export const getServerSideProps = async ({
       if (workspace) {
         isNewWorkspace = true;
       }
-      console.info(`[INFO] ${PAGE} page: Workspace has been created`);
-      console.debug(`[DEBUG] ${PAGE} page: Workspace data:`, workspace);
+      log.info(`${PAGE} page: Workspace has been created`);
+      log.debug(`${PAGE} page: Workspace data:`, workspace);
 
       const singleMembership = await prisma.membership.create({
         data: {
@@ -379,8 +379,8 @@ export const getServerSideProps = async ({
       if (singleMembership) {
         isNewMembership = true;
       }
-      console.info(`[INFO] ${PAGE} page: Membership record has been created`);
-      console.debug(`[DEBUG] ${PAGE} page: Membership data:`, singleMembership);
+      log.info(`${PAGE} page: Membership record has been created`);
+      log.debug(`${PAGE} page: Membership data:`, singleMembership);
       membership.push(singleMembership);
 
       const publicDomain = await prisma.publicDomain.findUnique({
@@ -389,8 +389,8 @@ export const getServerSideProps = async ({
         },
       });
       if (publicDomain) {
-        console.info(
-          `[INFO] ${PAGE} page: The email domain was found in the list of public email domains`
+        log.warn(
+          `${PAGE} page: The email domain was found in the list of public email domains`
         );
         isPublicDomain = true;
       }
@@ -402,13 +402,8 @@ export const getServerSideProps = async ({
           workspace: { connect: { id: workspace.id } },
         },
       });
-      console.info(
-        `[INFO] ${PAGE} page: WorkspaceAccess record has been created`
-      );
-      console.debug(
-        `[DEBUG] ${PAGE} page: WorkspaceAccess data:`,
-        newWorkspaceAccess
-      );
+      log.info(`${PAGE} page: WorkspaceAccess record has been created`);
+      log.debug(`${PAGE} page: WorkspaceAccess data:`, newWorkspaceAccess);
     }
     if (!slugProfile || slugProfile.email === session!.user!.email) {
       isSlugAvailable = true;
@@ -433,11 +428,11 @@ export const getServerSideProps = async ({
         },
       })
       .catch(async (e) => {
-        console.error(`[ERROR] /account Saving new profile failed: ${e}`);
+        log.error(`[ERROR] /account Saving new profile failed:`, e);
       });
     isNewProfile = true;
-    console.info(`[INFO] ${PAGE} page: New profile has been created`);
-    console.debug(`[DEBUG] ${PAGE} page: Profile:`, newProfile);
+    log.info(`${PAGE} page: New profile has been created`);
+    log.debug(`${PAGE} page: Profile:`, newProfile as { [key: string]: any });
   }
   // console.log('profile.user', profile!.user);
   // a hack to deal with the serialising the date objects

@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
 import { Save, Check } from 'lucide-react';
 import { useState } from 'react';
+import { log } from 'next-axiom';
 import RequestAssessment from './RequestAssessment';
 
 type Props = {
@@ -31,20 +32,22 @@ const SkillPopoverPanel = ({
   slug,
 }: Props) => {
   const [success, setSuccess] = useState(false);
-  // console.log('isSameProfile', isSameProfile);
 
   const updateScore = async (
     profileId: string,
     skillId: string,
     score: number | null
   ) => {
+    const functionName = 'updateScore';
+    const url = '/api/score';
+    const method = 'PUT';
     if (!score) {
       return null;
     }
 
     try {
-      const response = await fetch('/api/score', {
-        method: 'PUT',
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify({
           profileId: profileId,
           skillId: skillId,
@@ -54,16 +57,20 @@ const SkillPopoverPanel = ({
           'Content-Type': 'application/json',
         },
       });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
       const jsonResponse = await response.json();
       if (jsonResponse.count > 0) {
         setScore(score);
         setSuccess(true);
+
         setTimeout(() => {
           close();
         }, 1000);
       }
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
 

@@ -10,6 +10,7 @@ import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { useState } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
 import { useRouter } from 'next/router';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
@@ -44,6 +45,8 @@ export default function CompetenciesPage({
   async function createCompetency(values: any) {
     let url = '/api/competency';
     let method = 'POST';
+    const functionName = 'submitScore';
+
     try {
       const response = await fetch(url, {
         method: method,
@@ -55,13 +58,16 @@ export default function CompetenciesPage({
           'Content-Type': 'application/json',
         },
       });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
       if (response.status < 300) {
         setSuccess(true);
         refreshData();
       }
       const jsonResponse = await response.json();
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   }
   const role = membership[0].role;
@@ -149,9 +155,7 @@ export const getServerSideProps = async ({
   const PAGE = 'Competencies';
   const session = await getServerSession(req, res, authOptions);
   if (!session) {
-    console.info(
-      `[INFO] ${PAGE} page - Session not found. Redirecting to Sing in page`
-    );
+    log.warn(`${PAGE} page - Session not found. Redirecting to Sing In page`);
     return {
       redirect: {
         destination: '/auth/signin',
@@ -173,9 +177,7 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
-    console.info(
-      `[INFO] ${PAGE} page - Profile not found. Redirecting to Account page`
-    );
+    log.warn(`${PAGE} page - Profile not found. Redirecting to Account page`);
 
     return {
       redirect: {
@@ -183,8 +185,8 @@ export const getServerSideProps = async ({
       },
     };
   }
-  console.info(`[INFO] ${PAGE} page - Profile found`);
-  console.debug(`[DEBUG] ${PAGE} page - Profile: `, profile);
+  log.info(`${PAGE} page - Profile found`);
+  log.debug(`${PAGE} page - Profile: `, profile);
 
   let membership = profile.user.membership;
 

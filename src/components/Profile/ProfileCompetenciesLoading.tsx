@@ -1,6 +1,7 @@
-import { CompetencyType, ProfileType, SkillType } from '@/types/types';
-import Link from 'next/link';
+import type { CompetencyType, ProfileType, SkillType } from '@/types/types';
 import { useState } from 'react';
+import { log } from 'next-axiom';
+import Link from 'next/link';
 import CustomButton from '../CustomButton';
 import Dropdown from '../Dropdown';
 import Spinner from '../Spinner';
@@ -38,26 +39,35 @@ const ProfileCompetenciesLoading = ({
     competencies[competencyIndex].unavailable = true;
   }
   const assignScores = async (profileId: string, skills: SkillType[]) => {
+    const functionName = 'assignScores';
+    const url = '/api/score';
+    const method = 'POST';
     if (skills.length === 0) {
       return setError('Please choose one of the competencies to assign');
     }
 
     try {
       skills.map(async (skill: SkillType) => {
-        const response = await fetch('/api/score', {
-          method: 'POST',
+        const response = await fetch(url, {
+          method: method,
           body: JSON.stringify({ profileId: profileId, skillId: skill.id }),
           headers: {
             'Content-Type': 'application/json',
           },
         });
+        log.info(
+          `${functionName} function -  ${method} ${url} response: ${response.status}`
+        );
         const jsonResponse = await response.json();
       });
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
   const assignCompetency = async (competencyId: string, profileId: string) => {
+    const functionName = 'assignCompetency';
+    const url = '/api/assigncompetency';
+    const method = 'POST';
     if (competencyId === 'none') {
       return setError('Please choose one of the competencies to assign');
     }
@@ -68,13 +78,16 @@ const ProfileCompetenciesLoading = ({
     };
     try {
       setLoading(true);
-      const response = await fetch('/api/assigncompetency', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify(newRecord),
         headers: {
           'Content-Type': 'application/json',
         },
       });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
       const jsonResponse = await response.json();
       updateAvailability(competencyId);
       const skillsArray: any = competencies.find(
@@ -85,7 +98,7 @@ const ProfileCompetenciesLoading = ({
       setLoading(false);
       return newRecord;
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
 

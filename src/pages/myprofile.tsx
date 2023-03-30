@@ -1,8 +1,8 @@
 import type { MembershipType, ProfileType } from '@/types/types';
 import type { GetServerSidePropsContext } from 'next';
-// import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import React from 'react';
 import prisma from '@/utils/prisma';
@@ -28,22 +28,19 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'MyProfile';
 
   if (!session) {
-    console.info(
-      `${PAGE} page - Session not found. Redirecting to /auth/signin`
-    );
+    log.warn(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
-  console.info(`${PAGE} page - Session found`);
-  console.debug(`${PAGE} page - Session: `, session);
+  log.info(`${PAGE} page - Session found`);
+  log.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -59,14 +56,14 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
-    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
+    log.warn(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
       },
     };
   } else {
-    console.info(`${PAGE} page - Profile found. Redirecting to /profile/:slug`);
+    log.info(`${PAGE} page - Profile found. Redirecting to /profile/:slug`);
 
     return {
       redirect: {
@@ -75,8 +72,8 @@ export const getServerSideProps = async ({
     };
   }
   let membership = profile!.user.membership;
-  console.info(`${PAGE} page - Profile found`);
-  console.debug(`${PAGE} page - Profile: `, profile);
+  log.info(`${PAGE} page - Profile found`);
+  log.debug(`${PAGE} page - Profile: `, profile as { [key: string]: any });
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));

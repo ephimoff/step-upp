@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Search from '@/components/Search';
 import SearchResults from '@/components/SearchResults';
@@ -69,20 +70,18 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Profile Slug';
   if (!session) {
-    console.info(
-      `${PAGE} page - Session not found. Redirecting to /auth/signin`
-    );
+    log.warn(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
-  console.info(`${PAGE} page - Session found: `, session);
+  log.info(`${PAGE} page - Session found`);
+  log.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -97,7 +96,7 @@ export const getServerSideProps = async ({
     },
   });
   if (!profile) {
-    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
+    log.warn(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
@@ -128,8 +127,8 @@ export const getServerSideProps = async ({
   });
 
   let membership = profile.user.membership;
-  console.info(`${PAGE} page - Profile found`);
-  console.debug(`${PAGE} page - Profile: `, profile);
+  log.info(`${PAGE} page - Profile found`);
+  log.debug(`${PAGE} page - Profile: `, profile);
 
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));

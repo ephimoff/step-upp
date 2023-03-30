@@ -1,12 +1,13 @@
 import type { GetServerSidePropsContext } from 'next';
 import type { MembershipType } from '@/types/types';
 import type { WorkspaceAccess } from '@prisma/client';
-import { Trash, AtSign, Plus, Check } from 'lucide-react';
+import { Trash, AtSign, Plus } from 'lucide-react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { string } from 'yup';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { log } from 'next-axiom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
@@ -62,9 +63,12 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
   ];
 
   const updateWorkspace = async (values: any) => {
+    const functionName = 'updateWorkspace';
+    const url = '/api/workspace';
+    const method = 'PUT';
     try {
-      const response = await fetch('/api/workspace', {
-        method: 'PUT',
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify({
           id: workspace.id,
           name: values.workspace,
@@ -74,17 +78,22 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
           'Content-Type': 'application/json',
         },
       });
-      // const jsonResponse = await response.json();
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
       return response;
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
 
   const updateDomain = async (domain: string, isActive: boolean) => {
+    const functionName = 'updateDomain';
+    const url = '/api/workspaceaccess';
+    const method = 'PUT';
     try {
-      const response = await fetch('/api/workspaceaccess', {
-        method: 'PUT',
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify({
           domain: domain,
           isActive: isActive,
@@ -93,12 +102,15 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
           'Content-Type': 'application/json',
         },
       });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
       if (response.status < 300) {
         refreshData();
       }
       const jsonResponse = await response.json();
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
   return (
@@ -223,17 +235,15 @@ export const getServerSideProps = async ({
   const PAGE = 'Workspace';
 
   if (!session) {
-    console.info(
-      `${PAGE} page - Session not found. Redirecting to /auth/signin`
-    );
+    log.warn(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
       redirect: {
         destination: '/auth/signin',
       },
     };
   }
-  console.info(`${PAGE} page - Session found`);
-  console.debug(`${PAGE} page - Session: `, session);
+  log.info(`${PAGE} page - Session found`);
+  log.debug(`${PAGE} page - Session: `, session);
 
   let profile = await prisma.profile.findUnique({
     where: {
@@ -251,7 +261,7 @@ export const getServerSideProps = async ({
   });
 
   if (!profile) {
-    console.info(`${PAGE} page - Profile not found. Redirecting to /account`);
+    log.warn(`${PAGE} page - Profile not found. Redirecting to /account`);
     return {
       redirect: {
         destination: '/account',
@@ -260,9 +270,9 @@ export const getServerSideProps = async ({
   }
   let membership = profile.user.membership;
   let access = membership[0].workspace.access;
-  console.info(`${PAGE} page - Profile found`);
-  console.debug(`${PAGE} page - Profile: `, profile);
-  // console.log('membership', membership);
+  log.info(`${PAGE} page - Profile found`);
+  log.debug(`${PAGE} page - Profile: `, profile);
+
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));

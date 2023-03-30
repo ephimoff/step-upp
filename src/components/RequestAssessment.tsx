@@ -1,9 +1,10 @@
 import { Send, Check } from 'lucide-react';
-import CustomButton from './CustomButton';
 import { Field, Form, Formik } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { log } from 'next-axiom';
+import CustomButton from './CustomButton';
 
 type Props = {
   requestorName: string;
@@ -12,7 +13,6 @@ type Props = {
 
 const RequestAssessment = ({ requestorName, slug }: Props) => {
   const { data: session } = useSession();
-  // console.log(session);
   const [success, setSuccess] = useState(false);
 
   const requestAssessment = async (
@@ -21,9 +21,12 @@ const RequestAssessment = ({ requestorName, slug }: Props) => {
     requestorEmail: string,
     slug: string
   ) => {
+    const functionName = 'requestAssessment';
+    const url = '/api/accesstoken';
+    const method = 'POST';
     try {
-      const response = await fetch('/api/accesstoken', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method: method,
         body: JSON.stringify({
           email: email,
           requestorName: requestorName,
@@ -34,13 +37,19 @@ const RequestAssessment = ({ requestorName, slug }: Props) => {
           'Content-Type': 'application/json',
         },
       });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
       if (response.status === 200) {
+        log.debug(
+          `${functionName} function - ${method} ${url} response: `,
+          response
+        );
         setSuccess(true);
       }
-      // console.log('response', response);
       const jsonResponse = await response.json();
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
 

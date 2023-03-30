@@ -1,6 +1,7 @@
 import { Search as SearchIcon, RefreshCw } from 'lucide-react';
 import { Field, Form, Formik } from 'formik';
 import { useState } from 'react';
+import { log } from 'next-axiom';
 
 type Props = {
   returnSearchResults: any;
@@ -13,11 +14,19 @@ const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
   const [success, setSuccess] = useState(false);
 
   const searchUsers = async (value: string, workspaceId: string) => {
+    const functionName = 'searchUsers';
+    const url = `/api/profile?query=${value}&workspaceId=${workspaceId}`;
+    const method = 'GET';
     try {
-      const response = await fetch(
-        `/api/profile?query=${value}&workspaceId=${workspaceId}`
+      const response = await fetch(url);
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
       );
-      if (response.status === 200) {
+      if (response.status < 300) {
+        log.debug(
+          `${functionName} function - ${method} ${url} response: `,
+          response
+        );
         setSuccess(true);
       }
       const searchResponse = await response.json();
@@ -25,7 +34,7 @@ const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
       returnSearchResults(searchResponse);
       return searchResponse;
     } catch (error) {
-      console.error(error);
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
 
