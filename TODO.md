@@ -73,7 +73,7 @@
 
 ## Production-ready
 
-- [ ] Logging. Winston?
+- [x] Logging
 - [ ] Monitoring
 - [ ] Containers?
 - [ ] Testing. Jest?
