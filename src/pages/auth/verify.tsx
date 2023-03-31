@@ -2,6 +2,8 @@ import type { GetServerSidePropsContext } from 'next';
 import { siteTitle } from '@/data/data';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
+import Image from 'next/image';
+import logo from '@/assets/logo.png';
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -18,9 +20,10 @@ const Verify = () => {
               <span className="text- flex justify-center font-thin">
                 Welcome to
               </span>
-              <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
+              <Image src={logo} className={`mx-auto w-2/3`} alt="StepUpp" />
+              {/* <h1 className="flex justify-center bg-gradient-to-r from-[#12c2e9] via-[#c471ed] to-[#f64f59] bg-clip-text text-4xl font-bold text-transparent">
                 Step<strong className="font-black">Upp</strong>
-              </h1>
+              </h1> */}
             </div>
             <div className="my-4">
               An email has been sent to your email. Please check for the link
