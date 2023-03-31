@@ -8,7 +8,7 @@ import type {
   Skill,
   Profile,
   Competency,
-  WorkspaceAccess,
+  Packs,
 } from '@prisma/client';
 
 export type SkillType = Optional<
@@ -56,6 +56,7 @@ export type UserType = User & {
 
 export type WorkspaceType = Workspace & {
   plan: Plan;
+  packs: Packs[];
 };
 
 export type MembershipType = Membership & {

@@ -235,9 +235,7 @@ model PublicDomain {
 }
 
 model Packs {
-  id          String    @id @default(cuid())
-  packName    String    @unique
-  isEnabled   Boolean   @default(false)
+  id          Int       @id
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 

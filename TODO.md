@@ -38,7 +38,7 @@
 - [ ] Add other permissions
 - [ ] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [ ] Think about not allowing to feedback-assess your own profile
-- [ ] Prepare competency packs
+- [x] Prepare functionalityu for competency packs
 - [ ] Allow to edit competencies
 - [ ] Consider encoding the query parameters for the search. It now contains `workspaceId` which is potentially a sensetive info. Alternatively, replace `GET` with `POST` for search
 
@@ -62,6 +62,7 @@
 - [ ] Submitting form second time without reloading form doesn't trigger the success check. Need to figure how to fix it
 - [ ] Update the display of the logo when the sidebar get thiner
 - [ ] Align the styling of elements: cards and headers
+- [ ] Add more packs
 
 ## Bugs
 

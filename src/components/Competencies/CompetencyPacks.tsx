@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { packs } from 'prisma/packsData';
+import type { Packs } from '@prisma/client';
 import Modal from '../Modal';
 
 type Props = {
   createCompetency: any;
+  markPackEnabled: any;
+  enabledPacks: Packs[];
 };
 
 type PackType = {
@@ -19,9 +22,17 @@ type PackType = {
   }[];
 };
 
-const CompetencyPacks = ({ createCompetency }: Props) => {
-  let [isOpen, setIsOpen] = useState(false);
-  let [previewPack, setPreviewPack] = useState<PackType | undefined>(packs[0]);
+const CompetencyPacks = ({
+  createCompetency,
+  markPackEnabled,
+  enabledPacks,
+}: Props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [previewPack, setPreviewPack] = useState<PackType | undefined>(
+    packs[0]
+  );
+
+  console.log('enabledPacks', enabledPacks);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -41,6 +52,11 @@ const CompetencyPacks = ({ createCompetency }: Props) => {
   const togglePackPreview = (id: Number) => {
     setPreviewPack(getPack(id));
     openModal();
+  };
+
+  const enablePack = async (id: Number) => {
+    createCompetency(getPack(id));
+    markPackEnabled(id);
   };
 
   return (
@@ -64,12 +80,16 @@ const CompetencyPacks = ({ createCompetency }: Props) => {
                   >
                     Preview
                   </button>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={() => createCompetency(getPack(id))}
-                  >
-                    Enable
-                  </button>
+                  {enabledPacks.find((pack) => pack.id === id) ? (
+                    <span className="font-semibold text-gray-500">Enabled</span>
+                  ) : (
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => enablePack(id)}
+                    >
+                      Enable
+                    </button>
+                  )}
                 </div>
                 <Modal closeModal={closeModal} isOpen={isOpen}>
                   <h2 className="my-4 text-lg font-semibold text-purple-600">

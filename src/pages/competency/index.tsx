@@ -37,14 +37,15 @@ export default function CompetenciesPage({
   const router = useRouter();
   const { data: session, status } = useSession();
   const [success, setSuccess] = useState(false);
+  const enabledPacks = membership[0].workspace.packs;
 
   const refreshData = () => {
     router.replace(router.asPath);
   };
 
   const createCompetency = async (values: any) => {
-    let url = '/api/competency';
-    let method = 'POST';
+    const url = '/api/competency';
+    const method = 'POST';
     const functionName = 'submitScore';
     log.info(
       `${functionName} function -  ${method} ${url} attempting to create a competency`
@@ -54,6 +55,34 @@ export default function CompetenciesPage({
         method: method,
         body: JSON.stringify({
           competencyData: values.competencies,
+          workspaceId: membership[0].workspaceId,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
+      if (response.status < 300) {
+        setSuccess(true);
+        refreshData();
+      }
+      const jsonResponse = await response.json();
+    } catch (error) {
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    }
+  };
+
+  const markPackEnabled = async (id: Number) => {
+    const functionName = 'markPackEnabled';
+    const url = '/api/pack';
+    const method = 'POST';
+    try {
+      const response = await fetch(url, {
+        method: method,
+        body: JSON.stringify({
+          id: id,
           workspaceId: membership[0].workspaceId,
         }),
         headers: {
@@ -87,7 +116,11 @@ export default function CompetenciesPage({
                 Here you can create Competencies and Skills in bulk. After
                 creation, all of these will be available to use with profiles.
               </p>
-              <CompetencyPacks createCompetency={createCompetency} />
+              <CompetencyPacks
+                createCompetency={createCompetency}
+                markPackEnabled={markPackEnabled}
+                enabledPacks={enabledPacks}
+              />
             </Card>
 
             <CompetenciesList competencies={competencies} />
@@ -172,7 +205,7 @@ export const getServerSideProps = async ({
     include: {
       user: {
         include: {
-          membership: true,
+          membership: { include: { workspace: { include: { packs: true } } } },
         },
       },
     },
