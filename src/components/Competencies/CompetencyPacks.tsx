@@ -1,6 +1,6 @@
+import type { Packs } from '@prisma/client';
 import { useState } from 'react';
 import { packs } from 'prisma/packsData';
-import type { Packs } from '@prisma/client';
 import Modal from '../Modal';
 
 type Props = {
@@ -31,8 +31,6 @@ const CompetencyPacks = ({
   const [previewPack, setPreviewPack] = useState<PackType | undefined>(
     packs[0]
   );
-
-  console.log('enabledPacks', enabledPacks);
 
   const closeModal = () => {
     setIsOpen(false);

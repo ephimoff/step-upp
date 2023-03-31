@@ -4,7 +4,7 @@ type CustomButtonProps = {
   text: string | React.ReactNode;
   onClick?: MouseEventHandler;
   fullWidth?: boolean;
-  role?: 'secondary' | 'primary' | 'noborder' | 'red';
+  role?: 'secondary' | 'primary' | 'noborder' | 'red' | 'google' | 'github';
   size?: 'small';
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
@@ -38,6 +38,10 @@ const CustomButton = ({
           ? 'btn-alert'
           : role === 'secondary'
           ? 'btn-secondary'
+          : role === 'google'
+          ? 'bg-red-700'
+          : role === 'github'
+          ? 'bg-white text-black'
           : 'btn-primary'
       }
       ${size === 'small' ? 'btn-sm' : null}

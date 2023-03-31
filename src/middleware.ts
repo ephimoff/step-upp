@@ -1,5 +1,5 @@
-import { NextResponse, userAgent } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { NextResponse, userAgent } from 'next/server';
 
 export const config = {
   // matcher: '/api/:path*',
@@ -21,7 +21,6 @@ export default async function middleware(request: NextRequest) {
     device: device,
     geo: request.geo,
   };
-
   // console.log(logData);
   return response;
 }

@@ -33,12 +33,12 @@
 - [x] Add Admin check for the sidebar
 - [x] Update all users with the company name to limit the scope of users
 - [x] Multi-tenancy: Restrict content by workspace
+- [x] Prepare functionality for competency packs
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
-- [ ] Add other permissions
+- [ ] Add other user permissions
 - [ ] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [ ] Think about not allowing to feedback-assess your own profile
-- [x] Prepare functionalityu for competency packs
 - [ ] Allow to edit competencies
 - [ ] Consider encoding the query parameters for the search. It now contains `workspaceId` which is potentially a sensetive info. Alternatively, replace `GET` with `POST` for search
 
@@ -52,7 +52,7 @@
 - [x] When reseting search remove the field from the search input
 - [x] Add a popup message when a profile needs to be created
 - [x] Add actions and tips or remove them for the first version
-- [ ] Update the login buttons to match the styles of the providers (google, github, etc)
+- [x] Update the login buttons to match the styles of the providers (google, github, etc)
 - [ ] Allow to change the picture
 - [ ] Add animations transitions for popups
 - [ ] When opening the feedback screen load the previous user assessments

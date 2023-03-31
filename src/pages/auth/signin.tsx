@@ -6,6 +6,8 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import { useRouter } from 'next/router';
 import { Form, Formik, Field } from 'formik';
 import { emailSchema } from '@/schemas/validationSchemas';
+import { SiGmail } from 'react-icons/si';
+import { Github } from 'lucide-react';
 import { log } from 'next-axiom';
 import Head from 'next/head';
 import CustomButton from '@/components/CustomButton';
@@ -116,8 +118,9 @@ const SignIn = () => {
             <div key="google">
               <CustomButton
                 text="Sign in with Google"
-                role="secondary"
+                role="google"
                 fullWidth
+                icon={<SiGmail />}
                 onClick={() =>
                   signIn('google', { callbackUrl: callbackUrl.toString() })
                 }
@@ -126,8 +129,9 @@ const SignIn = () => {
             <div key="github" className="my-4">
               <CustomButton
                 text="Sign in with GitHub"
-                role="secondary"
+                role="github"
                 fullWidth
+                icon={<Github size={18} strokeWidth={3} />}
                 onClick={() =>
                   signIn('github', { callbackUrl: callbackUrl.toString() })
                 }
