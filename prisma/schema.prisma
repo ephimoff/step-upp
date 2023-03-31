@@ -94,6 +94,7 @@ model Profile {
 model Competency {
   id          String                @id @default(cuid())
   name        String
+  description String?
   skills      Skill[]
   profiles    ProfileCompetencies[]
   workspaceId String
@@ -243,36 +244,3 @@ model Packs {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-// model Pack {
-//   id           String             @id @default(cuid())
-//   name         String
-//   description  String
-//   isEnabled    Boolean            @default(false)
-//   competencies PackCompetencies[]
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-// model PackCompetencies {
-//   id          String       @id @default(cuid())
-//   name        String
-//   description String
-//   skills      PackSkills[]
-//   packId      String
-//   pack        Pack         @relation(fields: [packId], references: [id])
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
-// model PackSkills {
-//   id           String           @id @default(cuid())
-//   name         String
-//   competencyId String
-//   competency   PackCompetencies @relation(fields: [competencyId], references: [id])
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }

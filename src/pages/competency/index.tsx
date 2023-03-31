@@ -42,11 +42,13 @@ export default function CompetenciesPage({
     router.replace(router.asPath);
   };
 
-  async function createCompetency(values: any) {
+  const createCompetency = async (values: any) => {
     let url = '/api/competency';
     let method = 'POST';
     const functionName = 'submitScore';
-
+    log.info(
+      `${functionName} function -  ${method} ${url} attempting to create a competency`
+    );
     try {
       const response = await fetch(url, {
         method: method,
@@ -69,7 +71,7 @@ export default function CompetenciesPage({
     } catch (error) {
       log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
-  }
+  };
   const role = membership[0].role;
   return (
     <>
@@ -85,7 +87,7 @@ export default function CompetenciesPage({
                 Here you can create Competencies and Skills in bulk. After
                 creation, all of these will be available to use with profiles.
               </p>
-              <CompetencyPacks />
+              <CompetencyPacks createCompetency={createCompetency} />
             </Card>
 
             <CompetenciesList competencies={competencies} />

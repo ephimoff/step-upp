@@ -3,7 +3,7 @@ import { packs } from 'prisma/packsData';
 import Modal from '../Modal';
 
 type Props = {
-  props?: any;
+  createCompetency: any;
 };
 
 type PackType = {
@@ -13,29 +13,35 @@ type PackType = {
   competencies: {
     name: string;
     description: string;
-    skills: string[];
+    skills: {
+      name: string;
+    }[];
   }[];
 };
 
-const CompetencyPacks = ({ props }: Props) => {
+const CompetencyPacks = ({ createCompetency }: Props) => {
   let [isOpen, setIsOpen] = useState(false);
   let [previewPack, setPreviewPack] = useState<PackType | undefined>(packs[0]);
 
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false);
-  }
+  };
 
-  function openModal() {
+  const openModal = () => {
     setIsOpen(true);
-  }
+  };
 
-  function togglePackPreview<PackType>(id: Number) {
+  const getPack = (id: Number): PackType | undefined => {
     const pack = packs.find((e) => {
       return e.id === id;
     });
-    setPreviewPack(pack);
+    return pack;
+  };
+
+  const togglePackPreview = (id: Number) => {
+    setPreviewPack(getPack(id));
     openModal();
-  }
+  };
 
   return (
     <div>
@@ -58,7 +64,12 @@ const CompetencyPacks = ({ props }: Props) => {
                   >
                     Preview
                   </button>
-                  <button className="btn btn-sm btn-primary">Enable</button>
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => createCompetency(getPack(id))}
+                  >
+                    Enable
+                  </button>
                 </div>
                 <Modal closeModal={closeModal} isOpen={isOpen}>
                   <h2 className="my-4 text-lg font-semibold text-purple-600">
@@ -79,7 +90,7 @@ const CompetencyPacks = ({ props }: Props) => {
                                   className="ml-4 text-sm text-gray-500"
                                   key={skillIndex}
                                 >
-                                  {skill}
+                                  {skill.name}
                                 </li>
                               );
                             })}

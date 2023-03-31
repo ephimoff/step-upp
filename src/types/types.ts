@@ -40,7 +40,7 @@ export type ProfileSkillType = {
 
 export type CompetencyType = Optional<
   Competency,
-  'id' | 'createdAt' | 'updatedAt'
+  'id' | 'description' | 'createdAt' | 'updatedAt'
 > & {
   skills?: SkillType[];
 };

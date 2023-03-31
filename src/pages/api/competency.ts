@@ -1,7 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { CompetencyType } from '@/types/types';
+import { log } from 'next-axiom';
 import prisma from '@/utils/prisma';
-import { CompetencyType } from '@/types/types';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -27,17 +28,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { competencyData, workspaceId } = req.body;
     let isSuccess = true;
+    log.info('API POST /api/competency. Attempting to create a record');
+    log.debug('API POST /api/competency. competencyData and workspaceId', {
+      competencyData,
+      workspaceId,
+    });
     try {
       competencyData.map(async (competency: CompetencyType, index: number) => {
-        const savedCompetency = await prisma.competency.create({
-          data: {
-            workspace: { connect: { id: workspaceId } },
-            name: competency.name,
-            skills: {
-              create: competency.skills,
+        log.debug('API POST /api/competency. competency', competency);
+        const savedCompetency = await prisma.competency
+          .create({
+            data: {
+              workspace: { connect: { id: workspaceId } },
+              name: competency.name,
+              skills: {
+                create: competency.skills,
+              },
             },
-          },
-        });
+          })
+          .catch(async (e) => {
+            log.error(
+              `API POST /api/competency. Error creating the record:`,
+              e
+            );
+          });
         isSuccess = savedCompetency ? true : false;
       });
       res.status(200).json(isSuccess);
