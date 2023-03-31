@@ -1,5 +1,6 @@
 export const packs = [
   {
+    id: 1,
     name: 'Product Management Pack',
     description:
       '4 competencies and 12 skills that are the must for every Product Manager',
@@ -40,6 +41,7 @@ export const packs = [
     ],
   },
   {
+    id: 2,
     name: 'Software Development Pack',
     description:
       '4 competencies and 12 skills that are the must for every Product Manager',

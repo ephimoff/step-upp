@@ -1,13 +1,25 @@
 import { useState } from 'react';
-import Modal from '../Modal';
 import { packs } from 'prisma/packsData';
+import Modal from '../Modal';
 
 type Props = {
   props?: any;
 };
 
+type PackType = {
+  id: number;
+  name: string;
+  description: string;
+  competencies: {
+    name: string;
+    description: string;
+    skills: string[];
+  }[];
+};
+
 const CompetencyPacks = ({ props }: Props) => {
   let [isOpen, setIsOpen] = useState(false);
+  let [previewPack, setPreviewPack] = useState<PackType | undefined>(packs[0]);
 
   function closeModal() {
     setIsOpen(false);
@@ -16,11 +28,20 @@ const CompetencyPacks = ({ props }: Props) => {
   function openModal() {
     setIsOpen(true);
   }
+
+  function togglePackPreview<PackType>(id: Number) {
+    const pack = packs.find((e) => {
+      return e.id === id;
+    });
+    setPreviewPack(pack);
+    openModal();
+  }
+
   return (
     <div>
       <h1>Competency Packs</h1>
       <div className="">
-        {packs.map(({ name, description, competencies }, index) => {
+        {packs.map(({ id, name, description }, index) => {
           return (
             <div
               key={index}
@@ -33,44 +54,46 @@ const CompetencyPacks = ({ props }: Props) => {
                 <div className="flex items-baseline ">
                   <button
                     className="btn btn-sm items-center dark:group-hover:text-white"
-                    onClick={openModal}
+                    onClick={() => togglePackPreview(id)}
                   >
                     Preview
                   </button>
                   <button className="btn btn-sm btn-primary">Enable</button>
                 </div>
+                <Modal closeModal={closeModal} isOpen={isOpen}>
+                  <h2 className="my-4 text-lg font-semibold text-purple-600">
+                    {previewPack?.name}
+                  </h2>
+                  {previewPack?.competencies.map(
+                    ({ name, description, skills }, ind) => {
+                      return (
+                        <div key={ind} className="mb-4">
+                          <div className="mb-1">
+                            <strong className="mr-2">{name}:</strong>
+                            <span>{description}</span>
+                          </div>
+                          <ul className="list-disc">
+                            {skills.map((skill, skillIndex) => {
+                              return (
+                                <li
+                                  className="ml-4 text-sm text-gray-500"
+                                  key={skillIndex}
+                                >
+                                  {skill}
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      );
+                    }
+                  )}
+                </Modal>
               </div>
 
               <h3 className="text-gray-500 dark:text-gray-400 ">
                 {description}
               </h3>
-              <Modal closeModal={closeModal} isOpen={isOpen}>
-                <h2 className="my-4 text-lg font-semibold text-purple-600">
-                  {name}
-                </h2>
-                {competencies.map(({ name, description, skills }, ind) => {
-                  return (
-                    <div key={ind} className="mb-4">
-                      <div className="mb-1">
-                        <strong className="mr-2">{name}:</strong>
-                        <span>{description}</span>
-                      </div>
-                      <ul className="list-disc">
-                        {skills.map((skill, skillIndex) => {
-                          return (
-                            <li
-                              className="ml-4 text-sm text-gray-500"
-                              key={skillIndex}
-                            >
-                              {skill}
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  );
-                })}
-              </Modal>
             </div>
           );
         })}
