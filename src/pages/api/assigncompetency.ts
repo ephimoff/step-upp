@@ -41,6 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             competency: {
               select: {
                 id: true,
+                description: true,
                 name: true,
                 skills: {
                   select: {

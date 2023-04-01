@@ -107,8 +107,10 @@ export default function CompetenciesPage({
       <Sidebar name={profile.name} role={role}>
         {status === 'authenticated' ? (
           <div className="">
-            <h1 className="text-2xl">Competencies management</h1>
             <Card>
+              <h1 className="mb-4 text-2xl text-purple-600">
+                Competencies management
+              </h1>
               <p>
                 Each Competency has a name and one ore more Skills attach to it.
               </p>

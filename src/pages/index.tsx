@@ -18,11 +18,9 @@ export default function HomePage({ profile, membership }: Props) {
   return (
     <>
       <Sidebar name={profile.name} role={role}>
-        <div>
-          <h1 className="mb-4 text-2xl">Welcome to StepUpp</h1>
-          <p>{siteDescription}</p>
-        </div>
         <Card>
+          <h1 className="mb-4 text-2xl text-purple-600">Welcome to StepUpp</h1>
+          <p>{siteDescription}</p>
           <h2 className="mb-2 text-xl">Quick actions</h2>
           <ul>
             <li>one</li>
@@ -39,8 +37,6 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
-  // console.log('req.headers.host', req.headers.host);
-  // const session = await getSession(context);
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Home';
 

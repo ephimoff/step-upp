@@ -1,8 +1,8 @@
+import type { CompetencyType } from '@/types/types';
 import React from 'react';
 import ProgressBar from '../Profile/ProgressBar';
 import Card from '../Card';
-import { CompetencyType } from '@/types/types';
-import CustomButton from '../CustomButton';
+// import CustomButton from '../CustomButton';
 // import ProgressBarFeedback from '../Profile/ProgressBarFeedback';
 
 interface Props {
@@ -20,13 +20,17 @@ const CompetencyCard = ({
   requestorName,
   slug,
 }: Props) => {
+  console.log('competency', competency);
   return (
     <>
       <Card grid={true}>
         <div className="col-span-7">
-          <h2 className="text-purple-400 sm:text-lg md:text-xl">
+          <h2 className="text-purple-600 sm:text-lg md:text-xl">
             {competency.name}
           </h2>
+          {competency.description && (
+            <h3 className="text-sm">{competency.description}</h3>
+          )}
         </div>
         <div className="col-span-1 text-xs text-slate-400 lg:col-span-3">
           <h2>Skill</h2>

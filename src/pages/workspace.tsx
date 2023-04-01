@@ -117,14 +117,14 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
     <>
       <Sidebar name={profile.name} role={role}>
         <Card>
-          <h1 className="text-xl">Workspace</h1>
+          <h1 className="mb-4 text-2xl text-purple-600">Workspace</h1>
           <div className="mt-10 mb-4">
-            <h2 className="text-lg">About</h2>
+            <h2 className="mb-2 text-lg">About</h2>
             <FormikForm fields={aboutFields} onSubmit={updateWorkspace} />
           </div>
 
           <div className="mt-10 mb-4">
-            <h2 className="text-lg">Plan</h2>
+            <h2 className="mb-2 text-lg">Plan</h2>
             <div>
               <span className="mr-4 rounded-lg bg-purple-600 px-4 py-1 text-white">
                 {plan.name}
@@ -135,8 +135,8 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
             </div>
           </div>
 
-          <div className="mt-10 mb-4 w-1/2">
-            <h2 className="text-lg">Access</h2>
+          <div className="mt-10 mb-4">
+            <h2 className="mb-2 text-lg">Access</h2>
             <p className="text-sm font-thin text-gray-400">
               When anyone with an email address from these domains joins
               StepUpp, they will automatically join this workspace. It is

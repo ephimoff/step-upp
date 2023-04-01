@@ -20,10 +20,8 @@ export default function DesignPage({ profile, membership }: Props) {
   return (
     <>
       <Sidebar name={profile.name} role={role}>
-        <div>
-          <h1 className="mb-4 text-2xl">Header H1</h1>
-        </div>
         <Card>
+          <h1 className="mb-4 text-2xl text-purple-600">Header H1</h1>
           <h2 className="mb-2 text-xl">Card component</h2>
           <div className="flex">
             <div className="mr-2 w-1/2">

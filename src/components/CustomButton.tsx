@@ -39,7 +39,7 @@ const CustomButton = ({
           : role === 'secondary'
           ? 'btn-secondary'
           : role === 'google'
-          ? 'bg-red-700'
+          ? 'bg-red-700 text-white'
           : role === 'github'
           ? 'bg-white text-black'
           : 'btn-primary'

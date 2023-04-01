@@ -59,7 +59,12 @@ const CompetencyPacks = ({
 
   return (
     <div>
-      <h1>Competency Packs</h1>
+      <h2 className="my-2 text-lg">Competency Packs</h2>
+      <p className="mb-2 text-sm text-gray-500">
+        You are free to create any competency you like, but we prepared some
+        free packs with competencies and skills. Have a look and maybe you can
+        find something useful for your company
+      </p>
       <div className="">
         {packs.map(({ id, name, description }, index) => {
           return (

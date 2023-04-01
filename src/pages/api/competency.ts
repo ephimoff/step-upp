@@ -41,6 +41,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             data: {
               workspace: { connect: { id: workspaceId } },
               name: competency.name,
+              description: competency.description,
               skills: {
                 create: competency.skills,
               },
