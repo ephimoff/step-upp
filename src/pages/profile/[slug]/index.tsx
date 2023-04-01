@@ -85,11 +85,14 @@ const ProfilePage = ({
               phone={slugProfile.phone as string}
               isSameProfile={isSameProfile}
             />
-            <ProfileCompetenciesLoading
-              profile={slugProfile}
-              competencies={competencies}
-              fetchAssignedCompetencies={fetchAssignedCompetencies}
-            />
+            {role === 'OWNER' && (
+              <ProfileCompetenciesLoading
+                profile={slugProfile}
+                competencies={competencies}
+                fetchAssignedCompetencies={fetchAssignedCompetencies}
+              />
+            )}
+
             {error && <div className="bg-red-500 text-white">{error}</div>}
             {loading ? (
               <Spinner />

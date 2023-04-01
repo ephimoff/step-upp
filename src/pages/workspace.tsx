@@ -270,6 +270,18 @@ export const getServerSideProps = async ({
   }
   let membership = profile.user.membership;
   let access = membership[0].workspace.access;
+
+  if (membership[0].role !== 'OWNER') {
+    log.warn(
+      `${PAGE} page - The user is not allowed to see this page. Redirecting to /`
+    );
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+
   log.info(`${PAGE} page - Profile found`);
   log.debug(`${PAGE} page - Profile: `, profile);
 

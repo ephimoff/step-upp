@@ -189,6 +189,17 @@ export const getServerSideProps = async ({
   log.info(`${PAGE} page - Profile found`);
   log.debug(`${PAGE} page - Profile: `, profile);
 
+  if (membership[0].role !== 'OWNER') {
+    log.warn(
+      `${PAGE} page - The user is not allowed to see this page. Redirecting to /`
+    );
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));

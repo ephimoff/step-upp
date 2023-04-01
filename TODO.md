@@ -34,10 +34,10 @@
 - [x] Update all users with the company name to limit the scope of users
 - [x] Multi-tenancy: Restrict content by workspace
 - [x] Prepare functionality for competency packs
+- [x] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
 - [ ] Add other user permissions
-- [ ] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Allow to edit competencies
 - [ ] Consider encoding the query parameters for the search. It now contains `workspaceId` which is potentially a sensetive info. Alternatively, replace `GET` with `POST` for search
@@ -54,7 +54,7 @@
 - [x] Add actions and tips or remove them for the first version
 - [x] Update the login buttons to match the styles of the providers (google, github, etc)
 - [x] Update the header of the profile page: font colour
-- [ ] Align the styling of elements: cards and headers
+- [x] Align the styling of elements: cards and headers
 - [ ] Add animations transitions for popups
 - [ ] Make the design a bit more "enterprisee"
 - [ ] Refactor all formik forms with the new Formik component

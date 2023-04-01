@@ -227,6 +227,17 @@ export const getServerSideProps = async ({
 
   let membership = profile.user.membership;
 
+  if (membership[0].role !== 'OWNER') {
+    log.warn(
+      `${PAGE} page - The user is not allowed to see this page. Redirecting to /`
+    );
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
+
   let competencies = await prisma.competency.findMany({
     where: {
       workspaceId: membership[0].workspaceId,

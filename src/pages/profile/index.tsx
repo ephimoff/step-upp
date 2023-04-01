@@ -44,7 +44,6 @@ export default function MainProfile({
   const showAll = () => {
     setSearchResults(allProfiles);
   };
-  // console.log('membership', membership[0].workspaceId);
   const role = membership[0].role;
   return (
     <>
@@ -127,6 +126,17 @@ export const getServerSideProps = async ({
   });
 
   let membership = profile.user.membership;
+
+  if (membership[0].role !== 'OWNER') {
+    log.warn(
+      `${PAGE} page - The user is not allowed to see this page. Redirecting to /`
+    );
+    return {
+      redirect: {
+        destination: '/',
+      },
+    };
+  }
   log.info(`${PAGE} page - Profile found`);
   log.debug(`${PAGE} page - Profile: `, profile);
 
