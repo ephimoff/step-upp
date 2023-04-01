@@ -1,6 +1,5 @@
 import type { GetServerSidePropsContext } from 'next';
 import type { MembershipType, ProfileType } from '@/types/types';
-// import { getSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import prisma from '@/utils/prisma';
@@ -39,8 +38,10 @@ const FeedbackScoresPage = ({
     <>
       <Sidebar title={title} name={appraiseeProfile.name} role={role}>
         <div>
-          <h2>{appraiseeProfile.name}</h2>
           <Card>
+            <h1 className="mb-4 text-2xl text-purple-600">
+              {appraiseeProfile.name}
+            </h1>
             <p>
               Please review the below skills of {appraiseeProfile.name} and
               evaluate them on a scale from 1 to 10:
@@ -129,8 +130,6 @@ export const getServerSideProps = async (
   }
 
   const { token } = context.query;
-  // console.log(token);
-  // console.log(session.user!.email);
 
   if (token) {
     const access = await prisma.feedbackAccessToken.findUnique({
@@ -155,7 +154,12 @@ export const getServerSideProps = async (
       },
     };
   }
-  const membership = appraiserProfile!.user.membership;
+  let membership = appraiserProfile!.user.membership;
+
+  // a hack to deal with the serialising the date objects
+  appraiseeProfile = JSON.parse(JSON.stringify(appraiseeProfile));
+  appraiserProfile = JSON.parse(JSON.stringify(appraiserProfile));
+  membership = JSON.parse(JSON.stringify(membership));
 
   return {
     props: { session, appraiseeProfile, appraiserProfile, membership },

@@ -4,6 +4,7 @@ import { emailSchema } from '@/schemas/validationSchemas';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { log } from 'next-axiom';
+import FormikForm from '@/components/FormikForm';
 import CustomButton from './CustomButton';
 
 type Props = {

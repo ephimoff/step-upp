@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { log } from 'next-axiom';
 import CustomButton from './CustomButton';
 
-type ScoresProps = {
+type Props = {
   skills: any;
   appraiseeId: string;
   appraiserId: string;
 };
 
-const Scores = ({ skills, appraiseeId, appraiserId }: ScoresProps) => {
+const Scores = ({ skills, appraiseeId, appraiserId }: Props) => {
   const [success, setSuccess] = useState(false);
   const initialFields = {};
   const extraFields = skills.map((e: any) => {
