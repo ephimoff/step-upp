@@ -79,6 +79,10 @@ const ProfilePage = ({
               team={slugProfile.team as string}
               email={slugProfile.email}
               userpic={slugProfile.userpic as string}
+              github={slugProfile.github as string}
+              linkedin={slugProfile.linkedin as string}
+              twitter={slugProfile.twitter as string}
+              phone={slugProfile.phone as string}
               isSameProfile={isSameProfile}
             />
             <ProfileCompetenciesLoading

@@ -1,4 +1,4 @@
-export function generateSlug(name: string) {
+export const generateSlug = (name: string): string => {
   if (!name) return '';
   const arr = name.split(' ');
   if (arr.length == 1) return arr[0];
@@ -11,9 +11,9 @@ export function generateSlug(name: string) {
     }
   });
   return slug;
-}
+};
 
-export function generateUniqueSlug(slug: string) {
+export const generateUniqueSlug = (slug: string): string => {
   const arr = slug.split('-'); // split slug into array by '-'
   const number = arr[arr.length - 1]; // get the last element of it
   let newArray: string[] = [];
@@ -34,10 +34,28 @@ export function generateUniqueSlug(slug: string) {
     }
   });
   return uniqueSlug;
-}
+};
 
-export function suggestName(email: string) {
+export const suggestName = (email: string): string => {
   const domain = email.split('@');
   const name = domain[1].split('.');
   return name[0].toUpperCase();
-}
+};
+
+export const parseLinkedinUrl = (url: string): string => {
+  const username = url.split('/in/');
+  return username[1].split('/')[0];
+};
+export const parseTwitterUrl = (url: string): string => {
+  if (url.includes('@')) {
+    return url.split('@')[1];
+  }
+  return url;
+};
+export const parseGithubUrl = (url: string): string => {
+  if (url.includes('github.com/')) {
+    // const username = url.split('github.com/');
+    return url.split('github.com/')[1].split('/')[0];
+  }
+  return url;
+};

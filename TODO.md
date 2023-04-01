@@ -53,16 +53,14 @@
 - [x] Add a popup message when a profile needs to be created
 - [x] Add actions and tips or remove them for the first version
 - [x] Update the login buttons to match the styles of the providers (google, github, etc)
-- [ ] Allow to change the picture
-- [ ] Add animations transitions for popups
-- [ ] When opening the feedback screen load the previous user assessments
-- [ ] Make the desing a bit more "enterprisee"
-- [ ] Update the header of the profile page: font colour and NoAvatar
-- [ ] Refactor all formik forms with the new Formik component
-- [ ] Submitting form second time without reloading form doesn't trigger the success check. Need to figure how to fix it
-- [ ] Update the display of the logo when the sidebar get thiner
+- [x] Update the header of the profile page: font colour
 - [ ] Align the styling of elements: cards and headers
+- [ ] Add animations transitions for popups
+- [ ] Make the design a bit more "enterprisee"
+- [ ] Refactor all formik forms with the new Formik component
 - [ ] Add more packs
+- [ ] When opening the feedback screen load the previous user assessments
+- [ ] Allow to change the picture
 
 ## Bugs
 
@@ -71,6 +69,9 @@
 - [x] Fix the sidebar for small height screens. it hides the menu on the top. Maybe need to add `overflow:hidden`
 - [ ] Store the state of the sidebar locally so it preserves after the refresh
 - [ ] Fix an issue with the progress bar when adding a new competency. Somehow it appears cyan
+- [ ] Update the display of the logo when the sidebar get thiner
+- [ ] Fix the header in profile on different resolutions
+- [ ] Submitting form second time without reloading form doesn't trigger the success check. Need to figure how to fix it
 
 ## Production-ready
 
