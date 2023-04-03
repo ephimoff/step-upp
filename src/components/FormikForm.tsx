@@ -8,6 +8,7 @@ import InputAndLabel from './InputAndLabel';
 interface FieldI {
   name: string;
   label: string;
+  placeholder?: string;
   value: string;
   type: any;
 }
@@ -31,6 +32,7 @@ const FormikForm = ({ fields, onSubmit }: Props) => {
 
   const submitForm = async (values: any) => {
     const response = await onSubmit(values);
+    console.log('response', response);
     if (response.status === 200) {
       setSuccess(true);
     }
@@ -50,12 +52,12 @@ const FormikForm = ({ fields, onSubmit }: Props) => {
         {({ values, errors, touched, isSubmitting }) => (
           <Form>
             <div>
-              {fields.map(({ label, name }, index) => {
+              {fields.map(({ label, name, placeholder }, index) => {
                 return (
                   <div key={index}>
                     <InputAndLabel
                       label={label}
-                      placeholder={label}
+                      placeholder={placeholder ? placeholder : label}
                       name={name}
                       type="input"
                     />

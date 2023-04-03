@@ -6,20 +6,22 @@ import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from './api/auth/[...nextauth]';
 import { useState, useEffect, useCallback } from 'react';
-import { Form, Formik } from 'formik';
 import { Check, X as Close } from 'lucide-react';
-import { profileSchema } from '@/schemas/validationSchemas';
-import { accountFields } from '@/data/data';
 import { generateSlug, generateUniqueSlug } from '@/utils/functions';
+import { string } from 'yup';
 import { log } from 'next-axiom';
+import FormikForm from '@/components/FormikForm';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import InputAndLabel from '@/components/InputAndLabel';
 import prisma from '@/utils/prisma';
 import NoAvatar from '@/components/NoAvatar';
 import Card from '@/components/Card';
-import CustomButton from '@/components/CustomButton';
 import Image from 'next/image';
 import Link from 'next/link';
+// import { profileSchema } from '@/schemas/validationSchemas';
+// import { accountFields } from '@/data/data';
+// import InputAndLabel from '@/components/InputAndLabel';
+// import CustomButton from '@/components/CustomButton';
+// import { Form, Formik } from 'formik';
 
 type Props = {
   profile: ProfileType;
@@ -100,12 +102,13 @@ export default function AccountPage({
         log.info(
           `${functionName} function -  ${method} ${url} response: ${response.status}`
         );
-        if (response.status === 200) {
+        if (response.status < 300) {
           setSuccess(true);
         }
         const profileResponse = await response.json();
 
         setCurrentProfile(profileResponse);
+        return response;
       } catch (error) {
         log.error(
           `${functionName} function - ${method} ${url} error: ${error}`
@@ -130,6 +133,83 @@ export default function AccountPage({
       setGithub(profile.github as string);
     }
   }, [initialName, profile, session, initialSlug, updateProfile]);
+
+  const fields = [
+    {
+      name: 'name',
+      label: 'Name',
+      placeholder: 'John Doe',
+      value: name,
+      type: string().required('Required'),
+    },
+    {
+      name: 'email',
+      label: 'Email',
+      placeholder: 'email@example.com',
+      value: email,
+      type: string().email('Please enter a valid email').required('Required'),
+    },
+    {
+      name: 'title',
+      label: 'Title',
+      placeholder: 'Senior Product Manager',
+      value: title,
+      type: string(),
+    },
+    {
+      name: 'team',
+      label: 'Team',
+      placeholder: 'Platform team',
+      value: team,
+      type: string(),
+    },
+    {
+      name: 'slug',
+      label: 'Slug',
+      placeholder: 'your-slug',
+      value: slug,
+      type: string()
+        .required('Required')
+        .test(
+          'Unique slug',
+          'Slug is already in use. Change it or generate a new one',
+          async (value, slug) => {
+            const { status } = await fetch(
+              `/api/slug?slug=${value}&email=${slug.parent.email}`
+            );
+            return status === 200 ? true : false;
+          }
+        ),
+    },
+    {
+      name: 'phone',
+      label: 'Phone',
+      placeholder: '1234567',
+      value: phone,
+      type: string(),
+    },
+    {
+      name: 'twitter',
+      label: 'Twitter',
+      placeholder: '@johndoe',
+      value: twitter,
+      type: string(),
+    },
+    {
+      name: 'linkedin',
+      label: 'LinkedIn',
+      placeholder: 'https://www.linkedin.com/in/johndoe/',
+      value: linkedin,
+      type: string().url('The field must be a valid URL'),
+    },
+    {
+      name: 'github',
+      label: 'GitHub',
+      placeholder: '@johndoe',
+      value: github,
+      type: string(),
+    },
+  ];
 
   return (
     <>
@@ -183,7 +263,21 @@ export default function AccountPage({
                   )}
                 </div>
               )}
-              <Formik
+              <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
+                {userpic ? (
+                  <Image
+                    width={96}
+                    height={96}
+                    src={userpic}
+                    alt=""
+                    className="rounded-full shadow-md"
+                  />
+                ) : (
+                  <NoAvatar size={24} />
+                )}
+              </div>
+              <FormikForm fields={fields} onSubmit={updateProfile} />
+              {/* <Formik
                 enableReinitialize
                 initialValues={{
                   name: name,
@@ -206,19 +300,6 @@ export default function AccountPage({
               >
                 {({ values, errors, touched, isSubmitting }) => (
                   <Form className="">
-                    <div className="mx-auto my-4 h-24 w-24 sm:h-32 sm:w-32">
-                      {userpic ? (
-                        <Image
-                          width={96}
-                          height={96}
-                          src={userpic}
-                          alt=""
-                          className="rounded-full shadow-md"
-                        />
-                      ) : (
-                        <NoAvatar size={24} />
-                      )}
-                    </div>
                     <div className="">
                       {accountFields.map((field, index) => {
                         return (
@@ -235,12 +316,6 @@ export default function AccountPage({
                         );
                       })}
                     </div>
-                    {/* <pre className="text-sm font-thin text-white">
-                      {JSON.stringify(values, null, 2)}
-                    </pre>
-                    <pre className="text-sm font-thin text-red-500">
-                      {JSON.stringify(errors, null, 2)}
-                    </pre> */}
                     <CustomButton
                       type="submit"
                       text="Update profile"
@@ -256,7 +331,7 @@ export default function AccountPage({
                     ) : null}
                   </Form>
                 )}
-              </Formik>
+              </Formik> */}
             </Card>
           </>
         ) : (
@@ -350,11 +425,6 @@ export const getServerSideProps = async ({
       membership.push(singleMembership);
     } else {
       log.warn(`${PAGE} page: Workspace not found. Creating a new one`);
-      // const user = await prisma.user.findUnique({
-      //   where: {
-      //     email: session!.user!.email as string,
-      //   },
-      // });
 
       const workspace = await prisma.workspace.create({
         data: {
@@ -428,7 +498,12 @@ export const getServerSideProps = async ({
         },
       })
       .catch(async (e) => {
-        log.error(`[ERROR] /account Saving new profile failed:`, e);
+        log.error(`${PAGE} page: Saving new profile failed:`, e);
+        log.debug(
+          `${PAGE} page: newProfile:`,
+          newProfile as { [key: string]: any }
+        );
+        log.debug(`${PAGE} page. Profile:`, { profile });
       });
     isNewProfile = true;
     log.info(`${PAGE} page: New profile has been created`);
