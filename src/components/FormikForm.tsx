@@ -32,7 +32,6 @@ const FormikForm = ({ fields, onSubmit }: Props) => {
 
   const submitForm = async (values: any) => {
     const response = await onSubmit(values);
-    console.log('response', response);
     if (response.status === 200) {
       setSuccess(true);
     }

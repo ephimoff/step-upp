@@ -30,6 +30,7 @@ const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
         setSuccess(true);
       }
       const searchResponse = await response.json();
+      // console.log('response', searchResponse);
 
       returnSearchResults(searchResponse);
       return searchResponse;
@@ -73,9 +74,10 @@ const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
                 setSuccess(false);
                 resetForm;
               }}
-              className="group ml-2 flex items-center transition duration-700"
+              className="group ml-2 flex items-center text-gray-500 transition duration-700"
             >
-              <RefreshCw size={16} className="group-hover:animate-spin" />
+              Reset
+              {/* <RefreshCw size={16} className="group-hover:animate-spin" /> */}
             </button>
           </Form>
         )}

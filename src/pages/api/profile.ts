@@ -8,6 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     log.info(`API POST /api/profile`);
     const profileData = req.body;
     log.info(`API POST /api/profile. [profileData]:`, profileData);
+
     try {
       const savedProfile = await prisma.profile
         .create({
@@ -23,23 +24,57 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PUT') {
     log.info(`API PUT /api/profile`);
-    const { email } = req.query;
-    const profile = req.body;
+    const { email, updateMembership } = req.query;
+    const data = req.body;
     // update profile
-    try {
-      const updatedProfile = await prisma.profile
-        .update({
+    if (email) {
+      try {
+        const updatedProfile = await prisma.profile
+          .update({
+            where: {
+              email: email as string,
+            },
+            data: data,
+          })
+          .catch(async (e) => {
+            log.error(`API PUT /api/profile. Error updating Profile:`, e);
+          });
+        res.status(200).json(updatedProfile);
+      } catch (error) {
+        res.status(500).json({ msg: 'Something went wrong', error });
+      }
+    }
+    if (updateMembership) {
+      // console.log('updateMembership', updateMembership);
+      // console.log('data', data);
+      const profileId = data.profileId;
+      const userId = data.userId;
+      const workspaceId = data.workspaceId;
+      const role = data.role;
+      try {
+        const updatedAccess = await prisma.profile.update({
           where: {
-            email: email as string,
+            id: profileId as string,
           },
-          data: profile,
-        })
-        .catch(async (e) => {
-          log.error(`API PUT /api/profile. Error updating Profile:`, e);
+          data: {
+            user: {
+              update: {
+                membership: {
+                  update: {
+                    where: {
+                      userId_workspaceId: { userId, workspaceId } as any,
+                    },
+                    data: { role: role as 'OWNER' | 'MEMBER' },
+                  },
+                },
+              },
+            },
+          },
         });
-      res.status(200).json(updatedProfile);
-    } catch (error) {
-      res.status(500).json({ msg: 'Something went wrong', error });
+        res.status(200).json(updatedAccess);
+      } catch (error) {
+        res.status(500).json({ msg: 'Something went wrong', error });
+      }
     }
   }
   if (req.method === 'GET') {
@@ -69,9 +104,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         let searchResults = await prisma.profile.findMany({
           where: {
-            user: {
-              membership: { some: { workspaceId: workspaceId as string } },
-            },
+            AND: [
+              {
+                user: {
+                  membership: { some: { workspaceId: workspaceId as string } },
+                },
+                OR: [
+                  { name: { contains: query as string, mode: 'insensitive' } },
+                  { email: { contains: query as string, mode: 'insensitive' } },
+                  { title: { contains: query as string, mode: 'insensitive' } },
+                  { team: { contains: query as string, mode: 'insensitive' } },
+                  { slug: { contains: query as string, mode: 'insensitive' } },
+                ],
+              },
+            ],
           },
           select: {
             name: true,

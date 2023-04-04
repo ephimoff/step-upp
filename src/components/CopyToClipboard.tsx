@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Copy, Files } from 'lucide-react';
+import { Files } from 'lucide-react';
+import { log } from 'next-axiom';
 
 type Props = {
   copyText: string;
@@ -27,7 +28,7 @@ const CopyToClipboard = ({ copyText }: Props) => {
         }, 1500);
       })
       .catch((err) => {
-        console.log(err);
+        log.error(err);
       });
   };
 

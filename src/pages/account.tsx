@@ -39,7 +39,7 @@ export default function AccountPage({
   isNewMembership,
 }: Props) {
   const { data: session, status } = useSession();
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
   const [newProfileShow, setNewProfileShow] = useState(true);
   const [newWorkspaceShow, setNewWorkspaceShow] = useState(true);
   const [newMembershipShow, setNewMembershipShow] = useState(true);
@@ -47,9 +47,9 @@ export default function AccountPage({
   const role = membership[0].role;
 
   // profile
-  const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
-    null
-  );
+  // const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(
+  //   null
+  // );
   // profile fields
   const initialName = profile?.name
     ? profile.name
@@ -102,12 +102,12 @@ export default function AccountPage({
         log.info(
           `${functionName} function -  ${method} ${url} response: ${response.status}`
         );
-        if (response.status < 300) {
-          setSuccess(true);
-        }
+        // if (response.status < 300) {
+        //   setSuccess(true);
+        // }
         const profileResponse = await response.json();
 
-        setCurrentProfile(profileResponse);
+        // setCurrentProfile(profileResponse);
         return response;
       } catch (error) {
         log.error(
@@ -120,7 +120,7 @@ export default function AccountPage({
 
   useEffect(() => {
     if (profile) {
-      setCurrentProfile(profile);
+      // setCurrentProfile(profile);
       setName(profile.name);
       setEmail(profile.email);
       setUserpic(profile.userpic as string);
@@ -509,7 +509,6 @@ export const getServerSideProps = async ({
     log.info(`${PAGE} page: New profile has been created`);
     log.debug(`${PAGE} page: Profile:`, newProfile as { [key: string]: any });
   }
-  // console.log('profile.user', profile!.user);
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));

@@ -12,9 +12,10 @@ type Props = {
   children: React.ReactNode;
   isOpen: boolean;
   closeModal: any;
+  size?: 'lg' | 'xl' | null;
 };
 
-const Modal = ({ children, isOpen, closeModal }: Props) => {
+const Modal = ({ children, isOpen, closeModal, size }: Props) => {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -43,7 +44,13 @@ const Modal = ({ children, isOpen, closeModal }: Props) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel
-                  className={`${rubik.variable} w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle font-sans shadow-xl transition-all dark:bg-slate-800`}
+                  className={`${rubik.variable} w-full ${
+                    size
+                      ? size === 'lg'
+                        ? 'max-w-lg'
+                        : 'max-w-xl'
+                      : 'max-w-md '
+                  } transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle font-sans shadow-xl transition-all dark:bg-slate-800`}
                 >
                   {/* <Dialog.Title
                     as="h3"

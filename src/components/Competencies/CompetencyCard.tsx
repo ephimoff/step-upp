@@ -20,7 +20,7 @@ const CompetencyCard = ({
   requestorName,
   slug,
 }: Props) => {
-  console.log('competency', competency);
+  // console.log('competency', competency);
   return (
     <>
       <Card grid={true}>

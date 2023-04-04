@@ -1,36 +1,82 @@
 import type { GetServerSidePropsContext } from 'next';
 import type { MembershipType } from '@/types/types';
 import type { WorkspaceAccess } from '@prisma/client';
-import { Trash, AtSign, Plus } from 'lucide-react';
+import { Trash, AtSign, Plus, User } from 'lucide-react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { string } from 'yup';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { log } from 'next-axiom';
+import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
 import FormikForm from '@/components/FormikForm';
 import Modal from '@/components/Modal';
+import Search from '@/components/Search';
+import Spinner from '@/components/Spinner';
+import OwnershipSearchResults from '@/components/OwnershipSearchResults';
+
+interface Profile {
+  name: string;
+  id: string;
+  slug: string;
+  team: string;
+  title: string;
+  email: string;
+  userpic: string;
+  user: {
+    id: string;
+    membership: {
+      role: 'OWNER' | 'MEMBER';
+      workspaceId: string;
+    }[];
+  };
+}
 
 type Props = {
   profile: any;
   membership: MembershipType[];
   access: WorkspaceAccess[];
+  allProfiles: Profile[];
 };
 
-const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
+const WorkspacePage = ({
+  profile,
+  membership,
+  access: domains,
+  allProfiles,
+}: Props) => {
   const router = useRouter();
 
-  let [isOpen, setIsOpen] = useState(false);
+  let [isDomainModalOpen, setDomainModalOpen] = useState(false);
+  let [isOwnerModalOpen, setOwnerModalOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState<Profile[]>(allProfiles);
+  const [loading, setLoading] = useState(false);
 
-  function closeModal() {
-    setIsOpen(false);
+  const { status } = useSession();
+
+  const searchProfiles = (results: Profile[]) => {
+    setLoading(true);
+    setSearchResults(results);
+    setLoading(false);
+  };
+  const showAll = useCallback(() => {
+    setSearchResults(allProfiles);
+  }, [allProfiles]);
+  useEffect(() => showAll(), [showAll, allProfiles]);
+  function closeDomainModal() {
+    setDomainModalOpen(false);
   }
-
-  function openModal() {
-    setIsOpen(true);
+  function openDomainModal() {
+    setDomainModalOpen(true);
+  }
+  function closeOwnerModal() {
+    setOwnerModalOpen(false);
+  }
+  function openOwnerModal() {
+    setOwnerModalOpen(true);
   }
 
   const refreshData = () => {
@@ -113,6 +159,43 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
       log.error(`${functionName} function - ${method} ${url} error: ${error}`);
     }
   };
+
+  const updateAccess = async (
+    profileId: string,
+    userId: string,
+    role: 'OWNER' | 'MEMBER'
+  ) => {
+    const functionName = 'updateAccess';
+    const url = `/api/profile?updateMembership=true`;
+    const method = 'PUT';
+    try {
+      const response = await fetch(url, {
+        method: method,
+        body: JSON.stringify({
+          profileId: profileId,
+          userId: userId,
+          workspaceId: workspace.id,
+          role: role,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      log.info(
+        `${functionName} function -  ${method} ${url} response: ${response.status}`
+      );
+      if (response.status < 300) {
+        log.debug(
+          `${functionName} function - ${method} ${url} response: `,
+          response
+        );
+        refreshData();
+      }
+      return response;
+    } catch (error) {
+      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    }
+  };
   return (
     <>
       <Sidebar name={profile.name} role={role}>
@@ -154,7 +237,11 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                         className="itens-center flex justify-between "
                       >
                         <div className="flex items-center">
-                          <AtSign className="mr-2 text-gray-300" />
+                          <AtSign
+                            size={20}
+                            strokeWidth={3}
+                            className="mr-2 text-gray-300"
+                          />
                           <span>{domain}</span>
                         </div>
 
@@ -173,11 +260,11 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
             <div className="">
               <button
                 className="flex items-center font-semibold text-purple-600"
-                onClick={openModal}
+                onClick={openDomainModal}
               >
                 <Plus size={16} strokeWidth={4} /> Add domain
               </button>
-              <Modal closeModal={closeModal} isOpen={isOpen}>
+              <Modal closeModal={closeDomainModal} isOpen={isDomainModalOpen}>
                 <div>
                   <p className="mb-4 text-sm">
                     You can only add work domains of users who signed up and are
@@ -185,14 +272,18 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
                   </p>
                   <div className="my-8">
                     {domains.map(({ domain, isActive, isPublic }, index) => {
-                      if (!isActive && isPublic) {
+                      if (!isActive && !isPublic) {
                         return (
                           <div
                             key={index}
                             className="itens-center flex justify-between "
                           >
                             <div className="flex items-center">
-                              <AtSign className="mr-2 text-gray-300" />
+                              <AtSign
+                                size={20}
+                                strokeWidth={3}
+                                className="mr-2 text-gray-300"
+                              />
                               <span>{domain}</span>
                             </div>
 
@@ -216,10 +307,77 @@ const WorkspacePage = ({ profile, membership, access: domains }: Props) => {
               </Modal>
             </div>
           </div>
-
-          {/* <pre className="text-xs font-thin text-black dark:text-white">
-            {JSON.stringify(profile, null, 2)}
-          </pre> */}
+          <div className="mt-10 mb-4">
+            <h2 className="mb-2 text-lg">Ownership</h2>
+            <p className="text-sm font-thin text-gray-400">
+              People specified below will have the owner permissions and will be
+              able to manage the workspace
+            </p>
+            <div className="my-8 text-sm">
+              {allProfiles.map((p, index) => {
+                if (p.user.membership[0].role === 'OWNER') {
+                  return (
+                    <div
+                      key={index}
+                      className="itens-center mb-4 flex justify-between "
+                    >
+                      <div className="flex items-center">
+                        <User
+                          size={20}
+                          strokeWidth={3}
+                          className="mr-2 text-gray-300"
+                        />
+                        <span>{p.name}</span>
+                      </div>
+                      {p.id !== profile.id && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            updateAccess(p.id, p.user.id, 'MEMBER')
+                          }
+                        >
+                          <Trash size={16} className="text-red-700" />
+                        </button>
+                      )}
+                    </div>
+                  );
+                }
+              })}
+            </div>
+            <div>
+              <button
+                className="flex items-center font-semibold text-purple-600"
+                onClick={openOwnerModal}
+              >
+                <Plus size={16} strokeWidth={4} /> Add owner
+              </button>
+              <Modal
+                closeModal={closeOwnerModal}
+                isOpen={isOwnerModalOpen}
+                size="xl"
+              >
+                <div>
+                  <h2>
+                    Turn on the toggle to make the employee an owner of the
+                    workspace
+                  </h2>
+                  <Search
+                    returnSearchResults={searchProfiles}
+                    showAll={showAll}
+                    workspaceId={membership[0].workspaceId}
+                  />
+                  {loading ? (
+                    <Spinner />
+                  ) : (
+                    <OwnershipSearchResults
+                      profiles={searchResults}
+                      updateAccess={updateAccess}
+                    />
+                  )}
+                </div>
+              </Modal>
+            </div>
+          </div>
         </Card>
       </Sidebar>
     </>
@@ -268,6 +426,35 @@ export const getServerSideProps = async ({
       },
     };
   }
+
+  const workspaceId = profile.user.membership[0].workspaceId;
+
+  let allProfiles = await prisma.profile.findMany({
+    where: {
+      user: {
+        membership: { some: { workspaceId: workspaceId } },
+      },
+    },
+
+    select: {
+      name: true,
+      id: true,
+      slug: true,
+      team: true,
+      title: true,
+      email: true,
+      userpic: true,
+      user: {
+        select: {
+          id: true,
+          membership: { select: { role: true, workspaceId: true } },
+        },
+      },
+    },
+    orderBy: { name: 'asc' },
+    take: 10,
+  });
+
   let membership = profile.user.membership;
   let access = membership[0].workspace.access;
 
@@ -289,7 +476,9 @@ export const getServerSideProps = async ({
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));
   access = JSON.parse(JSON.stringify(access));
+  allProfiles = JSON.parse(JSON.stringify(allProfiles));
+
   return {
-    props: { session, profile, membership, access },
+    props: { session, profile, membership, access, allProfiles },
   };
 };

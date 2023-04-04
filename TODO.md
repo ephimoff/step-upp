@@ -40,6 +40,7 @@
 - [ ] Add other user permissions
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Allow to edit competencies
+- [ ] Add pagination to the search results
 - [ ] Consider encoding the query parameters for the search. It now contains `workspaceId` which is potentially a sensetive info. Alternatively, replace `GET` with `POST` for search
 
 ### Nice to have
@@ -61,6 +62,9 @@
 - [ ] Add more packs
 - [ ] When opening the feedback screen load the previous user assessments
 - [ ] Allow to change the picture
+- [ ] Consider merging the search results components
+- [ ] Consider creating a component for Access and Ownership on the Workspace page
+- [ ] Refactor function that fetch the data into one function
 
 ## Bugs
 
