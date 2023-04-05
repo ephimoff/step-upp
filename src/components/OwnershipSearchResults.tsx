@@ -21,11 +21,16 @@ interface Profile {
 }
 
 type Props = {
+  profileId: string;
   profiles: Profile[];
   updateAccess: any;
 };
 
-const OwnwershipSearchResults = ({ profiles, updateAccess }: Props) => {
+const OwnwershipSearchResults = ({
+  profileId,
+  profiles,
+  updateAccess,
+}: Props) => {
   if (profiles.length > 0) {
     return (
       <Card>
@@ -59,12 +64,18 @@ const OwnwershipSearchResults = ({ profiles, updateAccess }: Props) => {
                 </div>
               </div>
               <div className="mx-auto flex">
-                <Toggle
-                  profileId={profile.id}
-                  userId={profile.user.id}
-                  isEnabled={profile.user.membership[0].role === 'OWNER'}
-                  toggleAction={updateAccess}
-                />
+                {profileId !== profile.id ? (
+                  <Toggle
+                    profileId={profile.id}
+                    userId={profile.user.id}
+                    isEnabled={profile.user.membership[0].role === 'OWNER'}
+                    toggleAction={updateAccess}
+                  />
+                ) : (
+                  <div className="mx-4 rounded-md bg-gray-500 px-2 py-1 text-xs text-gray-300">
+                    You
+                  </div>
+                )}
               </div>
             </div>
           );

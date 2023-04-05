@@ -416,6 +416,7 @@ const WorkspacePage = ({
                     <Spinner />
                   ) : (
                     <OwnershipSearchResults
+                      profileId={profile.id}
                       profiles={searchResults}
                       updateAccess={updateOwnership}
                     />
