@@ -35,9 +35,9 @@
 - [x] Multi-tenancy: Restrict content by workspace
 - [x] Prepare functionality for competency packs
 - [x] Make sure users with no admin permissions cannot get to the restricted pages using url
+- [x] Add other user permissions
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
-- [ ] Add other user permissions
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Allow to edit competencies
 - [ ] Add pagination to the search results
@@ -56,6 +56,7 @@
 - [x] Update the login buttons to match the styles of the providers (google, github, etc)
 - [x] Update the header of the profile page: font colour
 - [x] Align the styling of elements: cards and headers
+- [x] Refactor function that fetch the data into one function
 - [ ] Add animations transitions for popups
 - [ ] Make the design a bit more "enterprisee"
 - [ ] Refactor all formik forms with the new Formik component
@@ -64,7 +65,6 @@
 - [ ] Allow to change the picture
 - [ ] Consider merging the search results components
 - [ ] Consider creating a component for Access and Ownership on the Workspace page
-- [ ] Refactor function that fetch the data into one function
 
 ## Bugs
 

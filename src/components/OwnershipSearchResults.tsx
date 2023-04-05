@@ -26,7 +26,6 @@ type Props = {
 };
 
 const OwnwershipSearchResults = ({ profiles, updateAccess }: Props) => {
-  // console.log('role', profiles[1].user.membership[0].role);
   if (profiles.length > 0) {
     return (
       <Card>

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Formik, Form, FieldArray } from 'formik';
 import { useRouter } from 'next/router';
 import { log } from 'next-axiom';
+import { fetcher } from '@/utils/fetch';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Competencies from '@/components/Competencies/Competencies';
 import CompetenciesList from '@/components/Competencies/CompetenciesList';
@@ -43,64 +44,93 @@ export default function CompetenciesPage({
     router.replace(router.asPath);
   };
 
+  // const createCompetency = async (values: any) => {
+  //   const url = '/api/competency';
+  //   const method = 'POST';
+  //   const functionName = 'submitScore';
+  //   log.info(
+  //     `${functionName} function -  ${method} ${url} attempting to create a competency`
+  //   );
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         competencyData: values.competencies,
+  //         workspaceId: membership[0].workspaceId,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     if (response.status < 300) {
+  //       setSuccess(true);
+  //       refreshData();
+  //     }
+  //     const jsonResponse = await response.json();
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
+
   const createCompetency = async (values: any) => {
-    const url = '/api/competency';
-    const method = 'POST';
-    const functionName = 'submitScore';
-    log.info(
-      `${functionName} function -  ${method} ${url} attempting to create a competency`
-    );
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          competencyData: values.competencies,
-          workspaceId: membership[0].workspaceId,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      if (response.status < 300) {
-        setSuccess(true);
-        refreshData();
+    const response = await fetcher(
+      'createCompetency',
+      `/api/competency`,
+      'POST',
+      {
+        competencyData: values.competencies,
+        workspaceId: membership[0].workspaceId,
       }
-      const jsonResponse = await response.json();
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    );
+    if (response) {
+      setSuccess(true);
+      refreshData();
     }
+    return response;
   };
 
+  // const markPackEnabled = async (id: Number) => {
+  //   const functionName = 'markPackEnabled';
+  //   const url = '/api/pack';
+  //   const method = 'POST';
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         id: id,
+  //         workspaceId: membership[0].workspaceId,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     if (response.status < 300) {
+  //       setSuccess(true);
+  //       refreshData();
+  //     }
+  //     const jsonResponse = await response.json();
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
   const markPackEnabled = async (id: Number) => {
-    const functionName = 'markPackEnabled';
-    const url = '/api/pack';
-    const method = 'POST';
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          id: id,
-          workspaceId: membership[0].workspaceId,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      if (response.status < 300) {
-        setSuccess(true);
-        refreshData();
-      }
-      const jsonResponse = await response.json();
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    const response = await fetcher('markPackEnabled', `/api/pack`, 'POST', {
+      id: id,
+      workspaceId: membership[0].workspaceId,
+    });
+    if (response) {
+      setSuccess(true);
+      refreshData();
     }
+    return response;
   };
+
   const role = membership[0].role;
   return (
     <>
@@ -168,9 +198,9 @@ export default function CompetenciesPage({
                         </div>
                       ) : null}
 
-                      {/* <pre className="text-sm font-thin text-white">
+                      <pre className="text-sm font-thin text-white">
                         {JSON.stringify(values, null, 2)}
-                      </pre> */}
+                      </pre>
                     </>
                   </Form>
                 )}

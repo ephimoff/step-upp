@@ -3,7 +3,8 @@ import { Field, Form, Formik } from 'formik';
 import { scoreSchema } from '@/schemas/validationSchemas';
 import { Save, Check } from 'lucide-react';
 import { useState } from 'react';
-import { log } from 'next-axiom';
+// import { log } from 'next-axiom';
+import { fetcher } from '@/utils/fetch';
 import RequestAssessment from './RequestAssessment';
 
 type Props = {
@@ -33,44 +34,63 @@ const SkillPopoverPanel = ({
 }: Props) => {
   const [success, setSuccess] = useState(false);
 
+  // const updateScore = async (
+  //   profileId: string,
+  //   skillId: string,
+  //   score: number | null
+  // ) => {
+  //   const functionName = 'updateScore';
+  //   const url = '/api/score';
+  //   const method = 'PUT';
+  //   if (!score) {
+  //     return null;
+  //   }
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         profileId: profileId,
+  //         skillId: skillId,
+  //         score: Number(score),
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     const jsonResponse = await response.json();
+  //     if (jsonResponse.count > 0) {
+  //       setScore(score);
+  //       setSuccess(true);
+
+  //       setTimeout(() => {
+  //         close();
+  //       }, 1000);
+  //     }
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
   const updateScore = async (
     profileId: string,
     skillId: string,
     score: number | null
   ) => {
-    const functionName = 'updateScore';
-    const url = '/api/score';
-    const method = 'PUT';
-    if (!score) {
-      return null;
-    }
+    const response = await fetcher('updateScore', `/api/score`, 'PUT', {
+      profileId: profileId,
+      skillId: skillId,
+      score: Number(score),
+    });
+    if (response.count > 0) {
+      setScore(score);
+      setSuccess(true);
 
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          profileId: profileId,
-          skillId: skillId,
-          score: Number(score),
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      const jsonResponse = await response.json();
-      if (jsonResponse.count > 0) {
-        setScore(score);
-        setSuccess(true);
-
-        setTimeout(() => {
-          close();
-        }, 1000);
-      }
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+      setTimeout(() => {
+        close();
+      }, 1000);
     }
   };
 

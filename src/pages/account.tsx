@@ -10,6 +10,7 @@ import { Check, X as Close } from 'lucide-react';
 import { generateSlug, generateUniqueSlug } from '@/utils/functions';
 import { string } from 'yup';
 import { log } from 'next-axiom';
+import { fetcher } from '@/utils/fetch';
 import FormikForm from '@/components/FormikForm';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
@@ -73,54 +74,74 @@ export default function AccountPage({
   // email to query
   const queryEmail = session!.user!.email;
 
+  // const updateProfile = useCallback(
+  //   async (values: any) => {
+  //     const functionName = 'updateProfile';
+  //     const method = 'PUT';
+  //     const url = `/api/profile?email=${queryEmail}`;
+  //     const newProfile = {
+  //       name: values.name,
+  //       email: values.email,
+  //       userpic: values.userpic,
+  //       title: values.title,
+  //       team: values.team,
+  //       slug: values.slug,
+  //       phone: values.phone,
+  //       twitter: values.twitter,
+  //       linkedin: values.linkedin,
+  //       github: values.github,
+  //       user: { connect: { email: queryEmail } },
+  //     };
+  //     try {
+  //       const response = await fetch(url, {
+  //         method: method,
+  //         body: JSON.stringify(newProfile),
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
+  //       log.info(
+  //         `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //       );
+
+  //       const profileResponse = await response.json();
+  //       return response;
+  //     } catch (error) {
+  //       log.error(
+  //         `${functionName} function - ${method} ${url} error: ${error}`
+  //       );
+  //     }
+  //   },
+  //   [queryEmail]
+  // );
+
   const updateProfile = useCallback(
     async (values: any) => {
-      const functionName = 'updateProfile';
-      const method = 'PUT';
-      const url = `/api/profile?email=${queryEmail}`;
-      const newProfile = {
-        name: values.name,
-        email: values.email,
-        userpic: values.userpic,
-        title: values.title,
-        team: values.team,
-        slug: values.slug,
-        phone: values.phone,
-        twitter: values.twitter,
-        linkedin: values.linkedin,
-        github: values.github,
-        user: { connect: { email: queryEmail } },
-      };
-      try {
-        const response = await fetch(url, {
-          method: method,
-          body: JSON.stringify(newProfile),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        log.info(
-          `${functionName} function -  ${method} ${url} response: ${response.status}`
-        );
-        // if (response.status < 300) {
-        //   setSuccess(true);
-        // }
-        const profileResponse = await response.json();
-
-        // setCurrentProfile(profileResponse);
-        return response;
-      } catch (error) {
-        log.error(
-          `${functionName} function - ${method} ${url} error: ${error}`
-        );
-      }
+      const response = await fetcher(
+        'updateProfile',
+        `/api/profile?email=${queryEmail}`,
+        'PUT',
+        {
+          name: values.name,
+          email: values.email,
+          userpic: values.userpic,
+          title: values.title,
+          team: values.team,
+          slug: values.slug,
+          phone: values.phone,
+          twitter: values.twitter,
+          linkedin: values.linkedin,
+          github: values.github,
+          user: { connect: { email: queryEmail } },
+        }
+      );
+      return response;
     },
     [queryEmail]
   );
 
   useEffect(() => {
     if (profile) {
-      // setCurrentProfile(profile);
       setName(profile.name);
       setEmail(profile.email);
       setUserpic(profile.userpic as string);

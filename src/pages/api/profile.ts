@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'PUT') {
     log.info(`API PUT /api/profile`);
-    const { email, updateMembership } = req.query;
+    const { email, updateOwnership } = req.query;
     const data = req.body;
     // update profile
     if (email) {
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ msg: 'Something went wrong', error });
       }
     }
-    if (updateMembership) {
+    if (updateOwnership) {
       // console.log('updateMembership', updateMembership);
       // console.log('data', data);
       const profileId = data.profileId;
@@ -79,8 +79,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   if (req.method === 'GET') {
     const { email, query, workspaceId } = req.query;
+    log.info(`API GET /api/profile`);
 
     if (email) {
+      log.info(`API PUT /api/profile. Searching by email`);
       try {
         const profile = await prisma.profile
           .findUnique({
@@ -101,6 +103,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
     if (query && workspaceId) {
+      log.info(`API PUT /api/profile. Searching by query`);
+      log.debug(
+        `API PUT /api/profile. Searching by query:`,
+        query as { [key: string]: any }
+      );
       try {
         let searchResults = await prisma.profile.findMany({
           where: {
@@ -127,10 +134,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             title: true,
             email: true,
             userpic: true,
+            user: {
+              select: {
+                id: true,
+                membership: { select: { role: true, workspaceId: true } },
+              },
+            },
           },
           orderBy: { name: 'asc' },
           take: 10,
         });
+        log.debug(`API PUT /api/profile. Search results: `, searchResults);
         if (searchResults) {
           res.status(200).json(searchResults);
         } else {

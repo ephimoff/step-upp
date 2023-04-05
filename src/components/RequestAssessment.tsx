@@ -4,7 +4,8 @@ import { emailSchema } from '@/schemas/validationSchemas';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { log } from 'next-axiom';
-import FormikForm from '@/components/FormikForm';
+import { fetcher } from '@/utils/fetch';
+// import FormikForm from '@/components/FormikForm';
 import CustomButton from './CustomButton';
 
 type Props = {
@@ -16,42 +17,65 @@ const RequestAssessment = ({ requestorName, slug }: Props) => {
   const { data: session } = useSession();
   const [success, setSuccess] = useState(false);
 
+  // const requestAssessment = async (
+  //   email: string,
+  //   requestorName: string,
+  //   requestorEmail: string,
+  //   slug: string
+  // ) => {
+  //   const functionName = 'requestAssessment';
+  //   const url = '/api/accesstoken';
+  //   const method = 'POST';
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         email: email,
+  //         requestorName: requestorName,
+  //         requestorEmail: requestorEmail,
+  //         slug: slug,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     if (response.status === 200) {
+  //       log.debug(
+  //         `${functionName} function - ${method} ${url} response: `,
+  //         response
+  //       );
+  //       setSuccess(true);
+  //     }
+  //     const jsonResponse = await response.json();
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
+
   const requestAssessment = async (
     email: string,
     requestorName: string,
     requestorEmail: string,
     slug: string
   ) => {
-    const functionName = 'requestAssessment';
-    const url = '/api/accesstoken';
-    const method = 'POST';
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          email: email,
-          requestorName: requestorName,
-          requestorEmail: requestorEmail,
-          slug: slug,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      if (response.status === 200) {
-        log.debug(
-          `${functionName} function - ${method} ${url} response: `,
-          response
-        );
-        setSuccess(true);
+    const response = await fetcher(
+      'requestAssessment',
+      `/api/accesstoken`,
+      'POST',
+      {
+        email: email,
+        requestorName: requestorName,
+        requestorEmail: requestorEmail,
+        slug: slug,
       }
-      const jsonResponse = await response.json();
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    );
+    if (response) {
+      setSuccess(true);
     }
+    return response;
   };
 
   return (

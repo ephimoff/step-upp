@@ -8,6 +8,7 @@ import { string } from 'yup';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { log } from 'next-axiom';
+import { fetcher } from '@/utils/fetch';
 import { useSession } from 'next-auth/react';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
@@ -108,93 +109,138 @@ const WorkspacePage = ({
     },
   ];
 
+  // const updateWorkspace = async (values: any) => {
+  //   const functionName = 'updateWorkspace';
+  //   const url = '/api/workspace';
+  //   const method = 'PUT';
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         id: workspace.id,
+  //         name: values.workspace,
+  //         description: values.description,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     return response;
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
   const updateWorkspace = async (values: any) => {
-    const functionName = 'updateWorkspace';
-    const url = '/api/workspace';
-    const method = 'PUT';
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          id: workspace.id,
-          name: values.workspace,
-          description: values.description,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      return response;
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
-    }
+    const response = await fetcher('updateWorkspace', `/api/workspace`, 'PUT', {
+      id: workspace.id,
+      name: values.workspace,
+      description: values.description,
+    });
+    return response;
   };
 
+  // const updateDomain = async (domain: string, isActive: boolean) => {
+  //   const functionName = 'updateDomain';
+  //   const url = '/api/workspaceaccess';
+  //   const method = 'PUT';
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         domain: domain,
+  //         isActive: isActive,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     if (response.status < 300) {
+  //       refreshData();
+  //     }
+  //     const jsonResponse = await response.json();
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
   const updateDomain = async (domain: string, isActive: boolean) => {
-    const functionName = 'updateDomain';
-    const url = '/api/workspaceaccess';
-    const method = 'PUT';
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          domain: domain,
-          isActive: isActive,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      if (response.status < 300) {
-        refreshData();
+    const response = await fetcher(
+      'updateDomain',
+      `/api/workspaceaccess`,
+      'PUT',
+      {
+        domain: domain,
+        isActive: isActive,
       }
-      const jsonResponse = await response.json();
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    );
+    if (response) {
+      refreshData();
     }
+    return response;
   };
 
-  const updateAccess = async (
+  // const updateAccess = async (
+  //   profileId: string,
+  //   userId: string,
+  //   role: 'OWNER' | 'MEMBER'
+  // ) => {
+  //   const functionName = 'updateAccess';
+  //   const url = `/api/profile?updateMembership=true`;
+  //   const method = 'PUT';
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: method,
+  //       body: JSON.stringify({
+  //         profileId: profileId,
+  //         userId: userId,
+  //         workspaceId: workspace.id,
+  //         role: role,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     log.info(
+  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
+  //     );
+  //     if (response.status < 300) {
+  //       log.debug(
+  //         `${functionName} function - ${method} ${url} response: `,
+  //         response
+  //       );
+  //       refreshData();
+  //     }
+  //     return response;
+  //   } catch (error) {
+  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+  //   }
+  // };
+
+  const updateOwnership = async (
     profileId: string,
     userId: string,
     role: 'OWNER' | 'MEMBER'
   ) => {
-    const functionName = 'updateAccess';
-    const url = `/api/profile?updateMembership=true`;
-    const method = 'PUT';
-    try {
-      const response = await fetch(url, {
-        method: method,
-        body: JSON.stringify({
-          profileId: profileId,
-          userId: userId,
-          workspaceId: workspace.id,
-          role: role,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      log.info(
-        `${functionName} function -  ${method} ${url} response: ${response.status}`
-      );
-      if (response.status < 300) {
-        log.debug(
-          `${functionName} function - ${method} ${url} response: `,
-          response
-        );
-        refreshData();
+    const response = await fetcher(
+      'updateOwnership',
+      `/api/profile?updateOwnership=true`,
+      'PUT',
+      {
+        profileId: profileId,
+        userId: userId,
+        workspaceId: workspace.id,
+        role: role,
       }
-      return response;
-    } catch (error) {
-      log.error(`${functionName} function - ${method} ${url} error: ${error}`);
+    );
+    if (response) {
+      refreshData();
     }
+    return response;
   };
   return (
     <>
@@ -240,7 +286,7 @@ const WorkspacePage = ({
                           <AtSign
                             size={20}
                             strokeWidth={3}
-                            className="mr-2 text-gray-300"
+                            className="mr-2 text-gray-300 dark:text-gray-700"
                           />
                           <span>{domain}</span>
                         </div>
@@ -282,7 +328,7 @@ const WorkspacePage = ({
                               <AtSign
                                 size={20}
                                 strokeWidth={3}
-                                className="mr-2 text-gray-300"
+                                className="mr-2 text-gray-300 dark:text-gray-700"
                               />
                               <span>{domain}</span>
                             </div>
@@ -325,7 +371,7 @@ const WorkspacePage = ({
                         <User
                           size={20}
                           strokeWidth={3}
-                          className="mr-2 text-gray-300"
+                          className="mr-2 text-gray-300 dark:text-gray-700"
                         />
                         <span>{p.name}</span>
                       </div>
@@ -333,7 +379,7 @@ const WorkspacePage = ({
                         <button
                           type="button"
                           onClick={() =>
-                            updateAccess(p.id, p.user.id, 'MEMBER')
+                            updateOwnership(p.id, p.user.id, 'MEMBER')
                           }
                         >
                           <Trash size={16} className="text-red-700" />
@@ -371,7 +417,7 @@ const WorkspacePage = ({
                   ) : (
                     <OwnershipSearchResults
                       profiles={searchResults}
-                      updateAccess={updateAccess}
+                      updateAccess={updateOwnership}
                     />
                   )}
                 </div>

@@ -43,7 +43,7 @@ async function main() {
       frequency: 'monthly',
     },
   });
-  console.log({ free, startup, enterprise });
+  console.info({ free, startup, enterprise });
   domainsList.map(async (domain) => {
     const domains = await prisma.publicDomain.upsert({
       where: {
@@ -54,7 +54,7 @@ async function main() {
         domain: domain,
       },
     });
-    console.log({ domains });
+    console.info({ domains });
   });
 }
 main()
