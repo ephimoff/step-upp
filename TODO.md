@@ -36,11 +36,12 @@
 - [x] Prepare functionality for competency packs
 - [x] Make sure users with no admin permissions cannot get to the restricted pages using url
 - [x] Add other user permissions
+- [x] Add pagination to the search results
 - [ ] Think how to not show the token in the address bar. Maybe to use a 'proxy' page, check the token there and return to this one afterwards? Or use a middleware. Maybe middleware?
 - [ ] Remove expired tokens from the DB
 - [ ] Think about not allowing to feedback-assess your own profile
 - [ ] Allow to edit competencies
-- [ ] Add pagination to the search results
+- [ ] For free plan limit the acceess to 30 days
 - [ ] Consider encoding the query parameters for the search. It now contains `workspaceId` which is potentially a sensetive info. Alternatively, replace `GET` with `POST` for search
 
 ### Nice to have
@@ -86,3 +87,13 @@
 - [ ] Promote to Prod only when tests (automated and manual) are succesfull
 
 ## Notes
+
+### Billing
+
+- All plans are monthly
+- Need to check the amount of employees and don't allow any actions unless the most expensive plan
+- Need to have ability to override the rules
+- Cusomers can cancel but the cancelation will only be executed in the end of billing period
+- Free plan expires in one month
+- There should be plan changes history
+- Consider Stripe for billing

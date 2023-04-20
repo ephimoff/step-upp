@@ -119,7 +119,7 @@ export default function CompetenciesPage({
   //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
   //   }
   // };
-  const markPackEnabled = async (id: Number) => {
+  const markPackEnabled = async (id: number) => {
     const response = await fetcher('markPackEnabled', `/api/pack`, 'POST', {
       id: id,
       workspaceId: membership[0].workspaceId,

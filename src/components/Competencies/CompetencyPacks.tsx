@@ -40,19 +40,19 @@ const CompetencyPacks = ({
     setIsOpen(true);
   };
 
-  const getPack = (id: Number): PackType | undefined => {
+  const getPack = (id: number): PackType | undefined => {
     const pack = packs.find((e) => {
       return e.id === id;
     });
     return pack;
   };
 
-  const togglePackPreview = (id: Number) => {
+  const togglePackPreview = (id: number) => {
     setPreviewPack(getPack(id));
     openModal();
   };
 
-  const enablePack = async (id: Number) => {
+  const enablePack = async (id: number) => {
     createCompetency(getPack(id));
     markPackEnabled(id);
   };

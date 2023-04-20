@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { log } from 'next-axiom';
 import { fetcher } from '@/utils/fetch';
 import { useSession } from 'next-auth/react';
+import { searchPerPage } from '@/data/data';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import prisma from '@/utils/prisma';
 import Card from '@/components/Card';
@@ -18,6 +19,8 @@ import Modal from '@/components/Modal';
 import Search from '@/components/Search';
 import Spinner from '@/components/Spinner';
 import OwnershipSearchResults from '@/components/OwnershipSearchResults';
+import SearchResults from '@/components/SearchResults';
+import Pagination from '@/components/Pagination';
 
 interface Profile {
   name: string;
@@ -40,33 +43,35 @@ type Props = {
   profile: any;
   membership: MembershipType[];
   access: WorkspaceAccess[];
-  allProfiles: Profile[];
+  owners: Profile[];
 };
 
 const WorkspacePage = ({
   profile,
   membership,
   access: domains,
-  allProfiles,
+  owners,
 }: Props) => {
   const router = useRouter();
 
   let [isDomainModalOpen, setDomainModalOpen] = useState(false);
   let [isOwnerModalOpen, setOwnerModalOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState<Profile[]>(allProfiles);
-  const [loading, setLoading] = useState(false);
+  const [searchResults, setSearchResults] = useState<Profile[]>([]);
+  const [resultsCount, setResultsCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const { status } = useSession();
 
-  const searchProfiles = (results: Profile[]) => {
-    setLoading(true);
+  const searchProfiles = (results: Profile[], count: number) => {
     setSearchResults(results);
+    setResultsCount(Number(count));
     setLoading(false);
   };
-  const showAll = useCallback(() => {
-    setSearchResults(allProfiles);
-  }, [allProfiles]);
-  useEffect(() => showAll(), [showAll, allProfiles]);
+  // const showAll = useCallback(() => {
+  //   setSearchResults(allProfiles);
+  // }, [allProfiles]);
+  // useEffect(() => showAll(), [showAll, allProfiles]);
   function closeDomainModal() {
     setDomainModalOpen(false);
   }
@@ -360,7 +365,7 @@ const WorkspacePage = ({
               able to manage the workspace
             </p>
             <div className="my-8 text-sm">
-              {allProfiles.map((p, index) => {
+              {owners.map((p, index) => {
                 if (p.user.membership[0].role === 'OWNER') {
                   return (
                     <div
@@ -409,17 +414,32 @@ const WorkspacePage = ({
                   </h2>
                   <Search
                     returnSearchResults={searchProfiles}
-                    showAll={showAll}
                     workspaceId={membership[0].workspaceId}
+                    page={currentPage}
+                    setCurrentPage={setCurrentPage}
                   />
+
                   {loading ? (
                     <Spinner />
                   ) : (
-                    <OwnershipSearchResults
-                      profileId={profile.id}
-                      profiles={searchResults}
-                      updateAccess={updateOwnership}
-                    />
+                    <div>
+                      <p className="my-2 text-xs font-thin text-gray-500">
+                        Displaying {searchResults.length} results out of{' '}
+                        {resultsCount.toString()}
+                      </p>
+                      <OwnershipSearchResults
+                        profileId={profile.id}
+                        profiles={searchResults}
+                        updateAccess={updateOwnership}
+                      />
+                      {resultsCount > searchPerPage && (
+                        <Pagination
+                          resultsCount={resultsCount}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                        />
+                      )}
+                    </div>
                   )}
                 </div>
               </Modal>
@@ -476,10 +496,13 @@ export const getServerSideProps = async ({
 
   const workspaceId = profile.user.membership[0].workspaceId;
 
-  let allProfiles = await prisma.profile.findMany({
+  let owners = await prisma.profile.findMany({
     where: {
       user: {
-        membership: { some: { workspaceId: workspaceId } },
+        membership: {
+          some: { workspaceId: workspaceId },
+          every: { role: 'OWNER' },
+        },
       },
     },
 
@@ -499,7 +522,7 @@ export const getServerSideProps = async ({
       },
     },
     orderBy: { name: 'asc' },
-    take: 10,
+    // take: 10,
   });
 
   let membership = profile.user.membership;
@@ -523,9 +546,9 @@ export const getServerSideProps = async ({
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));
   access = JSON.parse(JSON.stringify(access));
-  allProfiles = JSON.parse(JSON.stringify(allProfiles));
+  owners = JSON.parse(JSON.stringify(owners));
 
   return {
-    props: { session, profile, membership, access, allProfiles },
+    props: { session, profile, membership, access, owners },
   };
 };

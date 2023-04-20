@@ -6,6 +6,7 @@ personalized recommendations for how to improve your skills and competencies.
 Whether you're just starting out in your career or you're an experienced pro, StepUpp is 
 the perfect tool to help you reach your professional goals.`;
 
+export const searchPerPage = 1;
 export const accountFields = [
   {
     label: 'Name',

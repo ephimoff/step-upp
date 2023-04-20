@@ -1,15 +1,18 @@
 import type { GetServerSidePropsContext } from 'next';
 import type { MembershipType } from '@/types/types';
+// import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { log } from 'next-axiom';
+import { searchPerPage } from '@/data/data';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Search from '@/components/Search';
 import SearchResults from '@/components/SearchResults';
 import Spinner from '@/components/Spinner';
 import prisma from '@/utils/prisma';
+import Pagination from '@/components/Pagination';
 
 interface Profile {
   name: string;
@@ -24,26 +27,29 @@ interface Profile {
 interface Props {
   profile: any;
   membership: MembershipType[];
-  allProfiles: Profile[];
 }
 
-export default function MainProfile({
-  profile,
-  membership,
-  allProfiles,
-}: Props) {
-  const [searchResults, setSearchResults] = useState<Profile[]>(allProfiles);
-  const [loading, setLoading] = useState(false);
+export default function MainProfile({ profile, membership }: Props) {
+  const [searchResults, setSearchResults] = useState<Profile[]>([]);
+  const [resultsCount, setResultsCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+
+  // const finalPage = Math.ceil(resultsCount / searchPerPage);
+  // const prevPage = Math.max(currentPage - 1, 0);
+  // const nextPage = Math.min(currentPage + 1, finalPage);
 
   const { status } = useSession();
-  const searchProfiles = (results: Profile[]) => {
-    setLoading(true);
+  const searchProfiles = (results: Profile[], count: number) => {
     setSearchResults(results);
+    setResultsCount(Number(count));
     setLoading(false);
   };
-  const showAll = () => {
-    setSearchResults(allProfiles);
-  };
+
+  // const goToPage = (page: number) => {
+  //   console.log('page', page);
+  //   setCurrentPage(page);
+  // };
   const role = membership[0].role;
   return (
     <>
@@ -52,10 +58,38 @@ export default function MainProfile({
           <>
             <Search
               returnSearchResults={searchProfiles}
-              showAll={showAll}
+              page={currentPage}
               workspaceId={membership[0].workspaceId}
+              setCurrentPage={setCurrentPage}
             />
-            {loading ? <Spinner /> : <SearchResults profiles={searchResults} />}
+
+            {loading ? (
+              <Spinner />
+            ) : (
+              <div>
+                <p className="my-2 text-xs font-thin text-gray-500">
+                  Displaying {searchResults.length} results out of{' '}
+                  {resultsCount.toString()}
+                </p>
+                <SearchResults
+                  profiles={searchResults}
+                  // count={resultsCount}
+                  // perPage={searchPerPage}
+                />
+                {resultsCount > searchPerPage && (
+                  <Pagination
+                    resultsCount={resultsCount}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
+                )}
+
+                {/* {prevPage}
+                {currentPage}
+                {nextPage}
+                {finalPage} */}
+              </div>
+            )}
           </>
         ) : (
           <p>You are not signed in</p>
@@ -69,8 +103,11 @@ export const getServerSideProps = async ({
   req,
   res,
 }: GetServerSidePropsContext) => {
+  // const { req, res } = context;
+
   const session = await getServerSession(req, res, authOptions);
   const PAGE = 'Profile Slug';
+
   if (!session) {
     log.warn(`${PAGE} page - Session not found. Redirecting to /auth/signin`);
     return {
@@ -103,27 +140,35 @@ export const getServerSideProps = async ({
     };
   }
 
-  const workspaceId = profile.user.membership[0].workspaceId;
+  // const workspaceId = profile.user.membership[0].workspaceId;
 
-  let allProfiles = await prisma.profile.findMany({
-    where: {
-      user: {
-        membership: { some: { workspaceId: workspaceId } },
-      },
-    },
+  // let allProfiles = await prisma.profile.findMany({
+  //   where: {
+  //     user: {
+  //       membership: { some: { workspaceId: workspaceId } },
+  //     },
+  //   },
 
-    select: {
-      name: true,
-      id: true,
-      slug: true,
-      team: true,
-      title: true,
-      email: true,
-      userpic: true,
-    },
-    orderBy: { name: 'asc' },
-    take: 10,
-  });
+  //   select: {
+  //     name: true,
+  //     id: true,
+  //     slug: true,
+  //     team: true,
+  //     title: true,
+  //     email: true,
+  //     userpic: true,
+  //   },
+  //   orderBy: { name: 'asc' },
+  //   take: searchPerPage,
+  //   skip: skip,
+  // });
+  // let allProfilesCount = await prisma.profile.count({
+  //   where: {
+  //     user: {
+  //       membership: { some: { workspaceId: workspaceId } },
+  //     },
+  //   },
+  // });
 
   let membership = profile.user.membership;
 
@@ -143,8 +188,8 @@ export const getServerSideProps = async ({
   // a hack to deal with the serialising the date objects
   profile = JSON.parse(JSON.stringify(profile));
   membership = JSON.parse(JSON.stringify(membership));
-  allProfiles = JSON.parse(JSON.stringify(allProfiles));
+  // allProfiles = JSON.parse(JSON.stringify(allProfiles));
   return {
-    props: { session, profile, membership, allProfiles },
+    props: { session, profile, membership },
   };
 };

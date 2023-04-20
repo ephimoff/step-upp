@@ -1,53 +1,43 @@
-import { Search as SearchIcon, RefreshCw } from 'lucide-react';
+import { Search as SearchIcon } from 'lucide-react';
 import { Field, Form, Formik } from 'formik';
-import { useState } from 'react';
-// import { log } from 'next-axiom';
+import { useState, useEffect, useCallback } from 'react';
 import { fetcher } from '@/utils/fetch';
 
 type Props = {
   returnSearchResults: any;
-  showAll: any;
+  page: number;
   workspaceId: string;
+  setCurrentPage: any;
 };
 
-const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
+const Search = ({
+  returnSearchResults,
+  page,
+  workspaceId,
+  setCurrentPage,
+}: Props) => {
   const [searchValue, setSearchValue] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // const searchUsers = async (value: string, workspaceId: string) => {
-  //   const functionName = 'searchUsers';
-  //   const url = `/api/profile?query=${value}&workspaceId=${workspaceId}`;
-  //   const method = 'GET';
-  //   try {
-  //     const response = await fetch(url);
-  //     log.info(
-  //       `${functionName} function -  ${method} ${url} response: ${response.status}`
-  //     );
-  //     if (response.status < 300) {
-  //       log.debug(
-  //         `${functionName} function - ${method} ${url} response: `,
-  //         response
-  //       );
-  //       setSuccess(true);
-  //     }
-  //     const searchResponse = await response.json();
-  //     // console.log('response', searchResponse);
+  const searchUsers = useCallback(
+    async (value: string, workspaceId: string, page: number) => {
+      const response = await fetcher(
+        'searchUsers',
+        `/api/profile?query=${value}&workspaceId=${workspaceId}&page=${page}`
+      );
+      const { searchResults, count } = response;
+      // console.log('searchResults', searchResults);
+      // console.log('count', count);
+      returnSearchResults(searchResults, count);
+      return { searchResults, count };
+    },
+    [returnSearchResults]
+  );
 
-  //     returnSearchResults(searchResponse);
-  //     return searchResponse;
-  //   } catch (error) {
-  //     log.error(`${functionName} function - ${method} ${url} error: ${error}`);
-  //   }
-  // };
-
-  const searchUsers = async (value: string, workspaceId: string) => {
-    const response = await fetcher(
-      'searchUsers',
-      `/api/profile?query=${value}&workspaceId=${workspaceId}`
-    );
-    returnSearchResults(response);
-    return response;
-  };
+  useEffect(() => {
+    searchUsers('', workspaceId, page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workspaceId, page]);
 
   return (
     <div>
@@ -58,7 +48,7 @@ const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
         }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
-          searchUsers(values.searchValue, workspaceId);
+          searchUsers(values.searchValue, workspaceId, 1);
           setSubmitting(false);
         }}
       >
@@ -80,14 +70,14 @@ const Search = ({ returnSearchResults, showAll, workspaceId }: Props) => {
               type="reset"
               onClick={() => {
                 setSearchValue('');
-                showAll();
+                setCurrentPage(1);
+                searchUsers('', workspaceId, 1);
                 setSuccess(false);
                 resetForm;
               }}
               className="group ml-2 flex items-center text-gray-500 transition duration-700"
             >
               Reset
-              {/* <RefreshCw size={16} className="group-hover:animate-spin" /> */}
             </button>
           </Form>
         )}

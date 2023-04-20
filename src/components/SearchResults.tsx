@@ -15,9 +15,13 @@ interface Profile {
 
 type Props = {
   profiles: Profile[];
+  // count: number;
+  // perPage: number;
 };
 
 const SearchResults = ({ profiles }: Props) => {
+  // const pages = count / perPage
+  // console.log('pages', pages);
   // console.log('profiles', profiles);
   if (profiles.length > 0) {
     return (

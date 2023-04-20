@@ -1,6 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { log } from 'next-axiom';
+import { searchPerPage } from '@/data/data';
 import prisma from '@/utils/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -78,7 +79,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
   if (req.method === 'GET') {
-    const { email, query, workspaceId } = req.query;
+    const { email, query, workspaceId, page } = req.query;
+    console.log('page', page);
+
     log.info(`API GET /api/profile`);
 
     if (email) {
@@ -102,7 +105,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ msg: 'Something went wrong', error });
       }
     }
-    if (query && workspaceId) {
+    if ((query && workspaceId) || page) {
+      // const PER_PAGE = 1;
+      const currentPage = Math.max(Number(page) || 1, 1);
+      const skip = (currentPage - 1) * searchPerPage;
+      // console.log('skip', skip);
       log.info(`API PUT /api/profile. Searching by query`);
       log.debug(
         `API PUT /api/profile. Searching by query:`,
@@ -142,11 +149,31 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
           orderBy: { name: 'asc' },
-          take: 10,
+          take: searchPerPage,
+          skip: skip,
+        });
+        console.log('searchResults', searchResults);
+        const count = await prisma.profile.count({
+          where: {
+            AND: [
+              {
+                user: {
+                  membership: { some: { workspaceId: workspaceId as string } },
+                },
+                OR: [
+                  { name: { contains: query as string, mode: 'insensitive' } },
+                  { email: { contains: query as string, mode: 'insensitive' } },
+                  { title: { contains: query as string, mode: 'insensitive' } },
+                  { team: { contains: query as string, mode: 'insensitive' } },
+                  { slug: { contains: query as string, mode: 'insensitive' } },
+                ],
+              },
+            ],
+          },
         });
         log.debug(`API PUT /api/profile. Search results: `, searchResults);
         if (searchResults) {
-          res.status(200).json(searchResults);
+          res.status(200).json({ searchResults, count });
         } else {
           res.status(500).json({ msg: 'Profile not found' });
         }
